@@ -1,62 +1,132 @@
 <template>
   <div
     class="block"
-    v-bind:class="{ moveable: block.editable }"
+    v-bind:class="{ editable: block.editable }"
     ref="root"
     @mousedown="onMove"
-    @input="onChange"
   >
-    <div class="container" ref="container">
+    <div class="container">
       <span
         class="content"
         ref="content"
         :contenteditable="block.editable"
         @mousedown="contentMouseDown"
       />
+
+      <div v-if="block.editable" class="toolbar">
+        <div class="tool tool-font">
+          <div class="tool-toggle" @click="toggleFont()">
+            <svg
+              class="svg-inline--fa fa-font fa-w-14"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="font"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              data-fa-i2svg=""
+            >
+              <path
+                fill="currentColor"
+                d="M432 416h-23.41L277.88 53.69A32 32 0 0 0 247.58 32h-47.16a32 32 0 0 0-30.3 21.69L39.41 416H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16h-19.58l23.3-64h152.56l23.3 64H304a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM176.85 272L224 142.51 271.15 272z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+        <div class="tool tool-color">
+          <div class="tool-toggle" @click="toggleColor()">
+            <svg
+              class="svg-inline--fa fa-palette fa-w-16 palette_icon"
+              style="color: rgb(57, 73, 171)"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="palette"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              data-fa-i2svg=""
+            >
+              <path
+                fill="currentColor"
+                d="M204.3 5C104.9 24.4 24.8 104.3 5.2 203.4c-37 187 131.7 326.4 258.8 306.7 41.2-6.4 61.4-54.6 42.5-91.7-23.1-45.4 9.9-98.4 60.9-98.4h79.7c35.8 0 64.8-29.6 64.9-65.3C511.5 97.1 368.1-26.9 204.3 5zM96 320c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm32-128c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128-64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+        <div class="tool tool-text-align">
+          <div class="tool-toggle" @click="toggleTextAlign()">
+            <svg
+              class="svg-inline--fa fa-align-center fa-w-14"
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fa"
+              data-icon="align-center"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              data-fa-i2svg=""
+            >
+              <path
+                fill="currentColor"
+                d="M432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM108.1 96h231.81A12.09 12.09 0 0 0 352 83.9V44.09A12.09 12.09 0 0 0 339.91 32H108.1A12.09 12.09 0 0 0 96 44.09V83.9A12.1 12.1 0 0 0 108.1 96zm231.81 256A12.09 12.09 0 0 0 352 339.9v-39.81A12.09 12.09 0 0 0 339.91 288H108.1A12.09 12.09 0 0 0 96 300.09v39.81a12.1 12.1 0 0 0 12.1 12.1z"
+              ></path>
+            </svg>
+          </div>
+          <div class="text-align-options">
+            <div>Left</div>
+            <div>Center</div>
+            <div>Right</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div v-if="block.editable" class="resize-left resize" @mousedown="onResizeLeft">
+    <div
+      v-if="block.editable"
+      class="resize-left resize"
+      @mousedown="onResizeLeft"
+    >
       Resize Left
     </div>
-    <div v-if="block.editable" class="resize-right resize" @mousedown="onResizeRight">
+    <div
+      v-if="block.editable"
+      class="resize-right resize"
+      @mousedown="onResizeRight"
+    >
       Resize Right
+    </div>
+    <div v-if="block.editable" class="save-block">
+      <button @click="saveBlock()">Save</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { BLOCK_TEXT_CHANGE } from '@/store/action_types';
 import { Block } from '@/store';
 
 export default defineComponent({
   props: {
     block: {
       type: Object as PropType<Block>,
-      required: true,
-    },
+      required: true
+    }
   },
   mounted() {
     const rootElm = this.$refs.root as HTMLElement;
-    const containerElm = this.$refs.container as HTMLElement;
     const contentElm = this.$refs.content as HTMLElement;
-    contentElm.innerText = this.block.text;
     rootElm.style.left = `${this.block.left}px`;
     rootElm.style.top = `${this.block.top}px`;
-    containerElm.style.fontFamily = this.block.fontFamily;
-    containerElm.style.fontSize = `${this.block.fontSize}px`;
-    containerElm.style.color = this.block.fontColor || 'inherit';
-    containerElm.style.fontStyle = this.block.fontStyle || 'inherit';
+    contentElm.innerText = this.block.text;
+    contentElm.style.fontFamily = this.block.fontFamily;
+    contentElm.style.color = this.block.fontColor || 'inherit';
+    contentElm.style.fontStyle = this.block.fontStyle || 'inherit';
+    contentElm.style.textAlign = this.block.textAlign || 'inherit';
   },
   methods: {
-    onChange(event: any) {
-      if (!this.block.editable) {
-        return;
-      }
-
-      const txt = event.target.innerText;
-      this.$store.dispatch(BLOCK_TEXT_CHANGE, { blockId: this.block.id, text: txt });
-    },
     contentMouseDown(e: MouseEvent): void {
+      // stop propagation to stop moving the block
       e.stopPropagation();
     },
     onResizeLeft(e: MouseEvent): void {
@@ -75,6 +145,18 @@ export default defineComponent({
       e.stopPropagation();
       this.$emit('onResizeRight', e, this.$refs.root);
     },
+    toggleTextAlign() {
+      console.log('select text align');
+    },
+    toggleFont() {
+      console.log('select text align');
+    },
+    toggleColor() {
+      console.log('select text align');
+    },
+    saveBlock() {
+      console.log('save block');
+    },
     onMove(e: MouseEvent) {
       if (!this.block.editable) {
         return;
@@ -82,22 +164,21 @@ export default defineComponent({
 
       e.stopPropagation();
       this.$emit('onMove', e, this.$refs.root);
-    },
-  },
+    }
+  }
 });
 </script>
 
 <style lang="scss" scoped>
 @import '../../assets/scss/mixins.scss';
 
-.moveable {
+.editable {
   cursor: move;
-  border: 2px dashed #ccc;
+  border: 2px dashed #ddd;
 }
 
 .block {
   width: 200px;
-  min-height: 100px;
   position: absolute;
   width: 200px;
   background: #fff;
@@ -105,32 +186,59 @@ export default defineComponent({
 
 .content {
   cursor: text;
+  font-size: 18px;
   outline: none;
   display: inline-block;
   min-width: 100%;
+  padding-bottom: 20px;
 }
 
 .container {
   padding: 10px;
+  position: relative;
+}
+
+.save-block {
+  position: absolute;
+  bottom: -40px;
 }
 
 .resize {
   position: absolute;
-  width: 14px;
-  height: 14px;
-  top: calc(50% - 7px);
+  width: 10px;
+  height: 10px;
+  top: calc(50% - 5px);
   text-indent: -1000px;
-  background: #aaeeaa;
+  background: #ddd;
   @include border-radius(100%);
 }
 
+.tool {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  margin-right: 15px;
+  position: relative;
+}
+
 .resize-left {
-  left: -7px;
+  left: -6px;
   cursor: w-resize;
 }
 
 .resize-right {
-  right: -7px;
+  right: -6px;
   cursor: e-resize;
+}
+
+.toolbar {
+  position: absolute;
+  bottom: 0;
+}
+
+.text-align-options {
+  position: absolute;
+  top: 25px;
+  border: 1px solid #eee;
 }
 </style>

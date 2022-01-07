@@ -1,5 +1,3 @@
-/** - passing block position - passign list of blocks - choose font, color, font size - vuex */
-
 <template>
   <div class="page" ref="root">
     <CardPageBlock
@@ -45,7 +43,11 @@ interface data {
   dragging?: draggingConfig;
 }
 
-function resizeLeft(evt: MouseEvent, page: HTMLElement, config: resizeLeftConfig): void {
+function resizeLeft(
+  evt: MouseEvent,
+  page: HTMLElement,
+  config: resizeLeftConfig
+): void {
   const el = config.element;
 
   let width = config.width - evt.clientX + config.X;
@@ -59,7 +61,11 @@ function resizeLeft(evt: MouseEvent, page: HTMLElement, config: resizeLeftConfig
   el.style.left = `${config.left - diff - 2}px`; // 2 = border width
 }
 
-function resizeRight(evt: MouseEvent, page: HTMLElement, config: resizeRightConfig): void {
+function resizeRight(
+  evt: MouseEvent,
+  page: HTMLElement,
+  config: resizeRightConfig
+): void {
   const elm = config.element;
 
   let width = config.width + evt.clientX - config.X;
@@ -70,7 +76,11 @@ function resizeRight(evt: MouseEvent, page: HTMLElement, config: resizeRightConf
   elm.style.width = `${width}px`;
 }
 
-function handleDragging(evt: MouseEvent, page: HTMLElement, config: draggingConfig): void {
+function handleDragging(
+  evt: MouseEvent,
+  page: HTMLElement,
+  config: draggingConfig
+): void {
   const elm = config.element;
 
   let left = evt.clientX + config.X;
@@ -87,10 +97,10 @@ function handleDragging(evt: MouseEvent, page: HTMLElement, config: draggingConf
 
 export default defineComponent({
   props: {
-    pageId: String,
+    pageId: String
   },
   components: {
-    CardPageBlock,
+    CardPageBlock
   },
   data(): data {
     return {};
@@ -98,7 +108,7 @@ export default defineComponent({
   computed: {
     blocks(): Block[] {
       return this.$store.getters.getBlocksByPageID(this.pageId);
-    },
+    }
   },
   mounted() {
     document.addEventListener('mouseup', () => {
@@ -131,24 +141,24 @@ export default defineComponent({
         element: elm,
         width: elm.offsetWidth,
         left: elm.offsetLeft,
-        X: e.clientX,
+        X: e.clientX
       };
     },
     onResizeRight(e: MouseEvent, elm: HTMLElement) {
       this.resizeRight = {
         element: elm,
         width: elm.offsetWidth,
-        X: e.clientX,
+        X: e.clientX
       };
     },
     onMove(e: MouseEvent, elm: HTMLElement) {
       this.dragging = {
         element: elm,
         X: elm.offsetLeft - e.clientX,
-        Y: elm.offsetTop - e.clientY,
+        Y: elm.offsetTop - e.clientY
       };
-    },
-  },
+    }
+  }
 });
 </script>
 

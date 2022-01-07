@@ -38,7 +38,7 @@ function updateBlock(
   blockId: string,
   data: {
     [key: string]: any;
-  },
+  }
 ): void {
   const idx = state.blocks.findIndex((b) => b.id === blockId);
   if (idx === -1) {
@@ -54,8 +54,8 @@ export const store = createStore<State>({
     pages: [
       {
         id: 'page1',
-        order: 1,
-      },
+        order: 1
+      }
     ],
     blocks: [
       {
@@ -65,11 +65,11 @@ export const store = createStore<State>({
         top: 0,
         left: 0,
         width: 300,
-        text: 'Congratulations on your graduation and best wishes for your next adventure!',
+        text: 'Congratulations on your graduation and best wishes',
         fontFamily: 'Times New Roman',
-        fontSize: 20,
         fontColor: '#EAAABB',
         fontStyle: 'italic',
+        textAlign: 'center'
       },
       {
         id: 'block2',
@@ -81,27 +81,34 @@ export const store = createStore<State>({
         text: 'Hello world 2',
         editable: true,
         fontFamily: 'Helvetica',
-        fontSize: 22,
-      },
-    ],
+        textAlign: 'right'
+      }
+    ]
   },
   getters: {
     getBlocksByPageID:
-      (st: State) => (pageId: string): Block[] => st.blocks.filter((b) => b.pageId === pageId),
+      (st: State) =>
+      (pageId: string): Block[] =>
+        st.blocks.filter((b) => b.pageId === pageId),
     getBlockByID:
-      (st: State) => (blockId: string): Block|undefined => st.blocks.find((b) => b.id === blockId),
+      (st: State) =>
+      (blockId: string): Block | undefined =>
+        st.blocks.find((b) => b.id === blockId)
   },
   mutations: {
     [UPDATE_BLOCK](state: State, payload: UpdateBlockPayload): void {
       updateBlock(state, payload.blockId, payload.data);
-    },
+    }
   },
   actions: {
-    async [BLOCK_TEXT_CHANGE]({ commit }: ActionContext<State, State>, { blockId, text }: any) {
+    async [BLOCK_TEXT_CHANGE](
+      { commit }: ActionContext<State, State>,
+      { blockId, text }: any
+    ) {
       commit(UPDATE_BLOCK, { blockId, data: { text } });
-    },
+    }
   },
-  modules: {},
+  modules: {}
 });
 
 declare module '@vue/runtime-core' {
