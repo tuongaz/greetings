@@ -80,7 +80,8 @@ export const store = createStore<State>({
         width: 300,
         text: 'Hello world 2',
         editable: true,
-        fontFamily: 'Helvetica',
+        fontFamily: 'Arial',
+        fontColor: '#8e24aa',
         textAlign: 'right'
       }
     ]
