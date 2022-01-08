@@ -142,7 +142,7 @@ export default defineComponent({
   width: 200px;
   position: absolute;
   width: 200px;
-  background: #fff;
+  z-index: 999;
 }
 
 .content {

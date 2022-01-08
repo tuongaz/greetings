@@ -20,7 +20,12 @@
     </div>
     <div class="options" ref="options">
       <ul>
-        <li @click="onFontSelect(font)" v-for="font in fonts" :key="font">
+        <li
+          @click="onFontSelect(font)"
+          v-bind:style="{ fontFamily: font }"
+          v-for="font in fonts"
+          :key="font"
+        >
           {{ font }}
         </li>
       </ul>
@@ -87,16 +92,19 @@ export default defineComponent({
   position: absolute;
   top: 25px;
   border: 1px solid #eee;
+  width: 200px;
+  height: 200px;
+  overflow: auto;
 
   ul {
     margin: 0;
     padding: 0;
     list-style: none;
-    width: 150px;
 
     li {
       border-bottom: 1px solid #eee;
       padding: 5px 10px;
+      display: block;
     }
   }
 }
