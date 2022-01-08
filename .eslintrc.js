@@ -20,7 +20,7 @@ module.exports = {
       {
         code: 80,
         template: 80,
-        ignorePattern: '<path([sS]*?)/>'
+        ignorePattern: 'd=([sS]*?)'
       }
     ]
   },

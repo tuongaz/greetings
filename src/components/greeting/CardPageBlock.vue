@@ -55,31 +55,7 @@
             </svg>
           </div>
         </div>
-        <div class="tool tool-text-align">
-          <div class="tool-toggle" @click="toggleTextAlign()">
-            <svg
-              class="svg-inline--fa fa-align-center fa-w-14"
-              aria-hidden="true"
-              focusable="false"
-              data-prefix="fa"
-              data-icon="align-center"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 448 512"
-              data-fa-i2svg=""
-            >
-              <path
-                fill="currentColor"
-                d="M432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM108.1 96h231.81A12.09 12.09 0 0 0 352 83.9V44.09A12.09 12.09 0 0 0 339.91 32H108.1A12.09 12.09 0 0 0 96 44.09V83.9A12.1 12.1 0 0 0 108.1 96zm231.81 256A12.09 12.09 0 0 0 352 339.9v-39.81A12.09 12.09 0 0 0 339.91 288H108.1A12.09 12.09 0 0 0 96 300.09v39.81a12.1 12.1 0 0 0 12.1 12.1z"
-              ></path>
-            </svg>
-          </div>
-          <div class="text-align-options">
-            <div>Left</div>
-            <div>Center</div>
-            <div>Right</div>
-          </div>
-        </div>
+        <ToolTextAlign @on-select="onSelectTextAlign" />
       </div>
     </div>
     <div
@@ -105,8 +81,12 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { Block } from '@/store';
+import ToolTextAlign from './ToolTextAlign.vue';
 
 export default defineComponent({
+  components: {
+    ToolTextAlign
+  },
   props: {
     block: {
       type: Object as PropType<Block>,
@@ -137,6 +117,10 @@ export default defineComponent({
       e.stopPropagation();
       this.$emit('onResizeLeft', e, this.$refs.root);
     },
+    onSelectTextAlign(value: string) {
+      const contentElm = this.$refs.content as HTMLElement;
+      contentElm.style.textAlign = value;
+    },
     onResizeRight(e: MouseEvent): void {
       if (!this.block.editable) {
         return;
@@ -145,8 +129,12 @@ export default defineComponent({
       e.stopPropagation();
       this.$emit('onResizeRight', e, this.$refs.root);
     },
-    toggleTextAlign() {
+    toggleTextAlign(e: Event) {
+      e.stopPropagation();
       console.log('select text align');
+      const elm = this.$refs.textalign as HTMLElement;
+      console.log(elm.style.display);
+      elm.style.display = elm.style.display === 'block' ? 'none' : 'block';
     },
     toggleFont() {
       console.log('select text align');
@@ -234,11 +222,5 @@ export default defineComponent({
 .toolbar {
   position: absolute;
   bottom: 0;
-}
-
-.text-align-options {
-  position: absolute;
-  top: 25px;
-  border: 1px solid #eee;
 }
 </style>
