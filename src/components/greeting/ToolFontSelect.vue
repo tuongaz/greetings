@@ -46,7 +46,16 @@ export default defineComponent({
   data() {
     return {
       clicked: false,
-      fonts: ['Courier New', 'Times New Roman', 'Arial', 'Verdana', 'Georgia']
+      fonts: [
+        'Courier New',
+        'Times New Roman',
+        'Arial',
+        'Verdana',
+        'Georgia',
+        'Architects Daughter',
+        'Gochi Hand',
+        'Grand Hotel'
+      ]
     };
   },
   methods: {
