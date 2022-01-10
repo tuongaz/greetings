@@ -1,6 +1,6 @@
 <template>
   <div class="tool">
-    <div class="tool-toggle" @click="toggle">
+    <div class="tool-toggle" data-testid="toggle-text-align" @click="toggle">
       <svg
         class="svg-inline--fa fa-font fa-w-14"
         aria-hidden="true"
@@ -18,7 +18,7 @@
         ></path>
       </svg>
     </div>
-    <div class="options" ref="options">
+    <div class="options" ref="options" data-testid="options">
       <ul>
         <li
           @click="onFontSelect(font)"
@@ -37,6 +37,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   mounted() {
+    (this.$refs.options as HTMLElement).style.display = 'none';
     document.addEventListener('click', () => {
       if (!this.clicked) {
         const elm = this.$refs.options as HTMLElement;

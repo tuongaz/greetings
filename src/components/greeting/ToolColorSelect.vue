@@ -1,6 +1,6 @@
 <template>
   <div class="tool">
-    <div class="tool-toggle" @click="toggle">
+    <div class="tool-toggle" data-testid="toggle-text-align" @click="toggle">
       <svg
         class="svg-inline--fa fa-palette fa-w-16 palette_icon"
         style="color: rgb(57, 73, 171)"
@@ -19,7 +19,7 @@
         ></path>
       </svg>
     </div>
-    <div class="options" ref="options">
+    <div class="options" data-testid="options" ref="options">
       <ul>
         <li
           v-for="color in colors"
@@ -38,6 +38,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   mounted() {
+    (this.$refs.options as HTMLElement).style.display = 'none';
     document.addEventListener('click', () => {
       if (!this.clicked) {
         const elm = this.$refs.options as HTMLElement;
