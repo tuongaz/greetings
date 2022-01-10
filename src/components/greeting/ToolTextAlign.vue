@@ -1,6 +1,6 @@
 <template>
   <div class="tool">
-    <div class="tool-toggle" @click="toggle">
+    <div class="tool-toggle" data-testid="toggle-text-align" @click="toggle">
       <svg
         class="svg-inline--fa fa-align-center fa-w-14"
         aria-hidden="true"
@@ -13,13 +13,12 @@
         data-fa-i2svg=""
       >
         <path
-          fill="currentColor"
           d="M432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM108.1 96h231.81A12.09 12.09 0 0 0 352 83.9V44.09A12.09 12.09 0 0 0 339.91 32H108.1A12.09 12.09 0 0 0 96 44.09V83.9A12.1 12.1 0 0 0 108.1 96zm231.81 256A12.09 12.09 0 0 0 352 339.9v-39.81A12.09 12.09 0 0 0 339.91 288H108.1A12.09 12.09 0 0 0 96 300.09v39.81a12.1 12.1 0 0 0 12.1 12.1z"
         ></path>
       </svg>
     </div>
-    <div class="options" ref="options">
-      <div @click="selectLeft" class="option">
+    <div class="options" ref="options" data-testid="options">
+      <div @click="selectLeft" data-testid="select-left" class="option">
         <svg
           class="svg-inline--fa fa-align-left fa-w-14"
           aria-hidden="true"
@@ -32,12 +31,11 @@
           data-fa-i2svg=""
         >
           <path
-            fill="currentColor"
             d="M12.83 352h262.34A12.82 12.82 0 0 0 288 339.17v-38.34A12.82 12.82 0 0 0 275.17 288H12.83A12.82 12.82 0 0 0 0 300.83v38.34A12.82 12.82 0 0 0 12.83 352zm0-256h262.34A12.82 12.82 0 0 0 288 83.17V44.83A12.82 12.82 0 0 0 275.17 32H12.83A12.82 12.82 0 0 0 0 44.83v38.34A12.82 12.82 0 0 0 12.83 96zM432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z"
           ></path>
         </svg>
       </div>
-      <div @click="selectCenter" class="option">
+      <div @click="selectCenter" data-testid="select-center" class="option">
         <svg
           class="svg-inline--fa fa-align-center fa-w-14"
           aria-hidden="true"
@@ -50,12 +48,11 @@
           data-fa-i2svg=""
         >
           <path
-            fill="currentColor"
             d="M432 160H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0 256H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM108.1 96h231.81A12.09 12.09 0 0 0 352 83.9V44.09A12.09 12.09 0 0 0 339.91 32H108.1A12.09 12.09 0 0 0 96 44.09V83.9A12.1 12.1 0 0 0 108.1 96zm231.81 256A12.09 12.09 0 0 0 352 339.9v-39.81A12.09 12.09 0 0 0 339.91 288H108.1A12.09 12.09 0 0 0 96 300.09v39.81a12.1 12.1 0 0 0 12.1 12.1z"
           ></path>
         </svg>
       </div>
-      <div @click="selectRight" class="option">
+      <div @click="selectRight" data-testid="select-right" class="option">
         <svg
           class="svg-inline--fa fa-align-right fa-w-14"
           aria-hidden="true"
@@ -81,6 +78,9 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   mounted() {
+    (this.$refs.options as HTMLElement).style.display = 'none';
+
+    // close the options when we click outside of the option.
     document.addEventListener('click', () => {
       if (!this.clicked) {
         const elm = this.$refs.options as HTMLElement;
@@ -98,7 +98,7 @@ export default defineComponent({
     };
   },
   methods: {
-    toggle(e: Event) {
+    toggle() {
       // e.stopPropagation();
       this.clicked = true;
       const elm = this.$refs.options as HTMLElement;
@@ -110,17 +110,17 @@ export default defineComponent({
     },
     selectLeft(e: Event) {
       e.stopPropagation();
-      this.$emit('onSelect', 'left');
+      this.$emit('optionSelected', 'left');
       this.close();
     },
     selectRight(e: Event) {
       e.stopPropagation();
-      this.$emit('onSelect', 'right');
+      this.$emit('optionSelected', 'right');
       this.close();
     },
     selectCenter(e: Event) {
       e.stopPropagation();
-      this.$emit('onSelect', 'center');
+      this.$emit('optionSelected', 'center');
       this.close();
     }
   }
