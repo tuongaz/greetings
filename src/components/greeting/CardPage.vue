@@ -1,6 +1,6 @@
 <template>
   <div class="page" ref="root">
-    <CardPageBlock
+    <CardPageText
       v-for="block in blocks"
       :key="block.id"
       :block="block"
@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import CardPageBlock from './CardPageBlock.vue';
+import CardPageText from './CardPageText.vue';
 import { Block } from '@/store';
 
 const blockMinWidth = 150;
@@ -100,7 +100,7 @@ export default defineComponent({
     pageId: String
   },
   components: {
-    CardPageBlock
+    CardPageText
   },
   data(): data {
     return {};

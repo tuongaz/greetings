@@ -1,0 +1,26 @@
+
+11/Jan:
+* Editable/editing option for block
+* Handle when block content is saved (event sent with data)
+* Unit tests for CardPageText
+====
+12/Jan
+* Add Delete button when it's editing
+* Allow to switch to edit 
+* Add new block
+* Vuex integration
+==
+13/Jan
+* Handle multiple pages, add new page
+* Handle page cover
+===
+14-20 Jan
+* Finialise the UI/UX with animation 
+* Icons (Find icons)
+* List colors
+* Design the app page (Setup steps...)
+===
+API integration:
+- GRPC, Microservice?
+
+

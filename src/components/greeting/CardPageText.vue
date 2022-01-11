@@ -1,39 +1,39 @@
 <template>
   <div
     class="block"
-    v-bind:class="{ editable: block.editable }"
+    v-bind:class="{ editing: editing, editable: block.editable && !editing }"
     ref="root"
-    @mousedown="onBlockMoved"
+    @mousedown="onMouseDown"
   >
     <div class="container">
       <span
         class="content"
         ref="content"
-        :contenteditable="block.editable"
+        :contenteditable="this.editing"
         @mousedown="contentMouseDown"
       />
 
-      <div v-if="block.editable" class="toolbar">
+      <div v-if="this.editing" class="toolbar">
         <ToolFontSelect @font-selected="onFontSelected" />
         <ToolColorSelect @color-selected="onColorSelected" />
         <ToolTextAlign @text-align-selected="onTextAlignSelected" />
       </div>
     </div>
     <div
-      v-if="block.editable"
+      v-if="this.editing"
       class="resize-left resize"
       @mousedown="onBlockLeftResized"
     >
       Resize Left
     </div>
     <div
-      v-if="block.editable"
+      v-if="this.editing"
       class="resize-right resize"
       @mousedown="onBlockRightResized"
     >
       Resize Right
     </div>
-    <div v-if="block.editable" class="save-block">
+    <div v-if="this.editing" class="save-block">
       <button @click="saveBlock()">Save</button>
     </div>
   </div>
@@ -45,6 +45,23 @@ import { Block } from '@/store';
 import ToolTextAlign from './ToolTextAlign.vue';
 import ToolColorSelect from './ToolColorSelect.vue';
 import ToolFontSelect from './ToolFontSelect.vue';
+
+function rgb2hex(rgb: string) {
+  const values = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  function hex(x: string) {
+    return `0${parseInt(x, 10).toString(16)}`.slice(-2);
+  }
+
+  if (values === null) {
+    return '';
+  }
+
+  return `#${hex(values[1])}${hex(values[2])}${hex(values[3])}`;
+}
+
+function pxToInt(px: string): number {
+  return parseInt(px.replace('px', ''), 10);
+}
 
 export default defineComponent({
   components: {
@@ -58,6 +75,11 @@ export default defineComponent({
       required: true
     }
   },
+  data() {
+    return {
+      editing: false
+    };
+  },
   mounted() {
     const rootElm = this.$refs.root as HTMLElement;
     const contentElm = this.$refs.content as HTMLElement;
@@ -66,16 +88,18 @@ export default defineComponent({
     contentElm.innerText = this.block.text;
     contentElm.style.fontFamily = this.block.fontFamily;
     contentElm.style.color = this.block.fontColor || 'inherit';
-    contentElm.style.fontStyle = this.block.fontStyle || 'inherit';
     contentElm.style.textAlign = this.block.textAlign || 'inherit';
   },
   methods: {
     contentMouseDown(e: MouseEvent): void {
       // stop propagation to stop moving the block
       e.stopPropagation();
+      if (this.block.editable) {
+        this.editing = true;
+      }
     },
     onBlockLeftResized(e: MouseEvent): void {
-      if (!this.block.editable) {
+      if (!this.editing) {
         return;
       }
 
@@ -83,7 +107,7 @@ export default defineComponent({
       this.$emit('onResizeLeft', e, this.$refs.root);
     },
     onBlockRightResized(e: MouseEvent): void {
-      if (!this.block.editable) {
+      if (!this.editing) {
         return;
       }
 
@@ -91,15 +115,29 @@ export default defineComponent({
       this.$emit('onResizeRight', e, this.$refs.root);
     },
     saveBlock() {
-      console.log('save block');
+      const rootElm = this.$refs.root as HTMLElement;
+      const contentElm = this.$refs.content as HTMLElement;
+      const data = {
+        left: pxToInt(rootElm.style.left),
+        top: pxToInt(rootElm.style.top),
+        text: contentElm.innerText,
+        fontFamily: contentElm.style.fontFamily,
+        color: rgb2hex(contentElm.style.color),
+        textAlign: contentElm.style.textAlign
+      };
+      console.log(data);
     },
-    onBlockMoved(e: MouseEvent) {
-      if (!this.block.editable) {
+    onMouseDown(e: MouseEvent) {
+      e.stopPropagation();
+
+      if (this.editing) {
+        this.$emit('onMove', e, this.$refs.root);
         return;
       }
 
-      e.stopPropagation();
-      this.$emit('onMove', e, this.$refs.root);
+      if (this.block.editable) {
+        this.editing = true;
+      }
     },
     onColorSelected(color: string) {
       const contentElm = this.$refs.content as HTMLElement;
@@ -120,20 +158,31 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '../../assets/scss/mixins.scss';
 
-.editable {
-  cursor: move;
-  border: 2px dashed #ddd;
-}
-
 .block {
   width: 200px;
+  border: 2px dashed #fff;
   position: absolute;
   width: 200px;
   z-index: 999;
+
+  &.editing {
+    cursor: move;
+    border: 2px dashed #ddd;
+
+    .content {
+      cursor: text;
+    }
+  }
+
+  &.editable {
+    cursor: pointer;
+    &:hover {
+      border: 2px dashed #ddd;
+    }
+  }
 }
 
 .content {
-  cursor: text;
   font-size: 18px;
   outline: none;
   display: inline-block;
