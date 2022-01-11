@@ -10,7 +10,7 @@
         class="content"
         ref="content"
         :contenteditable="this.editing"
-        @mousedown="contentMouseDown"
+        @mousedown="onContentMouseDown"
       />
 
       <div v-if="this.editing" class="toolbar">
@@ -85,15 +85,19 @@ export default defineComponent({
     const contentElm = this.$refs.content as HTMLElement;
     rootElm.style.left = `${this.block.left}px`;
     rootElm.style.top = `${this.block.top}px`;
+    rootElm.style.width = `${this.block.width}px`;
+
     contentElm.innerText = this.block.text;
     contentElm.style.fontFamily = this.block.fontFamily;
     contentElm.style.color = this.block.fontColor || 'inherit';
     contentElm.style.textAlign = this.block.textAlign || 'inherit';
   },
   methods: {
-    contentMouseDown(e: MouseEvent): void {
+    onContentMouseDown(e: MouseEvent): void {
       // stop propagation to stop moving the block
       e.stopPropagation();
+
+      // Change to editing mode if the user is eligible to edit this block.
       if (this.block.editable) {
         this.editing = true;
       }
@@ -120,6 +124,7 @@ export default defineComponent({
       const data = {
         left: pxToInt(rootElm.style.left),
         top: pxToInt(rootElm.style.top),
+        width: pxToInt(rootElm.style.width),
         text: contentElm.innerText,
         fontFamily: contentElm.style.fontFamily,
         color: rgb2hex(contentElm.style.color),

@@ -77,7 +77,7 @@ export const store = createStore<State>({
         type: 'message',
         top: 200,
         left: 200,
-        width: 300,
+        width: 200,
         text: 'Hello world 2',
         editable: true,
         fontFamily: 'Arial',
