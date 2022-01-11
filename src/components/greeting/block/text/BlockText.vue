@@ -161,7 +161,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/scss/mixins.scss';
+@import '@/assets/scss/mixins.scss';
 
 .block {
   width: 200px;
