@@ -23,7 +23,8 @@
         <li
           @click="onFontSelect(font)"
           v-bind:style="{ fontFamily: font }"
-          v-for="font in fonts"
+          v-for="(font, index) in fonts"
+          :data-testid="'option-' + index"
           :key="font"
         >
           {{ font }}
@@ -72,7 +73,7 @@ export default defineComponent({
       elm.style.display = elm.style.display === 'block' ? 'none' : 'block';
     },
     onFontSelect(font: string) {
-      this.$emit('onFontSelect', font);
+      this.$emit('fontSelected', font);
     },
     close() {
       const elm = this.$refs.options as HTMLElement;

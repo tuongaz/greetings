@@ -14,4 +14,16 @@ describe('ToolColorSelect.vue', () => {
     wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
     expect(options.isVisible()).toBeFalsy();
   });
+
+  it('should send the "colorSelected" event when a color is chosen', () => {
+    const wrapper = mount(ToolColorSelect);
+    wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
+
+    const btn = wrapper.find('[data-testid="option-1"]');
+    btn.trigger('click');
+
+    const events = wrapper.emitted('colorSelected');
+    expect(events).toHaveLength(1);
+    expect(events).toEqual([['#d81b60']]);
+  });
 });

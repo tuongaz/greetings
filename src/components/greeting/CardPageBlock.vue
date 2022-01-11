@@ -14,8 +14,8 @@
       />
 
       <div v-if="block.editable" class="toolbar">
-        <ToolFontSelect @on-font-select="onFontSelect" />
-        <ToolColorSelect @on-select-color="onSelectColor" />
+        <ToolFontSelect @font-selected="onFontSelect" />
+        <ToolColorSelect @color-selected="onSelectColor" />
         <ToolTextAlign @option-selected="onSelectTextAlign" />
       </div>
     </div>

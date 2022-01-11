@@ -14,4 +14,16 @@ describe('ToolFontSelect.vue', () => {
     wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
     expect(options.isVisible()).toBeFalsy();
   });
+
+  it('should send the "fontSelected" event when a font is chosen', () => {
+    const wrapper = mount(ToolFontSelect);
+    wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
+
+    const btn = wrapper.find('[data-testid="option-1"]');
+    btn.trigger('click');
+
+    const events = wrapper.emitted('fontSelected');
+    expect(events).toHaveLength(1);
+    expect(events).toEqual([['Times New Roman']]);
+  });
 });

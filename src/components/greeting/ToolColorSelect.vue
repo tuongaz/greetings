@@ -22,7 +22,8 @@
     <div class="options" data-testid="options" ref="options">
       <ul>
         <li
-          v-for="color in colors"
+          v-for="(color, index) in colors"
+          :data-testid="'option-' + index"
           :key="color"
           @click="selectColor(color)"
           v-bind:style="{ background: color }"
@@ -85,7 +86,7 @@ export default defineComponent({
       elm.style.display = elm.style.display === 'block' ? 'none' : 'block';
     },
     selectColor(color: string) {
-      this.$emit('onSelectColor', color);
+      this.$emit('colorSelected', color);
     },
     close() {
       const elm = this.$refs.options as HTMLElement;
