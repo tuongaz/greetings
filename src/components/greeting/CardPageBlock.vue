@@ -3,7 +3,7 @@
     class="block"
     v-bind:class="{ editable: block.editable }"
     ref="root"
-    @mousedown="onMove"
+    @mousedown="onBlockMoved"
   >
     <div class="container">
       <span
@@ -14,22 +14,22 @@
       />
 
       <div v-if="block.editable" class="toolbar">
-        <ToolFontSelect @font-selected="fontSelected" />
-        <ToolColorSelect @color-selected="colorSelected" />
-        <ToolTextAlign @text-align-selected="textAlignSelected" />
+        <ToolFontSelect @font-selected="onFontSelected" />
+        <ToolColorSelect @color-selected="onColorSelected" />
+        <ToolTextAlign @text-align-selected="onTextAlignSelected" />
       </div>
     </div>
     <div
       v-if="block.editable"
       class="resize-left resize"
-      @mousedown="onResizeLeft"
+      @mousedown="onBlockLeftResized"
     >
       Resize Left
     </div>
     <div
       v-if="block.editable"
       class="resize-right resize"
-      @mousedown="onResizeRight"
+      @mousedown="onBlockRightResized"
     >
       Resize Right
     </div>
@@ -74,7 +74,7 @@ export default defineComponent({
       // stop propagation to stop moving the block
       e.stopPropagation();
     },
-    onResizeLeft(e: MouseEvent): void {
+    onBlockLeftResized(e: MouseEvent): void {
       if (!this.block.editable) {
         return;
       }
@@ -82,7 +82,7 @@ export default defineComponent({
       e.stopPropagation();
       this.$emit('onResizeLeft', e, this.$refs.root);
     },
-    onResizeRight(e: MouseEvent): void {
+    onBlockRightResized(e: MouseEvent): void {
       if (!this.block.editable) {
         return;
       }
@@ -90,16 +90,10 @@ export default defineComponent({
       e.stopPropagation();
       this.$emit('onResizeRight', e, this.$refs.root);
     },
-    toggleFont() {
-      console.log('select text align');
-    },
-    toggleColor() {
-      console.log('select text align');
-    },
     saveBlock() {
       console.log('save block');
     },
-    onMove(e: MouseEvent) {
+    onBlockMoved(e: MouseEvent) {
       if (!this.block.editable) {
         return;
       }
@@ -107,15 +101,15 @@ export default defineComponent({
       e.stopPropagation();
       this.$emit('onMove', e, this.$refs.root);
     },
-    colorSelected(color: string) {
+    onColorSelected(color: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.color = color;
     },
-    fontSelected(font: string) {
+    onFontSelected(font: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.fontFamily = font;
     },
-    textAlignSelected(value: string) {
+    onTextAlignSelected(value: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.textAlign = value;
     }
