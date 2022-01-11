@@ -22,7 +22,7 @@ describe('ToolTextAlign.vue', () => {
     const btn = wrapper.find('[data-testid="select-left"]');
     btn.trigger('click');
 
-    const events = wrapper.emitted('optionSelected');
+    const events = wrapper.emitted('textAlignSelected');
     expect(events).toHaveLength(1);
     expect(events).toEqual([['left']]);
   });
@@ -34,7 +34,7 @@ describe('ToolTextAlign.vue', () => {
     const btn = wrapper.find('[data-testid="select-center"]');
     btn.trigger('click');
 
-    const events = wrapper.emitted('optionSelected');
+    const events = wrapper.emitted('textAlignSelected');
     expect(events).toHaveLength(1);
     expect(events).toEqual([['center']]);
   });
@@ -46,7 +46,7 @@ describe('ToolTextAlign.vue', () => {
     const btn = wrapper.find('[data-testid="select-right"]');
     btn.trigger('click');
 
-    const events = wrapper.emitted('optionSelected');
+    const events = wrapper.emitted('textAlignSelected');
     expect(events).toHaveLength(1);
     expect(events).toEqual([['right']]);
   });

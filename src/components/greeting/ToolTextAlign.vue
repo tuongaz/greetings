@@ -110,17 +110,17 @@ export default defineComponent({
     },
     selectLeft(e: Event) {
       e.stopPropagation();
-      this.$emit('optionSelected', 'left');
+      this.$emit('textAlignSelected', 'left');
       this.close();
     },
     selectRight(e: Event) {
       e.stopPropagation();
-      this.$emit('optionSelected', 'right');
+      this.$emit('textAlignSelected', 'right');
       this.close();
     },
     selectCenter(e: Event) {
       e.stopPropagation();
-      this.$emit('optionSelected', 'center');
+      this.$emit('textAlignSelected', 'center');
       this.close();
     }
   }

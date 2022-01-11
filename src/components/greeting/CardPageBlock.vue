@@ -14,9 +14,9 @@
       />
 
       <div v-if="block.editable" class="toolbar">
-        <ToolFontSelect @font-selected="onFontSelect" />
-        <ToolColorSelect @color-selected="onSelectColor" />
-        <ToolTextAlign @option-selected="onSelectTextAlign" />
+        <ToolFontSelect @font-selected="fontSelected" />
+        <ToolColorSelect @color-selected="colorSelected" />
+        <ToolTextAlign @text-align-selected="textAlignSelected" />
       </div>
     </div>
     <div
@@ -82,10 +82,6 @@ export default defineComponent({
       e.stopPropagation();
       this.$emit('onResizeLeft', e, this.$refs.root);
     },
-    onSelectTextAlign(value: string) {
-      const contentElm = this.$refs.content as HTMLElement;
-      contentElm.style.textAlign = value;
-    },
     onResizeRight(e: MouseEvent): void {
       if (!this.block.editable) {
         return;
@@ -93,13 +89,6 @@ export default defineComponent({
 
       e.stopPropagation();
       this.$emit('onResizeRight', e, this.$refs.root);
-    },
-    toggleTextAlign(e: Event) {
-      e.stopPropagation();
-      console.log('select text align');
-      const elm = this.$refs.textalign as HTMLElement;
-      console.log(elm.style.display);
-      elm.style.display = elm.style.display === 'block' ? 'none' : 'block';
     },
     toggleFont() {
       console.log('select text align');
@@ -118,13 +107,17 @@ export default defineComponent({
       e.stopPropagation();
       this.$emit('onMove', e, this.$refs.root);
     },
-    onSelectColor(color: string) {
+    colorSelected(color: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.color = color;
     },
-    onFontSelect(font: string) {
+    fontSelected(font: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.fontFamily = font;
+    },
+    textAlignSelected(value: string) {
+      const contentElm = this.$refs.content as HTMLElement;
+      contentElm.style.textAlign = value;
     }
   }
 });

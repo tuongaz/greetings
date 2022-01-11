@@ -79,8 +79,7 @@ export default defineComponent({
     };
   },
   methods: {
-    toggle(e: Event) {
-      // e.stopPropagation();
+    toggle() {
       this.clicked = true;
       const elm = this.$refs.options as HTMLElement;
       elm.style.display = elm.style.display === 'block' ? 'none' : 'block';
