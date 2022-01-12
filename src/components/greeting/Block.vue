@@ -11,7 +11,6 @@
         :block="block"
         ref="block"
         :editing="editing"
-        @editing="editing = true"
         @block-value-changed="onBlockValueChanged"
       />
     </div>
@@ -66,12 +65,8 @@ export default defineComponent({
     rootElm.style.top = `${this.block.top}px`;
     rootElm.style.width = `${this.block.width}px`;
   },
-  render() {
-    return h('div', 'hello world');
-  },
   methods: {
     onContentMouseDown(e: MouseEvent): void {
-      // stop propagation to stop moving the block
       e.stopPropagation();
 
       // Change to editing mode if the user is eligible to edit this block.
@@ -80,18 +75,10 @@ export default defineComponent({
       }
     },
     onBlockLeftResized(e: MouseEvent): void {
-      if (!this.editing) {
-        return;
-      }
-
       e.stopPropagation();
       this.$emit('onResizeLeft', e, this.$refs.root);
     },
     onBlockRightResized(e: MouseEvent): void {
-      if (!this.editing) {
-        return;
-      }
-
       e.stopPropagation();
       this.$emit('onResizeRight', e, this.$refs.root);
     },
@@ -105,6 +92,9 @@ export default defineComponent({
       console.log({ ...data, ...this.blockValues });
     },
     onMouseDown(e: MouseEvent) {
+      if (!this.block.editable) {
+        return;
+      }
       e.stopPropagation();
 
       if (this.editing) {
@@ -112,12 +102,9 @@ export default defineComponent({
         return;
       }
 
-      if (this.block.editable) {
-        this.editing = true;
-      }
+      this.editing = true;
     },
     onBlockValueChanged(key: string, value: any) {
-      console.log({ key, value });
       (this.blockValues as any)[key] = value;
     }
   }
