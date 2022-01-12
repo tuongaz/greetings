@@ -1,15 +1,17 @@
 <template>
-  <span
-    class="content"
-    ref="content"
-    :contenteditable="this.editing"
-    @mousedown="onContentMouseDown"
-  />
+  <div v-bind:class="{ editing: editing }">
+    <span
+      class="content"
+      ref="content"
+      :contenteditable="editing"
+      @mousedown="onContentMouseDown"
+    />
 
-  <div v-if="this.editing" class="toolbar">
-    <ToolFontSelect @font-selected="onFontSelected" />
-    <ToolColorSelect @color-selected="onColorSelected" />
-    <ToolTextAlign @text-align-selected="onTextAlignSelected" />
+    <div v-if="editing" class="toolbar">
+      <ToolFontSelect @font-selected="onFontSelected" />
+      <ToolColorSelect @color-selected="onColorSelected" />
+      <ToolTextAlign @text-align-selected="onTextAlignSelected" />
+    </div>
   </div>
 </template>
 
@@ -43,25 +45,12 @@ export default defineComponent({
   },
   methods: {
     onContentMouseDown(e: MouseEvent): void {
-      // stop propagation to stop moving the block
-      e.stopPropagation();
-
-      // Change to editing mode if the user is eligible to edit this block.
-      if (this.block.editable) {
-        this.$emit('editing');
-      }
-    },
-    onMouseDown(e: MouseEvent) {
-      e.stopPropagation();
-
-      if (this.editing) {
-        this.$emit('onMove', e, this.$refs.root);
+      if (this.block.editable && !this.editing) {
         return;
       }
 
-      if (this.block.editable) {
-        this.$emit('editing');
-      }
+      // stop propagation to stop moving the block
+      e.stopPropagation();
     },
     onColorSelected(color: string) {
       const contentElm = this.$refs.content as HTMLElement;
@@ -84,6 +73,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/assets/scss/mixins.scss';
+.editing {
+  .content {
+    cursor: text;
+  }
+}
 
 .content {
   font-size: 18px;
@@ -97,7 +91,7 @@ export default defineComponent({
   width: 12px;
   height: 12px;
   display: inline-block;
-  margin-right: 15px;
+  padding: 0 10px;
   position: relative;
 }
 

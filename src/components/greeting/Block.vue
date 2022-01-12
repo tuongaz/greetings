@@ -135,10 +135,6 @@ export default defineComponent({
   &.editing {
     cursor: move;
     border: 2px dashed #ddd;
-
-    .content {
-      cursor: text;
-    }
   }
 
   &.editable {
