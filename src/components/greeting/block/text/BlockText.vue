@@ -19,7 +19,6 @@ import { Block } from '@/store';
 import ToolTextAlign from './ToolTextAlign.vue';
 import ToolColorSelect from './ToolColorSelect.vue';
 import ToolFontSelect from './ToolFontSelect.vue';
-import { pxToInt, rgb2hex } from '@/util';
 
 export default defineComponent({
   components: {
@@ -27,16 +26,13 @@ export default defineComponent({
     ToolColorSelect,
     ToolFontSelect
   },
+  emits: ['editing', 'onMove', 'blockValueChanged'],
   props: {
+    editing: Boolean,
     block: {
       type: Object as PropType<Block>,
       required: true
     }
-  },
-  data() {
-    return {
-      editing: false
-    };
   },
   mounted() {
     const contentElm = this.$refs.content as HTMLElement;
@@ -52,7 +48,7 @@ export default defineComponent({
 
       // Change to editing mode if the user is eligible to edit this block.
       if (this.block.editable) {
-        this.editing = true;
+        this.$emit('editing');
       }
     },
     onMouseDown(e: MouseEvent) {
@@ -64,20 +60,23 @@ export default defineComponent({
       }
 
       if (this.block.editable) {
-        this.editing = true;
+        this.$emit('editing');
       }
     },
     onColorSelected(color: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.color = color;
+      this.$emit('blockValueChanged', 'color', color);
     },
     onFontSelected(font: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.fontFamily = font;
+      this.$emit('blockValueChanged', 'fontFamily', font);
     },
     onTextAlignSelected(value: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.textAlign = value;
+      this.$emit('blockValueChanged', 'textAlign', value);
     }
   }
 });

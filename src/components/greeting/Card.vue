@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <CardPage
+    <Page
       v-for="page in pages"
       :key="page.id"
       :page-id="page.id"
@@ -11,11 +11,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import CardPage from './CardPage.vue';
+import Page from './Page.vue';
 
 export default defineComponent({
   components: {
-    CardPage
+    Page
   },
   computed: {
     pages() {

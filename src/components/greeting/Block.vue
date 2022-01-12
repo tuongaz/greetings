@@ -6,7 +6,14 @@
     @mousedown="onMouseDown"
   >
     <div class="container">
-      <slot></slot>
+      <component
+        :is="block.type"
+        :block="block"
+        ref="block"
+        :editing="editing"
+        @editing="editing = true"
+        @block-value-changed="onBlockValueChanged"
+      />
     </div>
     <div
       v-if="this.editing"
@@ -29,12 +36,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, h } from 'vue';
+import BlockText from './block/text/BlockText.vue';
 import { Block } from '@/store';
 import { pxToInt } from '@/util';
 
 export default defineComponent({
+  components: {
+    BlockText
+  },
   props: {
+    component: String,
     block: {
       type: Object as PropType<Block>,
       required: true
@@ -42,7 +54,8 @@ export default defineComponent({
   },
   data() {
     return {
-      editing: false
+      editing: false,
+      blockValues: {}
     };
   },
   mounted() {
@@ -50,6 +63,9 @@ export default defineComponent({
     rootElm.style.left = `${this.block.left}px`;
     rootElm.style.top = `${this.block.top}px`;
     rootElm.style.width = `${this.block.width}px`;
+  },
+  render() {
+    return h('div', 'hello world');
   },
   methods: {
     onContentMouseDown(e: MouseEvent): void {
@@ -84,7 +100,7 @@ export default defineComponent({
         top: pxToInt(rootElm.style.top),
         width: pxToInt(rootElm.style.width)
       };
-      console.log(data);
+      console.log({ ...data, ...this.blockValues });
     },
     onMouseDown(e: MouseEvent) {
       e.stopPropagation();
@@ -97,6 +113,10 @@ export default defineComponent({
       if (this.block.editable) {
         this.editing = true;
       }
+    },
+    onBlockValueChanged(key: string, value: any) {
+      console.log({ key, value });
+      (this.blockValues as any)[key] = value;
     }
   }
 });
