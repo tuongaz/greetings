@@ -1,19 +1,22 @@
 <template>
   <div class="page" ref="root">
-    <BlockText
+    <CardPageBlock
       v-for="block in blocks"
       :key="block.id"
       :block="block"
       @on-resize-left="onResizeLeft"
       @on-resize-right="onResizeRight"
       @on-move="onMove"
-    />
+    >
+      <BlockText :block="block" />
+    </CardPageBlock>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import BlockText from './block/text/BlockText.vue';
+import CardPageBlock from './CardPageBlock.vue';
 import { Block } from '@/store';
 
 const blockMinWidth = 150;
@@ -100,7 +103,8 @@ export default defineComponent({
     pageId: String
   },
   components: {
-    BlockText
+    BlockText,
+    CardPageBlock
   },
   data(): data {
     return {};
