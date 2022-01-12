@@ -61,7 +61,7 @@ export const store = createStore<State>({
       {
         id: 'block1',
         pageId: 'page1',
-        type: 'message',
+        type: 'BlockText',
         top: 0,
         left: 0,
         width: 300,
@@ -74,7 +74,7 @@ export const store = createStore<State>({
       {
         id: 'block2',
         pageId: 'page1',
-        type: 'message',
+        type: 'BlockText',
         top: 200,
         left: 200,
         width: 200,

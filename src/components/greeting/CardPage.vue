@@ -8,7 +8,7 @@
       @on-resize-right="onResizeRight"
       @on-move="onMove"
     >
-      <BlockText :block="block" />
+      <component :is="block.type" :block="block" />
     </CardPageBlock>
   </div>
 </template>
