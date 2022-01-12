@@ -61,7 +61,7 @@ export const store = createStore<State>({
       {
         id: 'block1',
         pageId: 'page1',
-        type: 'BlockText',
+        type: 'blocktext',
         top: 0,
         left: 0,
         width: 300,
@@ -74,7 +74,7 @@ export const store = createStore<State>({
       {
         id: 'block2',
         pageId: 'page1',
-        type: 'BlockText',
+        type: 'blockimage',
         top: 200,
         left: 200,
         width: 200,
@@ -83,6 +83,20 @@ export const store = createStore<State>({
         fontFamily: 'Arial',
         fontColor: '#8e24aa',
         textAlign: 'right'
+      },
+      {
+        id: 'block3',
+        pageId: 'page1',
+        type: 'blocktext',
+        top: 120,
+        left: 100,
+        width: 200,
+        text: "I'm going to miss you so much\n From: Christina",
+        fontFamily: 'Architects Daughter',
+        fontColor: '#EAAABB',
+        fontStyle: 'italic',
+        editable: true,
+        textAlign: 'center'
       }
     ]
   },

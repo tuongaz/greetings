@@ -38,12 +38,14 @@
 <script lang="ts">
 import { defineComponent, PropType, h } from 'vue';
 import BlockText from './block/text/BlockText.vue';
+import BlockImage from './block/image/BlockImage.vue';
 import { Block } from '@/store';
 import { pxToInt } from '@/util';
 
 export default defineComponent({
   components: {
-    BlockText
+    blocktext: BlockText,
+    blockimage: BlockImage
   },
   props: {
     component: String,
@@ -127,7 +129,7 @@ export default defineComponent({
 
 .block {
   width: 200px;
-  border: 2px dashed #fff;
+  border: 2px dashed rgba(255, 255, 255, 0);
   position: absolute;
   width: 200px;
   z-index: 999;

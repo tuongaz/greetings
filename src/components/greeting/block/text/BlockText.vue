@@ -45,11 +45,13 @@ export default defineComponent({
   },
   methods: {
     onContentMouseDown(e: MouseEvent): void {
-      if (this.block.editable && !this.editing) {
+      if (!this.block.editable || (this.block.editable && !this.editing)) {
+        // don't do anything if the block is not editable
+        // or it is not in editing mode.
         return;
       }
 
-      // stop propagation to stop moving the block
+      // stop propagation when it is in editing mode
       e.stopPropagation();
     },
     onColorSelected(color: string) {
