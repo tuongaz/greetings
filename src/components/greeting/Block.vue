@@ -16,6 +16,7 @@
     </div>
     <div
       v-if="this.editing"
+      data-testid="resize-left"
       class="resize-left resize"
       @mousedown="onBlockLeftResized"
     >
@@ -23,15 +24,23 @@
     </div>
     <div
       v-if="this.editing"
+      data-testid="resize-right"
       class="resize-right resize"
       @mousedown="onBlockRightResized"
     >
       Resize Right
     </div>
-    <div v-if="this.editing" class="save-block">
+    <div v-if="this.editing" class="save-block" data-testid="save-block">
       <button @click="saveBlock()">Save</button>
     </div>
-    <div v-if="this.editing" class="delete" @click="onBlockDeleted">Delete</div>
+    <div
+      v-if="this.editing"
+      data-testid="delete-block"
+      class="delete"
+      @click="onBlockDeleted"
+    >
+      Delete
+    </div>
   </div>
 </template>
 

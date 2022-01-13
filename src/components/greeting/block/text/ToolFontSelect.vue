@@ -1,6 +1,6 @@
 <template>
   <div class="tool">
-    <div class="tool-toggle" data-testid="toggle-text-align" @click="toggle">
+    <div class="tool-toggle" data-testid="toggle-font-select" @click="toggle">
       <svg
         class="svg-inline--fa fa-font fa-w-14"
         aria-hidden="true"

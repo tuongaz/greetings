@@ -1,6 +1,6 @@
 <template>
   <div class="tool">
-    <div class="tool-toggle" data-testid="toggle-text-align" @click="toggle">
+    <div class="tool-toggle" data-testid="toggle-color-select" @click="toggle">
       <svg
         class="svg-inline--fa fa-palette fa-w-16 palette_icon"
         style="color: rgb(57, 73, 171)"

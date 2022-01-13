@@ -5,7 +5,8 @@
       ref="content"
       :contenteditable="editing"
       @mousedown="onContentMouseDown"
-    />
+      >{{ block.text }}</span
+    >
 
     <div v-if="editing" class="toolbar">
       <ToolFontSelect @font-selected="onFontSelected" />
@@ -38,7 +39,6 @@ export default defineComponent({
   },
   mounted() {
     const contentElm = this.$refs.content as HTMLElement;
-    contentElm.innerText = this.block.text;
     contentElm.style.fontFamily = this.block.fontFamily;
     contentElm.style.color = this.block.fontColor || 'inherit';
     contentElm.style.textAlign = this.block.textAlign || 'inherit';

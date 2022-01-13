@@ -8,16 +8,16 @@ describe('ToolColorSelect.vue', () => {
     const options = wrapper.find('[data-testid="options"]');
     expect(options.isVisible()).toBeFalsy();
 
-    wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
+    wrapper.find('[data-testid="toggle-color-select"]').trigger('click');
     expect(options.isVisible()).toBeTruthy();
 
-    wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
+    wrapper.find('[data-testid="toggle-color-select"]').trigger('click');
     expect(options.isVisible()).toBeFalsy();
   });
 
   it('should send the "colorSelected" event when a color is chosen', () => {
     const wrapper = mount(ToolColorSelect);
-    wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
+    wrapper.find('[data-testid="toggle-color-select"]').trigger('click');
 
     const btn = wrapper.find('[data-testid="option-1"]');
     btn.trigger('click');

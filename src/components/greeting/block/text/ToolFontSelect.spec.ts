@@ -8,16 +8,16 @@ describe('ToolFontSelect.vue', () => {
     const options = wrapper.find('[data-testid="options"]');
     expect(options.isVisible()).toBeFalsy();
 
-    wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
+    wrapper.find('[data-testid="toggle-font-select"]').trigger('click');
     expect(options.isVisible()).toBeTruthy();
 
-    wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
+    wrapper.find('[data-testid="toggle-font-select"]').trigger('click');
     expect(options.isVisible()).toBeFalsy();
   });
 
   it('should send the "fontSelected" event when a font is chosen', () => {
     const wrapper = mount(ToolFontSelect);
-    wrapper.find('[data-testid="toggle-text-align"]').trigger('click');
+    wrapper.find('[data-testid="toggle-font-select"]').trigger('click');
 
     const btn = wrapper.find('[data-testid="option-1"]');
     btn.trigger('click');
