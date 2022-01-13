@@ -31,6 +31,7 @@
     <div v-if="this.editing" class="save-block">
       <button @click="saveBlock()">Save</button>
     </div>
+    <div v-if="this.editing" class="delete" @click="onBlockDeleted">Delete</div>
   </div>
 </template>
 
@@ -90,6 +91,8 @@ export default defineComponent({
         width: pxToInt(rootElm.style.width)
       };
       console.log({ ...data, ...this.blockValues });
+
+      this.editing = false;
     },
     onMouseDown(e: MouseEvent) {
       if (!this.block.editable) {
@@ -106,6 +109,10 @@ export default defineComponent({
     },
     onBlockValueChanged(key: string, value: any) {
       (this.blockValues as any)[key] = value;
+    },
+    onBlockDeleted(e: MouseEvent) {
+      e.stopPropagation();
+      console.log('deleted');
     }
   }
 });
@@ -162,5 +169,17 @@ export default defineComponent({
 .resize-right {
   right: -6px;
   cursor: e-resize;
+}
+
+.delete {
+  text-indent: -999px;
+  background: red;
+  @include border-radius(100%);
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  cursor: pointer;
 }
 </style>

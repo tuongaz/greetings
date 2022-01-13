@@ -2,15 +2,11 @@
 11/Jan:
 * Editable/editing option for block
 * Handle when block content is saved (event sent with data)
-* Unit tests for CardPageText
-====
-12/Jan
 * Add Delete button when it's editing
-* Allow to switch to edit 
+* Unit tests for Block, TextBlock
 * Add new block
 * Vuex integration
-==
-13/Jan
+* Save mode (Block back to view mode after save)
 * Handle multiple pages, add new page
 * Handle page cover
 ===
