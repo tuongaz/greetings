@@ -41,6 +41,7 @@ import BlockText from './block/text/BlockText.vue';
 import BlockImage from './block/image/BlockImage.vue';
 import { Block } from '@/store';
 import { pxToInt } from '@/util';
+import { DELETE_BLOCK } from '@/store/action_types';
 
 export default defineComponent({
   components: {
@@ -112,6 +113,7 @@ export default defineComponent({
     },
     onBlockDeleted(e: MouseEvent) {
       e.stopPropagation();
+      this.$store.dispatch(DELETE_BLOCK, { blockId: this.block.id });
       console.log('deleted');
     }
   }

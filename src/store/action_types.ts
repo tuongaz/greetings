@@ -1,2 +1,2 @@
-export const BLOCK_TEXT_CHANGE = 'blockTextChange';
-export const BLOCK_DELETE = 'blockDelete';
+export const UPDATE_BLOCK = 'updateBlock';
+export const DELETE_BLOCK = 'deleteBlock';

@@ -1,7 +1,7 @@
 import { InjectionKey } from 'vue';
 import { ActionContext, createStore, Store } from 'vuex';
-import { BLOCK_TEXT_CHANGE } from './action_types';
-import { UPDATE_BLOCK } from './mutation_types';
+import { DELETE_BLOCK as DELETE_BLOCK_ACTION } from './action_types';
+import { DELETE_BLOCK } from './mutation_types';
 
 export interface Block {
   id: string;
@@ -19,11 +19,8 @@ export interface Page {
   order: number;
 }
 
-export interface UpdateBlockPayload {
+export interface DeleteBlockPayload {
   blockId: string;
-  data: {
-    [key: string]: any;
-  };
 }
 
 export interface State {
@@ -32,6 +29,10 @@ export interface State {
 }
 
 export const key: InjectionKey<Store<State>> = Symbol('hi');
+
+function deleteBlock(state: State, blockId: string) {
+  state.blocks = state.blocks.filter((b) => b.id !== blockId);
+}
 
 function updateBlock(
   state: State,
@@ -46,7 +47,6 @@ function updateBlock(
   }
 
   state.blocks[idx] = { ...state.blocks[idx], ...data } as Block;
-  console.log('updated');
 }
 
 export const store = createStore<State>({
@@ -111,16 +111,16 @@ export const store = createStore<State>({
         st.blocks.find((b) => b.id === blockId)
   },
   mutations: {
-    [UPDATE_BLOCK](state: State, payload: UpdateBlockPayload): void {
-      updateBlock(state, payload.blockId, payload.data);
+    [DELETE_BLOCK](state: State, { blockId }: DeleteBlockPayload): void {
+      deleteBlock(state, blockId);
     }
   },
   actions: {
-    async [BLOCK_TEXT_CHANGE](
+    async [DELETE_BLOCK_ACTION](
       { commit }: ActionContext<State, State>,
-      { blockId, text }: any
+      { blockId }: any
     ) {
-      commit(UPDATE_BLOCK, { blockId, data: { text } });
+      commit(DELETE_BLOCK, { blockId });
     }
   },
   modules: {}
