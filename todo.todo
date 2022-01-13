@@ -4,11 +4,13 @@
 * Handle when block content is saved (event sent with data)
 * Add Delete button when it's editing
 * Save mode (Block back to view mode after save)
-
-
 * Unit tests for Block, TextBlock
-* Vuex integration
-* Add new block
+
+14/Jan
+* Vuex integration (unit test block save, block delete)
+* Add new block + Unit test with Vuex
+
+15/Jan
 * Handle multiple pages, add new page
 * Handle page cover
 ===
