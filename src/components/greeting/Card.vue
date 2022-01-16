@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { GET_CARD } from '@/store/action_types';
 import Page from './Page.vue';
 
 export default defineComponent({
@@ -21,6 +22,9 @@ export default defineComponent({
     pages() {
       return this.$store.state.pages;
     }
+  },
+  mounted() {
+    this.$store.dispatch(GET_CARD, { cardId: '123' });
   },
   methods: {
     onChange(event: any) {
