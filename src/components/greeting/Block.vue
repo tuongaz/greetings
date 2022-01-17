@@ -1,7 +1,7 @@
 <template>
   <div
     class="block"
-    v-bind:class="{ editing: editing, editable: block.editable && !editing }"
+    v-bind:class="{ editing: editing, editable: editable }"
     ref="root"
     @mousedown="onMouseDown"
   >
@@ -51,6 +51,7 @@ import BlockImage from './block/image/BlockImage.vue';
 import { Block } from '@/store';
 import { pxToInt } from '@/util';
 import { DELETE_BLOCK } from '@/store/action_types';
+import { SET_ACTIVE_BLOCK } from '@/store/mutation_types';
 
 export default defineComponent({
   components: {
@@ -70,6 +71,11 @@ export default defineComponent({
       blockValues: {}
     };
   },
+  computed: {
+    editable() {
+      return !!this.block.editable && !this.$store.getters.hasActiveBlockId();
+    }
+  },
   mounted() {
     const rootElm = this.$refs.root as HTMLElement;
     rootElm.style.left = `${this.block.left}px`;
@@ -77,12 +83,22 @@ export default defineComponent({
     rootElm.style.width = `${this.block.width}px`;
   },
   methods: {
+    canEdit(): boolean {
+      return !!this.block.editable && !this.$store.getters.hasActiveBlockId();
+    },
+    startEdit() {
+      this.editing = true;
+      this.$store.commit(SET_ACTIVE_BLOCK, { blockId: this.block.id });
+    },
+    stopEdit() {
+      this.editing = false;
+      this.$store.commit(SET_ACTIVE_BLOCK, { blockId: undefined });
+    },
     onContentMouseDown(e: MouseEvent): void {
       e.stopPropagation();
 
-      // Change to editing mode if the user is eligible to edit this block.
-      if (this.block.editable) {
-        this.editing = true;
+      if (this.canEdit()) {
+        this.startEdit();
       }
     },
     onBlockLeftResized(e: MouseEvent): void {
@@ -100,9 +116,8 @@ export default defineComponent({
         top: pxToInt(rootElm.style.top),
         width: pxToInt(rootElm.style.width)
       };
-      console.log({ ...data, ...this.blockValues });
 
-      this.editing = false;
+      this.stopEdit();
     },
     onMouseDown(e: MouseEvent) {
       if (!this.block.editable) {
@@ -115,7 +130,9 @@ export default defineComponent({
         return;
       }
 
-      this.editing = true;
+      if (!this.$store.getters.hasActiveBlockId()) {
+        this.startEdit();
+      }
     },
     onBlockValueChanged(key: string, value: any) {
       (this.blockValues as any)[key] = value;
@@ -123,7 +140,6 @@ export default defineComponent({
     onBlockDeleted(e: MouseEvent) {
       e.stopPropagation();
       this.$store.dispatch(DELETE_BLOCK, { blockId: this.block.id });
-      console.log('deleted');
     }
   }
 });
@@ -146,9 +162,6 @@ export default defineComponent({
 
   &.editable {
     cursor: pointer;
-    &:hover {
-      border: 2px dashed #ddd;
-    }
   }
 }
 

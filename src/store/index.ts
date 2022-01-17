@@ -1,34 +1,8 @@
 import { InjectionKey } from 'vue';
 import { ActionContext, createStore, Store } from 'vuex';
 import { DELETE_BLOCK as DELETE_BLOCK_ACTION, GET_CARD } from './action_types';
-import { DELETE_BLOCK, SET_CARD } from './mutation_types';
-
-export interface Block {
-  id: string;
-  pageId: string;
-  editable?: boolean;
-  type: string;
-  top: number;
-  left: number;
-  width: number;
-  [key: string]: any;
-}
-
-export interface Page {
-  id: string;
-  cardId: string;
-  order: number;
-}
-
-export interface Card {
-  id: string;
-}
-
-export interface State {
-  card: Card | null;
-  pages: Page[];
-  blocks: Block[];
-}
+import { DELETE_BLOCK, SET_CARD, SET_ACTIVE_BLOCK } from './mutation_types';
+import { State, Card, Page, Block } from './models';
 
 export interface DeleteBlockPayload {
   blockId: string;
@@ -40,13 +14,18 @@ export interface SetCardPayload {
   blocks: Block[];
 }
 
-export const key: InjectionKey<Store<State>> = Symbol('hi');
+export interface SetActiveBlockPayload {
+  blockId: string;
+}
+
+export const key: InjectionKey<Store<State>> = Symbol('');
 
 export const store = createStore<State>({
   state: {
     card: null,
     pages: [],
-    blocks: []
+    blocks: [],
+    app: {}
   },
   getters: {
     getBlocksByPageID:
@@ -56,7 +35,8 @@ export const store = createStore<State>({
     getBlockByID:
       (st: State) =>
       (blockId: string): Block | undefined =>
-        st.blocks.find((b) => b.id === blockId)
+        st.blocks.find((b) => b.id === blockId),
+    hasActiveBlockId: (st: State) => () => st.app.activeBlockId !== undefined
   },
   mutations: {
     [DELETE_BLOCK](state: State, { blockId }: DeleteBlockPayload) {
@@ -66,6 +46,9 @@ export const store = createStore<State>({
       state.card = card;
       state.blocks = blocks;
       state.pages = pages;
+    },
+    [SET_ACTIVE_BLOCK](state: State, { blockId }: SetActiveBlockPayload) {
+      state.app.activeBlockId = blockId;
     }
   },
   actions: {
@@ -79,7 +62,7 @@ export const store = createStore<State>({
     async [GET_CARD]({ commit }: ActionContext<State, State>, { cardId }: any) {
       await new Promise((res) => {
         // simulate loading data takes 1 second.
-        setTimeout(res, 1000);
+        setTimeout(res, 2000);
       });
       // get detail based on cardId
       const _ = cardId;
@@ -139,8 +122,7 @@ export const store = createStore<State>({
 
       commit(SET_CARD, { card, pages, blocks });
     }
-  },
-  modules: {}
+  }
 });
 
 declare module '@vue/runtime-core' {
@@ -149,3 +131,5 @@ declare module '@vue/runtime-core' {
     $store: Store<State>;
   }
 }
+
+export * from './models';
