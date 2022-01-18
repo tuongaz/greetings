@@ -1,13 +1,16 @@
 <template>
-  <div class="page" ref="root">
-    <WrapperBlock
-      v-for="block in blocks"
-      :key="block.id"
-      :block="block"
-      @on-resize-left="onResizeLeft"
-      @on-resize-right="onResizeRight"
-      @on-move="onMove"
-    />
+  <div class="page" ref="root" @click="selectPage">
+    <div class="container">
+      <WrapperBlock
+        v-for="block in blocks"
+        :key="block.id"
+        :block="block"
+        :isActive="isActive"
+        @on-resize-left="onResizeLeft"
+        @on-resize-right="onResizeRight"
+        @on-move="onMove"
+      />
+    </div>
   </div>
 </template>
 
@@ -97,7 +100,9 @@ function handleDragging(
 
 export default defineComponent({
   props: {
-    pageId: String
+    pageId: String,
+    pageIdx: Number,
+    isActive: Boolean
   },
   components: {
     WrapperBlock
@@ -136,6 +141,10 @@ export default defineComponent({
     });
   },
   methods: {
+    selectPage(e: MouseEvent) {
+      e.stopPropagation();
+      this.$emit('pageSelected', this.pageIdx);
+    },
     onResizeLeft(e: MouseEvent, elm: HTMLElement) {
       this.resizeLeft = {
         element: elm,
@@ -164,6 +173,12 @@ export default defineComponent({
 
 <style scoped>
 .page {
+  position: absolute;
+  background: #fff;
+  top: 0;
+  left: 0;
+}
+.container {
   position: relative;
   border: 1px solid #cccccc;
   width: 500px;

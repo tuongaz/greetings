@@ -7,12 +7,13 @@
 * Unit tests for Block, TextBlock
 
 14/Jan
-* Vuex integration (unit test block save, block delete)
 * Add new block + Unit test with Vuex
 
 15/Jan
 * Handle multiple pages, add new page
-* Handle page cover
+* Handle page cover, back
+
+* Vuex integration (unit test block save, block delete)
 ===
 * Finialise the UI/UX with animation 
 * Icons (Find icons)
@@ -22,5 +23,9 @@
 ===
 30/Jan: API integration:
 - GRPC, Microservice?
+
+=== FUTURE
+* Add new block, find the best position
+
 
 

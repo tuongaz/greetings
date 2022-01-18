@@ -60,6 +60,7 @@ export default defineComponent({
   },
   props: {
     component: String,
+    isActive: Boolean,
     block: {
       type: Object as PropType<Block>,
       required: true
@@ -84,7 +85,11 @@ export default defineComponent({
   },
   methods: {
     canEdit(): boolean {
-      return !!this.block.editable && !this.$store.getters.hasActiveBlockId();
+      return (
+        !!this.block.editable &&
+        !this.$store.getters.hasActiveBlockId() &&
+        this.isActive
+      );
     },
     startEdit() {
       this.editing = true;
@@ -120,7 +125,7 @@ export default defineComponent({
       this.stopEdit();
     },
     onMouseDown(e: MouseEvent) {
-      if (!this.block.editable) {
+      if (!this.block.editable || !this.isActive) {
         return;
       }
       e.stopPropagation();

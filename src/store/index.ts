@@ -46,6 +46,7 @@ export const store = createStore<State>({
       (st: State) =>
       (pageId: string): Block[] =>
         st.blocks.filter((b) => b.pageId === pageId),
+    getPages: (st: State) => (): Page[] => st.pages,
     getBlockByID:
       (st: State) =>
       (blockId: string): Block | undefined =>
@@ -106,12 +107,46 @@ export const store = createStore<State>({
       };
       const pages = [
         {
+          id: 'page0',
+          cardId: 'card0',
+          order: 1
+        },
+        {
           id: 'page1',
           cardId: 'card1',
-          order: 1
+          order: 2
+        },
+        {
+          id: 'page2',
+          cardId: 'card1',
+          order: 3
+        },
+        {
+          id: 'page3',
+          cardId: 'card1',
+          order: 4
+        },
+        {
+          id: 'page4',
+          cardId: 'card1',
+          order: 5
         }
       ];
       const blocks: Block[] = [
+        {
+          id: 'block0',
+          cardId: 'card0',
+          pageId: 'page0',
+          type: 'blocktext',
+          top: 120,
+          left: 20,
+          width: 300,
+          text: 'This is the first page content. Very cool heh?',
+          fontFamily: 'Times New Roman',
+          fontStyle: 'italic',
+          editable: true,
+          textAlign: 'center'
+        },
         {
           id: 'block1',
           cardId: 'card1',
