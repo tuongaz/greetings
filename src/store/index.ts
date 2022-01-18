@@ -95,10 +95,6 @@ export const store = createStore<State>({
       commit(CREATE_BLOCK, { block });
     },
     async [GET_CARD]({ commit }: ActionContext<State, State>, { cardId }: any) {
-      await new Promise((res) => {
-        // simulate loading data takes 1 second.
-        setTimeout(res, 100);
-      });
       // get detail based on cardId
       const _ = cardId;
 
@@ -107,45 +103,29 @@ export const store = createStore<State>({
       };
       const pages = [
         {
-          id: 'page0',
-          cardId: 'card0',
-          order: 1
+          id: 'cover',
+          cardId: 'card0'
         },
         {
           id: 'page1',
-          cardId: 'card1',
-          order: 2
+          cardId: 'card1'
         },
         {
           id: 'page2',
-          cardId: 'card1',
-          order: 3
-        },
-        {
-          id: 'page3',
-          cardId: 'card1',
-          order: 4
-        },
-        {
-          id: 'page4',
-          cardId: 'card1',
-          order: 5
+          cardId: 'card1'
         }
       ];
       const blocks: Block[] = [
         {
           id: 'block0',
           cardId: 'card0',
-          pageId: 'page0',
+          pageId: 'cover',
           type: 'blocktext',
           top: 120,
           left: 20,
           width: 300,
-          text: 'This is the first page content. Very cool heh?',
-          fontFamily: 'Times New Roman',
-          fontStyle: 'italic',
-          editable: true,
-          textAlign: 'center'
+          text: 'COVER PAGE',
+          editable: false
         },
         {
           id: 'block1',

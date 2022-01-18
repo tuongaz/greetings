@@ -1,5 +1,6 @@
 export interface App {
   activeBlockId?: string;
+  activePageId?: string;
 }
 
 export interface Block {
