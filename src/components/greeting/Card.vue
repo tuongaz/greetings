@@ -5,7 +5,6 @@
       :key="idx"
       :page-id="page.id"
       :page-idx="idx"
-      @on-change="onChange"
       @page-selected="onPageSelected"
       :isActive="idx === currentPageIndex"
       :blocks="blocksByPageId(page.id)"
@@ -58,9 +57,6 @@ export default defineComponent({
     };
   },
   methods: {
-    onChange(event: any) {
-      console.log(event);
-    },
     blocksByPageId(pageId: string): Block[] {
       return this.$store.getters.getBlocksByPageID(pageId) as Block[];
     },
@@ -72,7 +68,6 @@ export default defineComponent({
     },
     onPageSelected(idx: number) {
       this.currentPageIndex = idx;
-      console.log(this.currentPageIndex);
     }
   }
 });

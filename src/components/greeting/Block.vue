@@ -241,8 +241,6 @@ export default defineComponent({
         width: pxToInt(rootElm.style.width)
       };
 
-      console.log({ input });
-
       this.stopEdit();
     },
     onBlockMouseDown(e: MouseEvent) {
