@@ -8,6 +8,7 @@
       @on-change="onChange"
       @page-selected="onPageSelected"
       :isActive="idx === currentPageIndex"
+      :blocks="blocksByPageId(page.id)"
       :class="{
         active: idx === currentPageIndex,
         'right-active': idx > currentPageIndex,
@@ -16,6 +17,8 @@
           idx === currentPageIndex + 1 || idx === currentPageIndex - 1
       }"
     />
+
+    <EditPage />
 
     <div v-if="canShowControllers" class="controllers">
       <button @click="newBlock">New Text</button>
@@ -27,10 +30,16 @@
 import { defineComponent } from 'vue';
 import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
 import Page from './Page.vue';
+import EditPage from './EditPage.vue';
+import { Block } from '@/store';
 
 export default defineComponent({
   components: {
-    Page
+    Page,
+    EditPage
+  },
+  props: {
+    cardId: String
   },
   computed: {
     pages() {
@@ -41,7 +50,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.$store.dispatch(GET_CARD, { cardId: '123' });
+    this.$store.dispatch(GET_CARD, { cardId: this.cardId });
   },
   data() {
     return {
@@ -52,11 +61,13 @@ export default defineComponent({
     onChange(event: any) {
       console.log(event);
     },
+    blocksByPageId(pageId: string): Block[] {
+      return this.$store.getters.getBlocksByPageID(pageId) as Block[];
+    },
     newBlock() {
       this.$store.dispatch(CREATE_BLOCK, {
         type: 'blocktext',
-        cardId: 'card1',
-        pageId: 'page1'
+        cardId: this.cardId
       });
     },
     onPageSelected(idx: number) {

@@ -45,12 +45,8 @@ export const store = createStore<State>({
     getBlocksByPageID:
       (st: State) =>
       (pageId: string): Block[] =>
-        st.blocks.filter((b) => b.pageId === pageId),
+        st.blocks.filter((b) => b.pageId === pageId && !b.isHidden),
     getPages: (st: State) => (): Page[] => st.pages,
-    getBlockByID:
-      (st: State) =>
-      (blockId: string): Block | undefined =>
-        st.blocks.find((b) => b.id === blockId),
     hasActiveBlockId: (st: State) => () => st.app.activeBlockId !== undefined
   },
   mutations: {

@@ -12,6 +12,7 @@ export interface Block {
   top: number;
   left: number;
   width: number;
+  isHidden?: boolean;
   [key: string]: any;
 }
 

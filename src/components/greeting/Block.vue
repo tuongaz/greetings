@@ -3,7 +3,7 @@
     class="block"
     v-bind:class="{ editing: editing, editable: editable }"
     ref="root"
-    @mousedown="onMouseDown"
+    @mousedown="onBlockMouseDown"
   >
     <div class="container">
       <component
@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, h } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import BlockText from './block/text/BlockText.vue';
 import BlockImage from './block/image/BlockImage.vue';
 import { Block } from '@/store';
@@ -53,20 +53,108 @@ import { pxToInt } from '@/util';
 import { DELETE_BLOCK } from '@/store/action_types';
 import { SET_ACTIVE_BLOCK } from '@/store/mutation_types';
 
+const blockMinWidth = 150;
+
+interface draggingConfig {
+  element: HTMLElement;
+  X: number;
+  Y: number;
+}
+
+interface resizeRightConfig {
+  element: HTMLElement;
+  width: number;
+  X: number;
+}
+
+interface resizeLeftConfig {
+  element: HTMLElement;
+  width: number;
+  left: number;
+  X: number;
+}
+
+interface data {
+  resizeRight?: resizeRightConfig;
+  resizeLeft?: resizeLeftConfig;
+  dragging?: draggingConfig;
+  editing: boolean;
+  blockValues: { [key: string]: any };
+}
+
+interface Bound {
+  width: number;
+  height: number;
+}
+
+function resizeLeft(evt: MouseEvent, config: resizeLeftConfig): void {
+  const el = config.element;
+
+  let width = config.width - evt.clientX + config.X;
+  width = Math.max(blockMinWidth, width);
+  const maxWidth = el.offsetLeft + el.offsetWidth - 2; // 2 = border width
+  width = Math.min(width, maxWidth);
+
+  const diff = width - config.width;
+
+  el.style.width = `${width - 2}px`;
+  el.style.left = `${config.left - diff - 2}px`; // 2 = border width
+}
+
+function resizeRight(
+  evt: MouseEvent,
+  bound: Bound,
+  config: resizeRightConfig
+): void {
+  const elm = config.element;
+
+  let width = config.width + evt.clientX - config.X;
+  width = Math.max(blockMinWidth, width);
+  const maxWidth = bound.width - config.element.offsetLeft - 6;
+  width = Math.min(width, maxWidth);
+
+  elm.style.width = `${width}px`;
+}
+
+function handleDragging(
+  evt: MouseEvent,
+  bound: Bound,
+  config: draggingConfig
+): void {
+  const elm = config.element;
+
+  let left = evt.clientX + config.X;
+  let top = evt.clientY + config.Y;
+
+  left = Math.min(left, bound.width - elm.offsetWidth);
+  left = Math.max(left, 0);
+  top = Math.min(top, bound.height - elm.offsetHeight);
+  top = Math.max(top, 0);
+
+  elm.style.left = `${left}px`;
+  elm.style.top = `${top}px`;
+}
+
 export default defineComponent({
   components: {
     blocktext: BlockText,
     blockimage: BlockImage
   },
   props: {
-    component: String,
-    isActive: Boolean,
+    readonly: {
+      type: Boolean,
+      required: true
+    },
     block: {
       type: Object as PropType<Block>,
       required: true
+    },
+    bound: {
+      type: Object as PropType<Bound>,
+      required: true
     }
   },
-  data() {
+  data(): data {
     return {
       editing: false,
       blockValues: {}
@@ -74,7 +162,7 @@ export default defineComponent({
   },
   computed: {
     editable() {
-      return !!this.block.editable && !this.$store.getters.hasActiveBlockId();
+      return this.canEdit();
     }
   },
   mounted() {
@@ -82,14 +170,32 @@ export default defineComponent({
     rootElm.style.left = `${this.block.left}px`;
     rootElm.style.top = `${this.block.top}px`;
     rootElm.style.width = `${this.block.width}px`;
+
+    document.addEventListener('mouseup', () => {
+      this.dragging = undefined;
+      this.resizeLeft = undefined;
+      this.resizeRight = undefined;
+    });
+
+    document.addEventListener('mousemove', (e: MouseEvent) => {
+      if (this.dragging) {
+        handleDragging(e, this.bound, this.dragging);
+        return;
+      }
+
+      if (this.resizeRight) {
+        resizeRight(e, this.bound, this.resizeRight);
+        return;
+      }
+
+      if (this.resizeLeft) {
+        resizeLeft(e, this.resizeLeft);
+      }
+    });
   },
   methods: {
     canEdit(): boolean {
-      return (
-        !!this.block.editable &&
-        !this.$store.getters.hasActiveBlockId() &&
-        this.isActive
-      );
+      return !!this.block.editable && !this.$store.getters.hasActiveBlockId();
     },
     startEdit() {
       this.editing = true;
@@ -108,30 +214,52 @@ export default defineComponent({
     },
     onBlockLeftResized(e: MouseEvent): void {
       e.stopPropagation();
-      this.$emit('onResizeLeft', e, this.$refs.root);
+      const elm = this.$refs.root as HTMLElement;
+
+      this.resizeLeft = {
+        element: elm,
+        width: elm.offsetWidth,
+        left: elm.offsetLeft,
+        X: e.clientX
+      };
     },
     onBlockRightResized(e: MouseEvent): void {
       e.stopPropagation();
-      this.$emit('onResizeRight', e, this.$refs.root);
+      const elm = this.$refs.root as HTMLElement;
+
+      this.resizeRight = {
+        element: elm,
+        width: elm.offsetWidth,
+        X: e.clientX
+      };
     },
     saveBlock() {
       const rootElm = this.$refs.root as HTMLElement;
-      const data = {
+      const input = {
         left: pxToInt(rootElm.style.left),
         top: pxToInt(rootElm.style.top),
         width: pxToInt(rootElm.style.width)
       };
 
+      console.log({ input });
+
       this.stopEdit();
     },
-    onMouseDown(e: MouseEvent) {
-      if (!this.block.editable || !this.isActive) {
+    onBlockMouseDown(e: MouseEvent) {
+      const elm = this.$refs.root as HTMLElement;
+
+      if (!this.block.editable) {
         return;
       }
       e.stopPropagation();
 
       if (this.editing) {
-        this.$emit('onMove', e, this.$refs.root);
+        this.dragging = {
+          element: elm,
+          X: elm.offsetLeft - e.clientX,
+          Y: elm.offsetTop - e.clientY
+        };
+
         return;
       }
 
