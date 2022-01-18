@@ -1,9 +1,3 @@
 <template>
-  <iframe
-    src="https://giphy.com/embed/LTYT5GTIiAMBa"
-    width="100%"
-    frameBorder="0"
-    class="giphy-embed"
-    allowFullScreen
-  ></iframe>
+  <p>This is the new image</p>
 </template>

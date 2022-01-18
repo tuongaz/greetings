@@ -3,3 +3,21 @@
   -webkit-border-radius: $radius;
   -moz-border-radius: $radius;
 }
+
+@mixin no-text-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+@mixin text-select {
+  -webkit-touch-callout: inherit; /* iOS Safari */
+  -webkit-user-select: inherit; /* Safari */
+  -khtml-user-select: inherit; /* Konqueror HTML */
+  -moz-user-select: inherit; /* Old versions of Firefox */
+  -ms-user-select: inherit; /* Internet Explorer/Edge */
+  user-select: inherit; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}

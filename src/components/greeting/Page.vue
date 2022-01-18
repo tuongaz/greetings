@@ -165,7 +165,6 @@ export default defineComponent({
 <style scoped>
 .page {
   position: relative;
-  overflow: hidden;
   border: 1px solid #cccccc;
   width: 500px;
   height: 500px;

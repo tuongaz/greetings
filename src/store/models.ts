@@ -4,6 +4,7 @@ export interface App {
 
 export interface Block {
   id: string;
+  cardId: string;
   pageId: string;
   editable?: boolean;
   type: string;

@@ -140,6 +140,7 @@ export default defineComponent({
     onBlockDeleted(e: MouseEvent) {
       e.stopPropagation();
       this.$store.dispatch(DELETE_BLOCK, { blockId: this.block.id });
+      this.stopEdit();
     }
   }
 });
@@ -153,11 +154,13 @@ export default defineComponent({
   border: 2px dashed rgba(255, 255, 255, 0);
   position: absolute;
   width: 200px;
-  z-index: 999;
+  @include text-select();
 
   &.editing {
     cursor: move;
     border: 2px dashed #ddd;
+    z-index: 999;
+    @include no-text-select();
   }
 
   &.editable {
