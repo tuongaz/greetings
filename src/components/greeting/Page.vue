@@ -39,7 +39,7 @@ export default defineComponent({
   methods: {
     selectPage(e: MouseEvent) {
       e.stopPropagation();
-      this.$emit('pageSelected', this.pageIdx);
+      this.$emit('pageSelected', this.pageIdx, this.pageId);
     }
   }
 });

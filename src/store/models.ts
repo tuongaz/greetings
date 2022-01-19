@@ -1,8 +1,3 @@
-export interface App {
-  activeBlockId?: string;
-  activePageId?: string;
-}
-
 export interface Block {
   id: string;
   cardId: string;
@@ -14,6 +9,12 @@ export interface Block {
   width: number;
   isHidden?: boolean;
   [key: string]: any;
+}
+
+export interface App {
+  activeBlockId?: string;
+  activePageId?: string;
+  editBlock?: Block;
 }
 
 export interface Page {

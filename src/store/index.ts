@@ -4,18 +4,32 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   DELETE_BLOCK as DELETE_BLOCK_ACTION,
   GET_CARD,
-  CREATE_BLOCK as CREATE_BLOCK_ACTION
+  CREATE_BLOCK as CREATE_BLOCK_ACTION,
+  UPDATE_BLOCK as UPDATE_BLOCK_ACTION
 } from './action_types';
 import {
   DELETE_BLOCK,
   SET_CARD,
   SET_ACTIVE_BLOCK,
-  CREATE_BLOCK
+  CREATE_BLOCK,
+  SET_EDIT_BLOCK,
+  UPDATE_BLOCK,
+  SET_ACTIVE_PAGE
 } from './mutation_types';
 import { State, Card, Page, Block } from './models';
 
 export interface DeleteBlockPayload {
   blockId: string;
+}
+export interface SetActivePagePayload {
+  pageId: string;
+}
+
+export interface UpdateBlockPayload {
+  blockId: string;
+  data: {
+    [key: string]: any;
+  };
 }
 
 export interface SetCardPayload {
@@ -25,6 +39,10 @@ export interface SetCardPayload {
 }
 
 export interface SetActiveBlockPayload {
+  blockId: string;
+}
+
+export interface SetEditBlockPayload {
   blockId: string;
 }
 
@@ -42,6 +60,7 @@ export const store = createStore<State>({
     app: {}
   },
   getters: {
+    getEditBlock: (st: State) => (): Block | undefined => st.app.editBlock,
     getBlocksByPageID:
       (st: State) =>
       (pageId: string): Block[] =>
@@ -52,6 +71,7 @@ export const store = createStore<State>({
   mutations: {
     [DELETE_BLOCK](state: State, { blockId }: DeleteBlockPayload) {
       state.blocks = state.blocks.filter((b) => b.id !== blockId);
+      state.app.editBlock = undefined;
     },
     [SET_CARD](state: State, { card, pages, blocks }: SetCardPayload) {
       state.card = card;
@@ -60,6 +80,30 @@ export const store = createStore<State>({
     },
     [SET_ACTIVE_BLOCK](state: State, { blockId }: SetActiveBlockPayload) {
       state.app.activeBlockId = blockId;
+    },
+    [SET_ACTIVE_PAGE](state: State, { pageId }: SetActivePagePayload) {
+      state.app.activePageId = pageId;
+    },
+    [SET_EDIT_BLOCK](state: State, { blockId }: SetEditBlockPayload) {
+      const block = state.blocks.find((b) => b.id === blockId);
+      if (!block) {
+        return;
+      }
+      block.isHidden = true;
+      state.app.editBlock = { ...block };
+    },
+    [UPDATE_BLOCK](state: State, { blockId, data }: UpdateBlockPayload) {
+      state.blocks = state.blocks.map((b) => {
+        if (b.id !== blockId) {
+          return b;
+        }
+
+        const newBlock = { ...b, isHidden: false, ...data };
+
+        return newBlock;
+      });
+
+      state.app.editBlock = undefined;
     },
     [CREATE_BLOCK](state: State, { block }: CreateBlockPayload) {
       state.blocks = [...state.blocks, block];
@@ -71,6 +115,12 @@ export const store = createStore<State>({
       { blockId }: any
     ) {
       commit(DELETE_BLOCK, { blockId });
+    },
+    async [UPDATE_BLOCK_ACTION](
+      { commit }: ActionContext<State, State>,
+      payload: UpdateBlockPayload
+    ) {
+      commit(UPDATE_BLOCK, payload);
     },
     async [CREATE_BLOCK_ACTION](
       { commit }: ActionContext<State, State>,
@@ -141,7 +191,7 @@ export const store = createStore<State>({
           id: 'block2',
           cardId: 'card1',
           pageId: 'page1',
-          type: 'blockimage',
+          type: 'blocktext',
           top: 200,
           left: 200,
           width: 200,

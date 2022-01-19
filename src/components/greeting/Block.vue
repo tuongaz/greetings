@@ -50,8 +50,8 @@ import BlockText from './block/text/BlockText.vue';
 import BlockImage from './block/image/BlockImage.vue';
 import { Block } from '@/store';
 import { pxToInt } from '@/util';
-import { DELETE_BLOCK } from '@/store/action_types';
-import { SET_ACTIVE_BLOCK } from '@/store/mutation_types';
+import { DELETE_BLOCK, UPDATE_BLOCK } from '@/store/action_types';
+import { SET_EDIT_BLOCK } from '@/store/mutation_types';
 
 const blockMinWidth = 150;
 
@@ -78,7 +78,6 @@ interface data {
   resizeRight?: resizeRightConfig;
   resizeLeft?: resizeLeftConfig;
   dragging?: draggingConfig;
-  editing: boolean;
   blockValues: { [key: string]: any };
 }
 
@@ -145,6 +144,7 @@ export default defineComponent({
       type: Boolean,
       required: true
     },
+    editing: Boolean,
     block: {
       type: Object as PropType<Block>,
       required: true
@@ -156,7 +156,6 @@ export default defineComponent({
   },
   data(): data {
     return {
-      editing: false,
       blockValues: {}
     };
   },
@@ -198,12 +197,7 @@ export default defineComponent({
       return !!this.block.editable && !this.$store.getters.hasActiveBlockId();
     },
     startEdit() {
-      this.editing = true;
-      this.$store.commit(SET_ACTIVE_BLOCK, { blockId: this.block.id });
-    },
-    stopEdit() {
-      this.editing = false;
-      this.$store.commit(SET_ACTIVE_BLOCK, { blockId: undefined });
+      this.$store.commit(SET_EDIT_BLOCK, { blockId: this.block.id });
     },
     onContentMouseDown(e: MouseEvent): void {
       e.stopPropagation();
@@ -238,10 +232,15 @@ export default defineComponent({
       const input = {
         left: pxToInt(rootElm.style.left),
         top: pxToInt(rootElm.style.top),
-        width: pxToInt(rootElm.style.width)
+        width: pxToInt(rootElm.style.width),
+        ...this.blockValues,
+        pageId: this.$store.state.app.activePageId
       };
-
-      this.stopEdit();
+      console.log({ input });
+      this.$store.dispatch(UPDATE_BLOCK, {
+        blockId: this.block.id,
+        data: input
+      });
     },
     onBlockMouseDown(e: MouseEvent) {
       const elm = this.$refs.root as HTMLElement;
@@ -271,7 +270,6 @@ export default defineComponent({
     onBlockDeleted(e: MouseEvent) {
       e.stopPropagation();
       this.$store.dispatch(DELETE_BLOCK, { blockId: this.block.id });
-      this.stopEdit();
     }
   }
 });

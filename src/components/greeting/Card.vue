@@ -17,7 +17,7 @@
       }"
     />
 
-    <EditPage />
+    <EditPage v-if="hasEditBlock" :block="editBlock" />
 
     <div v-if="canShowControllers" class="controllers">
       <button @click="newBlock">New Text</button>
@@ -28,6 +28,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
+import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import Page from './Page.vue';
 import EditPage from './EditPage.vue';
 import { Block } from '@/store';
@@ -46,6 +47,12 @@ export default defineComponent({
     },
     canShowControllers(): boolean {
       return !this.$store.getters.hasActiveBlockId();
+    },
+    editBlock(): Block {
+      return this.$store.getters.getEditBlock();
+    },
+    hasEditBlock(): boolean {
+      return !!this.$store.getters.getEditBlock();
     }
   },
   mounted() {
@@ -66,8 +73,12 @@ export default defineComponent({
         cardId: this.cardId
       });
     },
-    onPageSelected(idx: number) {
-      this.currentPageIndex = idx;
+    onPageSelected(pageIndex: number, pageId: number) {
+      this.currentPageIndex = pageIndex;
+      console.log({ pageIndex, pageId });
+      this.$store.commit(SET_ACTIVE_PAGE, {
+        pageId
+      });
     }
   }
 });
