@@ -21,7 +21,7 @@ export interface DeleteBlockPayload {
   blockId: string;
 }
 export interface SetActivePagePayload {
-  pageId: string;
+  pageId: number;
 }
 
 export interface UpdateBlockPayload {
@@ -55,10 +55,13 @@ export const store = createStore<State>({
     app: {}
   },
   getters: {
-    getEditBlock: (st: State) => (): Block | undefined => st.app.editBlock,
+    getEditingBlock: (st: State) => (): Block | undefined => st.app.editBlock,
+    getActivePage: (st: State) => (): Page | undefined => {
+      return st.pages.find((p) => p.id === st.app.activePageId);
+    },
     getBlocksByPageID:
       (st: State) =>
-      (pageId: string): Block[] =>
+      (pageId: number): Block[] =>
         st.blocks.filter((b) => b.pageId === pageId && !b.isHidden),
     getPages: (st: State) => (): Page[] => st.pages,
     hasEditingBlock: (st: State) => () => st.app.editBlock !== undefined
@@ -132,29 +135,26 @@ export const store = createStore<State>({
       };
       commit(CREATE_BLOCK, { block });
     },
-    async [GET_CARD]({ commit }: ActionContext<State, State>, { cardId }: any) {
-      // get detail based on cardId
-      const _ = cardId;
-
+    async [GET_CARD]({ commit }: ActionContext<State, State>) {
       const card = {
         id: 'card1'
       };
       const pages: Page[] = [
         {
-          id: 'front',
+          id: 0,
           cardId: 'card1',
           type: 'front'
         },
         {
-          id: 'page1',
+          id: 1,
           cardId: 'card1'
         },
         {
-          id: 'page2',
+          id: 2,
           cardId: 'card1'
         },
         {
-          id: 'back',
+          id: 3,
           type: 'back',
           cardId: 'card1'
         }
@@ -163,7 +163,7 @@ export const store = createStore<State>({
         {
           id: 'front',
           cardId: 'card0',
-          pageId: 'front',
+          pageId: 0,
           type: 'blocktext',
           top: 120,
           left: 20,
@@ -174,7 +174,7 @@ export const store = createStore<State>({
         {
           id: 'back',
           cardId: 'card0',
-          pageId: 'back',
+          pageId: 3,
           type: 'blocktext',
           top: 120,
           left: 350,
@@ -185,7 +185,7 @@ export const store = createStore<State>({
         {
           id: 'block1',
           cardId: 'card1',
-          pageId: 'page1',
+          pageId: 1,
           type: 'blocktext',
           top: 0,
           left: 0,
@@ -199,7 +199,7 @@ export const store = createStore<State>({
         {
           id: 'block2',
           cardId: 'card1',
-          pageId: 'page1',
+          pageId: 1,
           type: 'blocktext',
           top: 200,
           left: 200,
@@ -213,7 +213,7 @@ export const store = createStore<State>({
         {
           id: 'block3',
           cardId: 'card1',
-          pageId: 'page1',
+          pageId: 1,
           type: 'blocktext',
           top: 120,
           left: 100,

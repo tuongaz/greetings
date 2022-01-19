@@ -23,7 +23,6 @@ export default defineComponent({
       type: Object as PropType<Page>,
       required: true
     },
-    pageIdx: Number,
     blocks: Object as PropType<Block[]>
   },
   computed: {
@@ -34,6 +33,7 @@ export default defineComponent({
       };
     },
     visible() {
+      console.log(this.page.type);
       return !(
         (this.page.type === 'front' || this.page.type === 'back') &&
         this.$store.getters.hasEditingBlock()
@@ -46,7 +46,7 @@ export default defineComponent({
   methods: {
     selectPage(e: MouseEvent) {
       e.stopPropagation();
-      this.$emit('pageSelected', this.pageIdx, this.page.id);
+      this.$emit('pageSelected', this.page.id);
     }
   }
 });

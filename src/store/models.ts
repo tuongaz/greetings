@@ -1,7 +1,7 @@
 export interface Block {
   id: string;
   cardId: string;
-  pageId: string;
+  pageId: number;
   editable?: boolean;
   type: string;
   top: number;
@@ -12,12 +12,12 @@ export interface Block {
 }
 
 export interface App {
-  activePageId?: string;
+  activePageId?: number;
   editBlock?: Block;
 }
 
 export interface Page {
-  id: string;
+  id: number;
   cardId: string;
   type?: 'front' | 'back';
 }

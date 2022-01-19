@@ -6,14 +6,12 @@
       :page="page"
       :page-idx="idx"
       @page-selected="onPageSelected"
-      :isActive="idx === currentPageIndex"
       :blocks="blocksByPageId(page.id)"
       :class="{
-        active: idx === currentPageIndex,
-        'right-active': idx > currentPageIndex,
-        'left-active': idx < currentPageIndex,
-        'next-active':
-          idx === currentPageIndex + 1 || idx === currentPageIndex - 1
+        active: idx === currentPageId,
+        'right-active': idx > currentPageId,
+        'left-active': idx < currentPageId,
+        'next-active': idx === currentPageId + 1 || idx === currentPageId - 1
       }"
     />
 
@@ -31,37 +29,44 @@ import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
 import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import Page from './Page.vue';
 import EditPage from './EditPage.vue';
-import { Block } from '@/store';
+import { Block, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
     Page,
     EditPage
   },
-  props: {
-    cardId: String
-  },
   computed: {
     pages() {
       return this.$store.getters.getPages();
     },
     canShowControllers(): boolean {
-      return !this.$store.getters.hasEditingBlock();
+      const activePage: ModelPage = this.$store.getters.getActivePage();
+      if (!activePage) {
+        return false;
+      }
+
+      return (
+        !this.$store.getters.hasEditingBlock() &&
+        activePage.type !== 'front' &&
+        activePage.type !== 'back'
+      );
     },
     editBlock(): Block {
-      return this.$store.getters.getEditBlock();
+      return this.$store.getters.getEditingBlock();
     },
     hasEditBlock(): boolean {
-      return !!this.$store.getters.getEditBlock();
+      return !!this.$store.getters.getEditingBlock();
+    },
+    currentPageId(): number {
+      return this.$store.state.app.activePageId || 0;
     }
   },
   mounted() {
-    this.$store.dispatch(GET_CARD, { cardId: this.cardId });
-  },
-  data() {
-    return {
-      currentPageIndex: 1
-    };
+    this.$store.dispatch(GET_CARD);
+    this.$store.commit(SET_ACTIVE_PAGE, {
+      pageId: this.currentPageId
+    });
   },
   methods: {
     blocksByPageId(pageId: string): Block[] {
@@ -69,13 +74,10 @@ export default defineComponent({
     },
     newBlock() {
       this.$store.dispatch(CREATE_BLOCK, {
-        type: 'blocktext',
-        cardId: this.cardId
+        type: 'blocktext'
       });
     },
-    onPageSelected(pageIndex: number, pageId: number) {
-      this.currentPageIndex = pageIndex;
-      console.log({ pageIndex, pageId });
+    onPageSelected(pageId: number) {
       this.$store.commit(SET_ACTIVE_PAGE, {
         pageId
       });
