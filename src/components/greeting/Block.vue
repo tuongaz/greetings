@@ -245,11 +245,16 @@ export default defineComponent({
       });
     },
     onBlockMouseDown(e: MouseEvent) {
-      const elm = this.$refs.root as HTMLElement;
-
-      if (!this.block.editable) {
+      if (
+        !this.block.editable ||
+        // eslint-disable-next-line vue/max-len
+        !this.$store.getters.isPageActive(this.block.pageId) // stop triggering the event when the page that contains this block is not active page.
+      ) {
         return;
       }
+
+      const elm = this.$refs.root as HTMLElement;
+
       e.stopPropagation();
 
       if (this.editing) {

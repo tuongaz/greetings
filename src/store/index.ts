@@ -59,6 +59,9 @@ export const store = createStore<State>({
     getActivePage: (st: State) => (): Page | undefined => {
       return st.pages.find((p) => p.id === st.app.activePageId);
     },
+    isPageActive: (st: State) => (pageId: number) => {
+      return pageId === st.app.activePageId;
+    },
     getBlocksByPageID:
       (st: State) =>
       (pageId: number): Block[] =>
@@ -134,6 +137,7 @@ export const store = createStore<State>({
         fontFamily: 'Arial'
       };
       commit(CREATE_BLOCK, { block });
+      commit(SET_EDIT_BLOCK, { blockId: block.id });
     },
     async [GET_CARD]({ commit }: ActionContext<State, State>) {
       const card = {
