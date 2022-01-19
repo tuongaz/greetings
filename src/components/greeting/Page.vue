@@ -33,7 +33,6 @@ export default defineComponent({
       };
     },
     visible() {
-      console.log(this.page.type);
       return !(
         (this.page.type === 'front' || this.page.type === 'back') &&
         this.$store.getters.hasEditingBlock()

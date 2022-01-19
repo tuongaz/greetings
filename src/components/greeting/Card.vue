@@ -36,6 +36,9 @@ export default defineComponent({
     Page,
     EditPage
   },
+  props: {
+    activePageId: Number
+  },
   computed: {
     pages() {
       return this.$store.getters.getPages();
@@ -65,7 +68,7 @@ export default defineComponent({
   mounted() {
     this.$store.dispatch(GET_CARD);
     this.$store.commit(SET_ACTIVE_PAGE, {
-      pageId: this.currentPageId
+      pageId: this.activePageId
     });
   },
   methods: {
