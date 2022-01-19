@@ -3,7 +3,7 @@
     <Page
       v-for="(page, idx) in pages"
       :key="idx"
-      :page-id="page.id"
+      :page="page"
       :page-idx="idx"
       @page-selected="onPageSelected"
       :isActive="idx === currentPageIndex"
@@ -46,7 +46,7 @@ export default defineComponent({
       return this.$store.getters.getPages();
     },
     canShowControllers(): boolean {
-      return !this.$store.getters.hasActiveBlockId();
+      return !this.$store.getters.hasEditingBlock();
     },
     editBlock(): Block {
       return this.$store.getters.getEditBlock();

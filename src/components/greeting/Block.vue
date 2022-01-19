@@ -194,7 +194,7 @@ export default defineComponent({
   },
   methods: {
     canEdit(): boolean {
-      return !!this.block.editable && !this.$store.getters.hasActiveBlockId();
+      return !!this.block.editable && !this.$store.getters.hasEditingBlock();
     },
     startEdit() {
       this.$store.commit(SET_EDIT_BLOCK, { blockId: this.block.id });
@@ -229,13 +229,15 @@ export default defineComponent({
     },
     saveBlock() {
       const rootElm = this.$refs.root as HTMLElement;
-      const input = {
+      const input: any = {
         left: pxToInt(rootElm.style.left),
         top: pxToInt(rootElm.style.top),
         width: pxToInt(rootElm.style.width),
-        ...this.blockValues,
-        pageId: this.$store.state.app.activePageId
+        ...this.blockValues
       };
+      if (this.$store.state.app.activePageId) {
+        input.pageId = this.$store.state.app.activePageId;
+      }
       console.log({ input });
       this.$store.dispatch(UPDATE_BLOCK, {
         blockId: this.block.id,
@@ -260,7 +262,7 @@ export default defineComponent({
         return;
       }
 
-      if (!this.$store.getters.hasActiveBlockId()) {
+      if (!this.$store.getters.hasEditingBlock()) {
         this.startEdit();
       }
     },

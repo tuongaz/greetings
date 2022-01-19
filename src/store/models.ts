@@ -12,7 +12,6 @@ export interface Block {
 }
 
 export interface App {
-  activeBlockId?: string;
   activePageId?: string;
   editBlock?: Block;
 }
@@ -20,7 +19,7 @@ export interface App {
 export interface Page {
   id: string;
   cardId: string;
-  order: number;
+  type?: 'front' | 'back';
 }
 
 export interface Card {

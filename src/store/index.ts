@@ -10,7 +10,6 @@ import {
 import {
   DELETE_BLOCK,
   SET_CARD,
-  SET_ACTIVE_BLOCK,
   CREATE_BLOCK,
   SET_EDIT_BLOCK,
   UPDATE_BLOCK,
@@ -38,10 +37,6 @@ export interface SetCardPayload {
   blocks: Block[];
 }
 
-export interface SetActiveBlockPayload {
-  blockId: string;
-}
-
 export interface SetEditBlockPayload {
   blockId: string;
 }
@@ -66,7 +61,7 @@ export const store = createStore<State>({
       (pageId: string): Block[] =>
         st.blocks.filter((b) => b.pageId === pageId && !b.isHidden),
     getPages: (st: State) => (): Page[] => st.pages,
-    hasActiveBlockId: (st: State) => () => st.app.activeBlockId !== undefined
+    hasEditingBlock: (st: State) => () => st.app.editBlock !== undefined
   },
   mutations: {
     [DELETE_BLOCK](state: State, { blockId }: DeleteBlockPayload) {
@@ -77,9 +72,6 @@ export const store = createStore<State>({
       state.card = card;
       state.blocks = blocks;
       state.pages = pages;
-    },
-    [SET_ACTIVE_BLOCK](state: State, { blockId }: SetActiveBlockPayload) {
-      state.app.activeBlockId = blockId;
     },
     [SET_ACTIVE_PAGE](state: State, { pageId }: SetActivePagePayload) {
       state.app.activePageId = pageId;
@@ -147,10 +139,11 @@ export const store = createStore<State>({
       const card = {
         id: 'card1'
       };
-      const pages = [
+      const pages: Page[] = [
         {
-          id: 'cover',
-          cardId: 'card0'
+          id: 'front',
+          cardId: 'card1',
+          type: 'front'
         },
         {
           id: 'page1',
@@ -159,18 +152,34 @@ export const store = createStore<State>({
         {
           id: 'page2',
           cardId: 'card1'
+        },
+        {
+          id: 'back',
+          type: 'back',
+          cardId: 'card1'
         }
       ];
       const blocks: Block[] = [
         {
-          id: 'block0',
+          id: 'front',
           cardId: 'card0',
-          pageId: 'cover',
+          pageId: 'front',
           type: 'blocktext',
           top: 120,
           left: 20,
           width: 300,
           text: 'COVER PAGE',
+          editable: false
+        },
+        {
+          id: 'back',
+          cardId: 'card0',
+          pageId: 'back',
+          type: 'blocktext',
+          top: 120,
+          left: 350,
+          width: 300,
+          text: 'BACK PAGE',
           editable: false
         },
         {

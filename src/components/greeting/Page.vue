@@ -1,5 +1,5 @@
 <template>
-  <div class="page" ref="root" @click="selectPage">
+  <div v-if="visible" class="page" ref="root" @click="selectPage">
     <div class="container">
       <WrapperBlock
         v-for="block in blocks"
@@ -7,7 +7,6 @@
         :readonly="false"
         :key="block.id"
         :block="block"
-        :isActive="isActive"
       />
     </div>
   </div>
@@ -16,13 +15,15 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import WrapperBlock from './Block.vue';
-import { Block } from '@/store';
+import { Block, Page } from '@/store';
 
 export default defineComponent({
   props: {
-    pageId: String,
+    page: {
+      type: Object as PropType<Page>,
+      required: true
+    },
     pageIdx: Number,
-    isActive: Boolean,
     blocks: Object as PropType<Block[]>
   },
   computed: {
@@ -31,6 +32,12 @@ export default defineComponent({
         width: 500,
         height: 500
       };
+    },
+    visible() {
+      return !(
+        (this.page.type === 'front' || this.page.type === 'back') &&
+        this.$store.getters.hasEditingBlock()
+      );
     }
   },
   components: {
@@ -39,7 +46,7 @@ export default defineComponent({
   methods: {
     selectPage(e: MouseEvent) {
       e.stopPropagation();
-      this.$emit('pageSelected', this.pageIdx, this.pageId);
+      this.$emit('pageSelected', this.pageIdx, this.page.id);
     }
   }
 });
