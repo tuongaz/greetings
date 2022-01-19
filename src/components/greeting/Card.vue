@@ -4,12 +4,13 @@
       v-for="(page, idx) in pages"
       :key="idx"
       :page="page"
-      :page-idx="idx"
       @page-selected="onPageSelected"
       :blocks="blocksByPageId(page.id)"
       :class="{
         active: idx === currentPageId,
         'right-active': idx > currentPageId,
+        'front-page': page.type === 'front',
+        'back-page': page.type === 'back',
         'left-active': idx < currentPageId,
         'next-active': idx === currentPageId + 1 || idx === currentPageId - 1
       }"
@@ -119,6 +120,11 @@ export default defineComponent({
   @include transform(translateX(-25%) scale(0.8));
   @include no-text-select();
   cursor: pointer;
+}
+
+.front-page,
+.back-page {
+  background: #eee;
 }
 
 .controllers {
