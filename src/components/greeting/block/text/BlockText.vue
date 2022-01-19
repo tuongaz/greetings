@@ -4,6 +4,7 @@
       class="content"
       ref="content"
       :contenteditable="editing"
+      @input="onContentChange"
       @mousedown="onContentMouseDown"
       >{{ block.text }}</span
     >
@@ -57,7 +58,7 @@ export default defineComponent({
     onColorSelected(color: string) {
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.color = color;
-      this.$emit('blockValueChanged', 'color', color);
+      this.$emit('blockValueChanged', 'fontColor', color);
     },
     onFontSelected(font: string) {
       const contentElm = this.$refs.content as HTMLElement;
@@ -68,6 +69,10 @@ export default defineComponent({
       const contentElm = this.$refs.content as HTMLElement;
       contentElm.style.textAlign = value;
       this.$emit('blockValueChanged', 'textAlign', value);
+    },
+    onContentChange(e: any) {
+      const contentElm = this.$refs.content as HTMLElement;
+      this.$emit('blockValueChanged', 'text', contentElm.innerHTML);
     }
   }
 });
