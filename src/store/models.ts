@@ -23,12 +23,12 @@ export interface Page {
 }
 
 export interface Card {
-  id: string;
+  id?: string;
 }
 
 export interface State {
   app: App;
-  card: Card | null;
+  card: Card;
   pages: Page[];
   blocks: Block[];
 }

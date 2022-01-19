@@ -49,7 +49,7 @@ export const key: InjectionKey<Store<State>> = Symbol('');
 
 export const store = createStore<State>({
   state: {
-    card: null,
+    card: {},
     pages: [],
     blocks: [],
     app: {}
@@ -118,13 +118,13 @@ export const store = createStore<State>({
       commit(UPDATE_BLOCK, payload);
     },
     async [CREATE_BLOCK_ACTION](
-      { commit }: ActionContext<State, State>,
-      { type, cardId, pageId }
+      { commit, state }: ActionContext<State, State>,
+      { type }
     ) {
       const block: Block = {
         id: uuidv4(),
-        cardId,
-        pageId,
+        cardId: state.card.id || '',
+        pageId: state.app.activePageId || 0,
         type,
         top: 200,
         left: 200,
