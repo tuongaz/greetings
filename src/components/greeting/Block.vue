@@ -306,7 +306,7 @@ export default defineComponent({
 
   &.editing {
     cursor: move;
-    border: 2px dashed #ddd;
+    border: 2px dashed rgba(8, 207, 108, 0.37);
     z-index: 999;
     @include no-text-select();
   }

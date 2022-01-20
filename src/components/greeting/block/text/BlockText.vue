@@ -83,6 +83,7 @@ export default defineComponent({
 .editing {
   .content {
     cursor: text;
+    padding-bottom: 20px;
   }
 }
 
@@ -91,7 +92,6 @@ export default defineComponent({
   outline: none;
   display: inline-block;
   min-width: 100%;
-  padding-bottom: 20px;
 }
 
 .tool {

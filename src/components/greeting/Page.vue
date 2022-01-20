@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="page" ref="root" @click="selectPage">
+  <div class="page" ref="root" @click="selectPage">
     <div class="container">
       <WrapperBlock
         v-for="block in blocks"
@@ -31,12 +31,6 @@ export default defineComponent({
         width: 500,
         height: 500
       };
-    },
-    visible() {
-      return !(
-        (this.page.type === 'front' || this.page.type === 'back') &&
-        this.$store.getters.hasEditingBlock()
-      );
     }
   },
   components: {
@@ -45,7 +39,17 @@ export default defineComponent({
   methods: {
     selectPage(e: MouseEvent) {
       e.stopPropagation();
+      if (!this.canSelect()) {
+        return;
+      }
+
       this.$emit('pageSelected', this.page.id);
+    },
+    canSelect() {
+      return !(
+        (this.page.type === 'front' || this.page.type === 'back') &&
+        this.$store.getters.hasEditingBlock()
+      );
     }
   }
 });
@@ -53,11 +57,13 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/assets/scss/mixins.scss';
+
 .page {
   position: absolute;
-  background: #fff;
+  background: #eee;
   top: 0;
   left: 0;
+  @include transition(0.4s, ease-in-out);
 }
 
 .container {
@@ -69,7 +75,7 @@ export default defineComponent({
 
 .page.active {
   z-index: 10;
-  transition: transform 0.4s ease-in-out;
+  @include transition(0.4s, ease-in-out);
 }
 
 .page {
@@ -84,14 +90,14 @@ export default defineComponent({
   cursor: pointer;
   @include transform(translateX(25%) scale(0.8));
   @include no-text-select();
-  @include transition(transform 0.4s ease-in-out);
+  @include transition(0.4s, ease-in-out);
 }
 
 .left-active {
   cursor: pointer;
   @include transform(translateX(-25%) scale(0.8));
   @include no-text-select();
-  @include transition(transform 0.4s ease-in-out);
+  @include transition(0.4s, ease-in-out);
 }
 
 .front,
