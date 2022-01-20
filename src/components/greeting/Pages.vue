@@ -6,11 +6,8 @@
     @page-selected="onPageSelected"
     :blocks="blocksByPageId(page.id)"
     :class="{
-      active: idx === currentPageId,
-      'right-active': idx > currentPageId,
-      [page.type]: true,
-      'left-active': idx < currentPageId,
-      'next-active': idx === currentPageId + 1 || idx === currentPageId - 1
+      [page.className]: true,
+      [page.type]: true
     }"
   />
 </template>
@@ -31,7 +28,30 @@ export default defineComponent({
   },
   computed: {
     pages() {
-      return this.$store.getters.getPages();
+      const pages = this.$store.getters.getPages() as ModelPage[];
+      const activePage = this.$store.getters.getActivePage() as ModelPage;
+
+      let className = 'left-active';
+      let previousActive = false;
+      for (let i = 0; i < pages.length; i += 1) {
+        const page = pages[i];
+        if (page.id === activePage.id) {
+          className = 'right-active';
+          pages[i] = { ...page, className: 'active' };
+          if (i > 0) {
+            pages[i - 1].className += ' next-active';
+          }
+          previousActive = true;
+        } else {
+          pages[i] = { ...page, className };
+          if (previousActive) {
+            previousActive = false;
+            pages[i].className += ' next-active';
+          }
+        }
+      }
+
+      return pages;
     },
     canShowControllers(): boolean {
       const activePage: ModelPage = this.$store.getters.getActivePage();

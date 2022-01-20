@@ -20,6 +20,7 @@ export interface Page {
   id: number;
   cardId: string;
   type?: 'front' | 'back' | 'content';
+  [key: string]: any;
 }
 
 export interface Card {
