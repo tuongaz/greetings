@@ -164,19 +164,28 @@ export default defineComponent({
       return this.canEdit();
     }
   },
+  created() {
+    document.addEventListener('mouseup', this.handleMouseUp);
+    document.addEventListener('mousemove', this.handleMouseMove);
+  },
+  unmounted() {
+    window.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('mousemove', this.handleMouseMove);
+  },
   mounted() {
     const rootElm = this.$refs.root as HTMLElement;
     rootElm.style.left = `${this.block.left}px`;
     rootElm.style.top = `${this.block.top}px`;
     rootElm.style.width = `${this.block.width}px`;
-
-    document.addEventListener('mouseup', () => {
+  },
+  methods: {
+    handleMouseUp(e: MouseEvent) {
+      e.stopPropagation();
       this.dragging = undefined;
       this.resizeLeft = undefined;
       this.resizeRight = undefined;
-    });
-
-    document.addEventListener('mousemove', (e: MouseEvent) => {
+    },
+    handleMouseMove(e: MouseEvent) {
       if (this.dragging) {
         handleDragging(e, this.bound, this.dragging);
         return;
@@ -190,9 +199,7 @@ export default defineComponent({
       if (this.resizeLeft) {
         resizeLeft(e, this.resizeLeft);
       }
-    });
-  },
-  methods: {
+    },
     canEdit(): boolean {
       return !!this.block.editable && !this.$store.getters.hasEditingBlock();
     },

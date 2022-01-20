@@ -59,6 +59,7 @@ export default defineComponent({
   top: 0;
   left: 0;
 }
+
 .container {
   position: relative;
   border: 1px solid #cccccc;
@@ -68,6 +69,7 @@ export default defineComponent({
 
 .page.active {
   z-index: 10;
+  transition: transform 0.4s ease-in-out;
 }
 
 .page {
@@ -82,12 +84,14 @@ export default defineComponent({
   cursor: pointer;
   @include transform(translateX(25%) scale(0.8));
   @include no-text-select();
+  @include transition(transform 0.4s ease-in-out);
 }
 
 .left-active {
+  cursor: pointer;
   @include transform(translateX(-25%) scale(0.8));
   @include no-text-select();
-  cursor: pointer;
+  @include transition(transform 0.4s ease-in-out);
 }
 
 .front,

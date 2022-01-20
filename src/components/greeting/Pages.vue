@@ -1,15 +1,17 @@
 <template>
-  <Page
-    v-for="(page, idx) in pages"
-    :key="idx"
-    :page="page"
-    @page-selected="onPageSelected"
-    :blocks="blocksByPageId(page.id)"
-    :class="{
-      [page.className]: true,
-      [page.type]: true
-    }"
-  />
+  <div>
+    <Page
+      v-for="(page, idx) in pages"
+      :key="idx"
+      :page="page"
+      @page-selected="onPageSelected"
+      :blocks="blocksByPageId(page.id)"
+      :class="{
+        [page.className]: true,
+        [page.type]: true
+      }"
+    />
+  </div>
 </template>
 
 <script lang="ts">

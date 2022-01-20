@@ -83,4 +83,8 @@ export default defineComponent({
   height: 500px;
   margin: 150px 0 0 250px;
 }
+.controllers {
+  position: absolute;
+  bottom: -30px;
+}
 </style>
