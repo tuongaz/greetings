@@ -252,18 +252,23 @@ export default defineComponent({
       });
     },
     onBlockMouseDown(e: MouseEvent) {
+      if (!this.block.editable) {
+        return;
+      }
+
+      // eslint-disable-next-line vue/max-len
+      // stop triggering the event when the page that contains this block is not active page
+      // and it is not in editing mode
       if (
-        !this.block.editable ||
-        // eslint-disable-next-line vue/max-len
-        !this.$store.getters.isPageActive(this.block.pageId) // stop triggering the event when the page that contains this block is not active page.
+        !this.editing &&
+        !this.$store.getters.isPageActive(this.block.pageId)
       ) {
         return;
       }
 
-      const elm = this.$refs.root as HTMLElement;
-
       e.stopPropagation();
 
+      const elm = this.$refs.root as HTMLElement;
       if (this.editing) {
         this.dragging = {
           element: elm,
