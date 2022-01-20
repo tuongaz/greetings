@@ -1,13 +1,13 @@
 <template>
   <div v-bind:class="{ editing: editing }">
     <span
+      v-html="block.text"
       class="content"
       ref="content"
       :contenteditable="editing"
       @input="onContentChange"
       @mousedown="onContentMouseDown"
-      >{{ block.text }}</span
-    >
+    ></span>
 
     <div v-if="editing" class="toolbar">
       <ToolFontSelect @font-selected="onFontSelected" />

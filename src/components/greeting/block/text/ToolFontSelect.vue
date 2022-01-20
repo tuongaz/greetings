@@ -22,12 +22,12 @@
       <ul>
         <li
           @click="onFontSelect(font)"
-          v-bind:style="{ fontFamily: font }"
+          v-bind:style="{ fontFamily: font[0] }"
           v-for="(font, index) in fonts"
           :data-testid="'option-' + index"
-          :key="font"
+          :key="font[0]"
         >
-          {{ font }}
+          {{ font[1] }}
         </li>
       </ul>
     </div>
@@ -35,6 +35,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { fonts } from '@/config';
 
 export default defineComponent({
   mounted() {
@@ -53,16 +54,7 @@ export default defineComponent({
   data() {
     return {
       clicked: false,
-      fonts: [
-        'Courier New',
-        'Times New Roman',
-        'Arial',
-        'Verdana',
-        'Georgia',
-        'Architects Daughter',
-        'Gochi Hand',
-        'Grand Hotel'
-      ]
+      fonts
     };
   },
   methods: {

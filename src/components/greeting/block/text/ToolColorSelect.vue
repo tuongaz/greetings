@@ -36,6 +36,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { colors } from '@/config';
 
 export default defineComponent({
   mounted() {
@@ -54,28 +55,7 @@ export default defineComponent({
   data() {
     return {
       clicked: false,
-      colors: [
-        '#e53935',
-        '#d81b60',
-        '#8e24aa',
-        '#5e35b1',
-        '#3949ab',
-        '#1e88e5',
-        '#039be5',
-        '#00acc1',
-        '#00897b',
-        '#43a047',
-        '#7cb342',
-        '#c0ca33',
-        '#fbc02d',
-        '#ffb300',
-        '#fb8c00',
-        '#f4511e',
-        '#6d4c41',
-        '#757575',
-        '#546e7a',
-        '#000000'
-      ]
+      colors
     };
   },
   methods: {

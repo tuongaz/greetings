@@ -13,18 +13,43 @@
 * Handle multiple pages, add new page
 * Handle page cover, back
 * Finialise the UI/UX with animation 
+
+* Add emoji
+* Add slate
+
+* Export (PDF, PNG, ...)
 ===
+
 * Icons (Find icons)
 * List colors
 * Design the app page (Setup steps...)
 * basic cross browser check
 * Vuex integration (unit test block save, block delete)
+
+* randomise the text, color, font...
+* Unit test/code stability, clean up
+* UX/UI fixes
+* Scrollbar for the next pages (When there are more than 5 pages)
 ===
 30/Jan: API integration:
 - GRPC, Microservice?
 
+=== FINAL touch
+* Choose fonts
+* Choose color
+
 === FUTURE
 * Add new block, find the best position
-
+* Print card (allow to print so that it can be folded)
+* NFT
+* Invite friends
+* Chips in $
+* Share option (HTML, others)
+* Integration?
+* Report
+* Video version
+* Auto generate content based on event...
+==
+Real time update
 
 

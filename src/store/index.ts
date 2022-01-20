@@ -17,6 +17,7 @@ import {
   ADD_NEW_PAGE
 } from './mutation_types';
 import { State, Card, Page, Block } from './models';
+import { getColor, getFont } from '@/config';
 
 export interface DeleteBlockPayload {
   blockId: string;
@@ -146,9 +147,11 @@ export const store = createStore<State>({
         top: 200,
         left: 200,
         width: 200,
-        text: 'here is the text example',
+        text: 'your message here...',
         editable: true,
-        fontFamily: 'Arial'
+        fontFamily: getFont(),
+        fontColor: getColor(),
+        textAlign: 'left'
       };
       commit(CREATE_BLOCK, { block });
       commit(SET_EDIT_BLOCK, { blockId: block.id });
