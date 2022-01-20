@@ -98,34 +98,3 @@ export default defineComponent({
   }
 });
 </script>
-<style lang="scss" scoped>
-@import '@/assets/scss/mixins.scss';
-.page.active {
-  z-index: 10;
-}
-
-.page {
-  z-index: 1;
-}
-
-.next-active {
-  z-index: 5;
-}
-
-.right-active {
-  cursor: pointer;
-  @include transform(translateX(25%) scale(0.8));
-  @include no-text-select();
-}
-
-.left-active {
-  @include transform(translateX(-25%) scale(0.8));
-  @include no-text-select();
-  cursor: pointer;
-}
-
-.front,
-.back {
-  background: #eee;
-}
-</style>

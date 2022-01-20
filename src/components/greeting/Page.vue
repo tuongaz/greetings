@@ -51,7 +51,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '@/assets/scss/mixins.scss';
 .page {
   position: absolute;
   background: #fff;
@@ -63,5 +64,34 @@ export default defineComponent({
   border: 1px solid #cccccc;
   width: 500px;
   height: 500px;
+}
+
+.page.active {
+  z-index: 10;
+}
+
+.page {
+  z-index: 1;
+}
+
+.next-active {
+  z-index: 5;
+}
+
+.right-active {
+  cursor: pointer;
+  @include transform(translateX(25%) scale(0.8));
+  @include no-text-select();
+}
+
+.left-active {
+  @include transform(translateX(-25%) scale(0.8));
+  @include no-text-select();
+  cursor: pointer;
+}
+
+.front,
+.back {
+  background: #eee;
 }
 </style>

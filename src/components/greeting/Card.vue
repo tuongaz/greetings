@@ -83,38 +83,4 @@ export default defineComponent({
   height: 500px;
   margin: 150px 0 0 250px;
 }
-
-.page.active {
-  z-index: 10;
-}
-
-.page {
-  z-index: 1;
-}
-
-.next-active {
-  z-index: 5;
-}
-
-.right-active {
-  cursor: pointer;
-  @include transform(translateX(25%) scale(0.8));
-  @include no-text-select();
-}
-
-.left-active {
-  @include transform(translateX(-25%) scale(0.8));
-  @include no-text-select();
-  cursor: pointer;
-}
-
-.front-page,
-.back-page {
-  background: #eee;
-}
-
-.controllers {
-  position: absolute;
-  bottom: -30px;
-}
 </style>
