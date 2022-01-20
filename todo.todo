@@ -16,8 +16,6 @@
 * randomise the text, color, font...
 * Vuex integration (unit test block save, block delete)
 ===============================================================
-* Add emoji
-* Add slate
 * Scrollbar for the next pages (When there are more than 5 pages)
 * Icons (Find icons)
 * List colors
@@ -34,6 +32,8 @@
 
 
 
+* Add emoji
+* Add slate
 
 ===
 30/Jan: API integration:

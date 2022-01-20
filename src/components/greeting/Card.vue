@@ -6,11 +6,13 @@
 
     <div v-if="canShowControllers" class="controllers">
       <button @click="newBlock">New Text</button>
+      <Slider v-model="value" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import Slider from '@vueform/slider';
 import { defineComponent } from 'vue';
 import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
 import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
@@ -21,10 +23,16 @@ import { Block, Page as ModelPage } from '@/store';
 export default defineComponent({
   components: {
     Pages,
-    EditPage
+    EditPage,
+    Slider
   },
   props: {
     activePageId: Number
+  },
+  data() {
+    return {
+      value: 20
+    };
   },
   computed: {
     pages() {
@@ -88,3 +96,5 @@ export default defineComponent({
   bottom: -30px;
 }
 </style>
+
+<style src="@vueform/slider/themes/default.css"></style>
