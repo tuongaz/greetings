@@ -12,14 +12,13 @@
 15/Jan
 * Handle multiple pages, add new page
 * Handle page cover, back
-
-* Vuex integration (unit test block save, block delete)
-===
 * Finialise the UI/UX with animation 
+===
 * Icons (Find icons)
 * List colors
 * Design the app page (Setup steps...)
 * basic cross browser check
+* Vuex integration (unit test block save, block delete)
 ===
 30/Jan: API integration:
 - GRPC, Microservice?
