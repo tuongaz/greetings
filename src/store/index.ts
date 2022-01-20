@@ -13,7 +13,8 @@ import {
   CREATE_BLOCK,
   SET_EDIT_BLOCK,
   UPDATE_BLOCK,
-  SET_ACTIVE_PAGE
+  SET_ACTIVE_PAGE,
+  ADD_NEW_PAGE
 } from './mutation_types';
 import { State, Card, Page, Block } from './models';
 
@@ -105,6 +106,13 @@ export const store = createStore<State>({
     },
     [CREATE_BLOCK](state: State, { block }: CreateBlockPayload) {
       state.blocks = [...state.blocks, block];
+    },
+    [ADD_NEW_PAGE](state: State) {
+      state.pages.splice(state.pages.length - 1, 0, {
+        id: state.pages.length,
+        cardId: state.card.id || ''
+      });
+      console.log(state.pages);
     }
   },
   actions: {
@@ -115,10 +123,17 @@ export const store = createStore<State>({
       commit(DELETE_BLOCK, { blockId });
     },
     async [UPDATE_BLOCK_ACTION](
-      { commit }: ActionContext<State, State>,
+      { commit, state }: ActionContext<State, State>,
       payload: UpdateBlockPayload
     ) {
       commit(UPDATE_BLOCK, payload);
+
+      // If this is the last page, create a new page
+      const idx = state.pages.findIndex((p) => p.id === state.app.activePageId);
+      if (idx === state.pages.length - 2) {
+        // add new page
+        commit(ADD_NEW_PAGE);
+      }
     },
     async [CREATE_BLOCK_ACTION](
       { commit, state }: ActionContext<State, State>,
@@ -151,14 +166,16 @@ export const store = createStore<State>({
         },
         {
           id: 1,
-          cardId: 'card1'
+          cardId: 'card1',
+          type: 'content'
         },
         {
           id: 2,
-          cardId: 'card1'
+          cardId: 'card1',
+          type: 'content'
         },
         {
-          id: 3,
+          id: 9999,
           type: 'back',
           cardId: 'card1'
         }
@@ -178,7 +195,7 @@ export const store = createStore<State>({
         {
           id: 'back',
           cardId: 'card0',
-          pageId: 3,
+          pageId: 9999,
           type: 'blocktext',
           top: 120,
           left: 350,

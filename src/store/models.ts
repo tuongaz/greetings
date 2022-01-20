@@ -19,7 +19,7 @@ export interface App {
 export interface Page {
   id: number;
   cardId: string;
-  type?: 'front' | 'back';
+  type?: 'front' | 'back' | 'content';
 }
 
 export interface Card {

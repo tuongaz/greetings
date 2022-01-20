@@ -1,27 +1,30 @@
 <template>
-  <div class="card">
-    <Pages />
-
-    <EditPage v-if="hasEditBlock" :block="editBlock" />
-
-    <div v-if="canShowControllers" class="controllers">
-      <button @click="newBlock">New Text</button>
-    </div>
-  </div>
+  <Page
+    v-for="(page, idx) in pages"
+    :key="idx"
+    :page="page"
+    @page-selected="onPageSelected"
+    :blocks="blocksByPageId(page.id)"
+    :class="{
+      active: idx === currentPageId,
+      'right-active': idx > currentPageId,
+      [page.type]: true,
+      'left-active': idx < currentPageId,
+      'next-active': idx === currentPageId + 1 || idx === currentPageId - 1
+    }"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
 import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
-import Pages from './Pages.vue';
-import EditPage from './EditPage.vue';
+import Page from './Page.vue';
 import { Block, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
-    Pages,
-    EditPage
+    Page
   },
   props: {
     activePageId: Number
@@ -77,13 +80,6 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/mixins.scss';
-
-.card {
-  position: relative;
-  height: 500px;
-  margin: 150px 0 0 250px;
-}
-
 .page.active {
   z-index: 10;
 }
@@ -108,13 +104,8 @@ export default defineComponent({
   cursor: pointer;
 }
 
-.front-page,
-.back-page {
+.front,
+.back {
   background: #eee;
-}
-
-.controllers {
-  position: absolute;
-  bottom: -30px;
 }
 </style>
