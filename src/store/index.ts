@@ -112,7 +112,6 @@ export const store = createStore<State>({
         id: state.pages.length,
         cardId: state.card.id || ''
       });
-      console.log(state.pages);
     }
   },
   actions: {
@@ -175,7 +174,7 @@ export const store = createStore<State>({
           type: 'content'
         },
         {
-          id: 9999,
+          id: -1,
           type: 'back',
           cardId: 'card1'
         }
@@ -195,7 +194,7 @@ export const store = createStore<State>({
         {
           id: 'back',
           cardId: 'card0',
-          pageId: 9999,
+          pageId: -1,
           type: 'blocktext',
           top: 120,
           left: 350,
