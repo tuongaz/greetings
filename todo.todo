@@ -15,8 +15,8 @@
 * Finialise the UI/UX with animation 
 * randomise the text, color, font...
 * Vuex integration (unit test block save, block delete)
-===============================================================
 * Scrollbar for the next pages (When there are more than 5 pages)
+===============================================================
 * Icons (Find icons)
 * List colors
 

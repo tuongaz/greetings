@@ -10,6 +10,7 @@
       </div>
     </div>
     <Slider
+      :tooltips="false"
       :modelValue="sliderValue"
       :min="1"
       :max="maxPage"

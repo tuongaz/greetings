@@ -245,7 +245,6 @@ export default defineComponent({
       if (this.$store.state.app.activePageId) {
         input.pageId = this.$store.state.app.activePageId;
       }
-      console.log({ input });
       this.$store.dispatch(UPDATE_BLOCK, {
         blockId: this.block.id,
         data: input
