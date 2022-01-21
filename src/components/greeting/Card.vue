@@ -10,10 +10,11 @@
       </div>
     </div>
     <Slider
-      v-model="sliderValue"
+      :modelValue="sliderValue"
       :min="1"
-      :max="pages.length"
-      @change="onSliderChange"
+      :max="maxPage"
+      :lazy="false"
+      @update="onSliderChange"
     />
   </div>
 </template>
@@ -39,6 +40,14 @@ export default defineComponent({
   computed: {
     pages() {
       return this.$store.getters.getPages();
+    },
+    maxPage() {
+      let count = this.$store.getters.getPages().length;
+      if (this.$store.getters.hasEditingBlock()) {
+        count -= 1;
+      }
+
+      return Math.max(count, 0);
     },
     sliderValue() {
       return this.$store.getters.getActivePageIndex() + 1;

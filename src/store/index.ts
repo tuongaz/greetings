@@ -209,7 +209,7 @@ export const store = createStore<State>({
         {
           id: 'back',
           cardId: 'card0',
-          pageId: -1,
+          pageId: 999999,
           type: 'blocktext',
           top: 120,
           left: 350,

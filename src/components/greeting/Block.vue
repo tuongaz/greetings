@@ -331,7 +331,7 @@ export default defineComponent({
   width: 10px;
   height: 10px;
   top: calc(50% - 5px);
-  text-indent: -1000px;
+  text-indent: -9999px;
   background: #ddd;
   @include border-radius(100%);
 }
@@ -347,7 +347,7 @@ export default defineComponent({
 }
 
 .delete {
-  text-indent: -999px;
+  text-indent: -9999px;
   background: red;
   @include border-radius(100%);
   width: 15px;
