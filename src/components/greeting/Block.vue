@@ -33,14 +33,12 @@
     <div v-if="this.editing" class="save-block" data-testid="save-block">
       <button @click="saveBlock()">Save</button>
     </div>
-    <div
+    <span
       v-if="this.editing"
       data-testid="delete-block"
-      class="delete"
+      class="delete icon-bin"
       @click="onBlockDeleted"
-    >
-      Delete
-    </div>
+    ></span>
   </div>
 </template>
 
@@ -346,14 +344,14 @@ export default defineComponent({
 }
 
 .delete {
-  text-indent: -9999px;
-  background: red;
+  color: red;
+  background: #fff;
+  border: 1px solid red;
   @include border-radius(100%);
-  width: 15px;
-  height: 15px;
+  padding: 3px;
+  top: -13px;
+  left: -13px;
   position: absolute;
-  top: -7px;
-  left: -7px;
   cursor: pointer;
 }
 </style>
