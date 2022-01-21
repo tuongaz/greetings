@@ -36,14 +36,12 @@ export default defineComponent({
   props: {
     activePageId: Number
   },
-  data() {
-    return {
-      sliderValue: 1
-    };
-  },
   computed: {
     pages() {
       return this.$store.getters.getPages();
+    },
+    sliderValue() {
+      return this.$store.getters.getActivePageIndex() + 1;
     },
     canShowControllers(): boolean {
       const activePage: ModelPage = this.$store.getters.getActivePage();

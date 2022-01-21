@@ -59,6 +59,9 @@ export const store = createStore<State>({
   },
   getters: {
     getEditingBlock: (st: State) => (): Block | undefined => st.app.editBlock,
+    getActivePageIndex: (st: State) => (): number => {
+      return st.pages.findIndex((p) => p.id === st.app.activePageId);
+    },
     getActivePage: (st: State) => (): Page | undefined => {
       return st.pages.find((p) => p.id === st.app.activePageId);
     },
@@ -186,7 +189,7 @@ export const store = createStore<State>({
           type: 'content'
         },
         {
-          id: -1,
+          id: 999999,
           type: 'back',
           cardId: 'card1'
         }
