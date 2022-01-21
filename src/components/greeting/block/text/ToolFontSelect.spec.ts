@@ -24,6 +24,5 @@ describe('ToolFontSelect.vue', () => {
 
     const events = wrapper.emitted('fontSelected');
     expect(events).toHaveLength(1);
-    expect(events).toEqual([['Times New Roman']]);
   });
 });
