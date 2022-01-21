@@ -85,7 +85,6 @@ export const store = createStore<State>({
     [SET_ACTIVE_PAGE](state: State, { pageId, index }: SetActivePagePayload) {
       if (index !== undefined) {
         const page = state.pages[index];
-        console.log(page);
         if (page) {
           state.app.activePageId = page.id;
         }

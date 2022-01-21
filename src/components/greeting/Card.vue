@@ -10,7 +10,7 @@
       </div>
     </div>
     <Slider
-      v-model="value"
+      v-model="sliderValue"
       :min="1"
       :max="pages.length"
       @change="onSliderChange"
@@ -38,7 +38,7 @@ export default defineComponent({
   },
   data() {
     return {
-      value: 1
+      sliderValue: 1
     };
   },
   computed: {
