@@ -5,9 +5,16 @@
     <EditPage v-if="hasEditBlock" :block="editBlock" />
 
     <div v-if="canShowControllers" class="controllers">
-      <button @click="newBlock">New Text</button>
-      <Slider v-model="value" />
+      <div style="margin-bottom: 20px">
+        <button @click="newBlock">New Text</button>
+      </div>
     </div>
+    <Slider
+      v-model="value"
+      :min="1"
+      :max="pages.length"
+      @change="onSliderChange"
+    />
   </div>
 </template>
 
@@ -31,7 +38,7 @@ export default defineComponent({
   },
   data() {
     return {
-      value: 20
+      value: 1
     };
   },
   computed: {
@@ -79,6 +86,11 @@ export default defineComponent({
       this.$store.commit(SET_ACTIVE_PAGE, {
         pageId
       });
+    },
+    onSliderChange(index: number) {
+      this.$store.commit(SET_ACTIVE_PAGE, {
+        index: index - 1
+      });
     }
   }
 });
@@ -88,12 +100,14 @@ export default defineComponent({
 
 .card {
   position: relative;
-  height: 500px;
-  margin: 150px 0 0 250px;
+  margin: auto;
+  width: 500px;
+  margin-top: 200px;
 }
+
 .controllers {
   position: absolute;
-  bottom: -30px;
+  width: 100%;
 }
 </style>
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pages">
     <Page
       v-for="(page, idx) in pages"
       :key="idx"
@@ -100,3 +100,11 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+@import '@/assets/scss/mixins.scss';
+
+.pages {
+  height: 600px;
+}
+</style>

@@ -23,7 +23,8 @@ export interface DeleteBlockPayload {
   blockId: string;
 }
 export interface SetActivePagePayload {
-  pageId: number;
+  pageId?: number;
+  index?: number;
 }
 
 export interface UpdateBlockPayload {
@@ -81,7 +82,16 @@ export const store = createStore<State>({
       state.blocks = blocks;
       state.pages = pages;
     },
-    [SET_ACTIVE_PAGE](state: State, { pageId }: SetActivePagePayload) {
+    [SET_ACTIVE_PAGE](state: State, { pageId, index }: SetActivePagePayload) {
+      if (index !== undefined) {
+        const page = state.pages[index];
+        console.log(page);
+        if (page) {
+          state.app.activePageId = page.id;
+        }
+        return;
+      }
+
       state.app.activePageId = pageId;
     },
     [SET_EDIT_BLOCK](state: State, { blockId }: SetEditBlockPayload) {
