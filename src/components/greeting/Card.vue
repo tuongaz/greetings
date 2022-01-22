@@ -11,32 +11,23 @@
     </div>
   </div>
 
-  <div class="slider">
-    <Slider
-      :tooltips="false"
-      :modelValue="sliderValue"
-      :min="1"
-      :max="maxPage"
-      :lazy="false"
-      @update="onSliderChange"
-    />
-  </div>
+  <Navigator @changed="onNavigatorChanged" />
 </template>
 
 <script lang="ts">
-import Slider from '@vueform/slider';
 import { defineComponent } from 'vue';
 import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
 import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import Pages from './Pages.vue';
 import EditPage from './EditPage.vue';
+import Navigator from './Navigator.vue';
 import { Block, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
     Pages,
     EditPage,
-    Slider
+    Navigator
   },
   props: {
     activePageId: Number
@@ -44,17 +35,6 @@ export default defineComponent({
   computed: {
     pages() {
       return this.$store.getters.getPages();
-    },
-    maxPage() {
-      let count = this.$store.getters.getPages().length;
-      if (this.$store.getters.hasEditingBlock()) {
-        count -= 1;
-      }
-
-      return Math.max(count, 0);
-    },
-    sliderValue() {
-      return this.$store.getters.getActivePageIndex() + 1;
     },
     canShowControllers(): boolean {
       const activePage: ModelPage = this.$store.getters.getActivePage();
@@ -98,9 +78,9 @@ export default defineComponent({
         pageId
       });
     },
-    onSliderChange(index: number) {
+    onNavigatorChanged(index: number) {
       this.$store.commit(SET_ACTIVE_PAGE, {
-        index: index - 1
+        index
       });
     }
   }
