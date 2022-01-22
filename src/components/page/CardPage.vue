@@ -1,16 +1,26 @@
 <template>
-  <div>
-    <Card :activePageId="1" />
-  </div>
+  <Header />
+  <Body>
+    <div>
+      <Card :activePageId="1" />
+    </div>
+  </Body>
+  <Footer />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Card from '@/components/card/Card.vue';
+import Header from '@/components/page/Header.vue';
+import Footer from '@/components/page/Footer.vue';
+import Body from '@/components/page/Body.vue';
 
 export default defineComponent({
   components: {
-    Card
+    Card,
+    Header,
+    Footer,
+    Body
   }
 });
 </script>
