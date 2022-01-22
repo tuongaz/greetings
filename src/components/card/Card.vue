@@ -2,9 +2,14 @@
   <div class="card">
     <Pages />
     <EditPage v-if="hasEditBlock" :block="editBlock" />
+
+    <Controllers
+      class="controllers"
+      @new-block="onNewBlock"
+      v-if="canShowControllers"
+    />
   </div>
 
-  <Controllers @new-block="onNewBlock" v-if="canShowControllers" />
   <Navigator @changed="onNavigatorChanged" />
 </template>
 
@@ -90,6 +95,12 @@ export default defineComponent({
   margin: auto;
   width: 450px;
   height: 550px;
+}
+
+.controllers {
+  position: absolute;
+  right: -200px;
+  top: 20px;
 }
 </style>
 

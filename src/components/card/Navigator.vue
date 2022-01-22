@@ -60,6 +60,6 @@ export default defineComponent({
 
 .slider {
   width: 450px;
-  margin: 80px auto;
+  margin: 20px auto;
 }
 </style>

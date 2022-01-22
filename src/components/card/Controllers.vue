@@ -1,8 +1,6 @@
 <template>
-  <div class="controllers">
-    <div style="margin-bottom: 20px">
-      <button @click="newBlock">New Text</button>
-    </div>
+  <div>
+    <button @click="newBlock">New Text</button>
   </div>
 </template>
 
@@ -17,12 +15,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style lang="scss" scoped>
-@import '@/assets/scss/mixins.scss';
-
-.controllers {
-  width: 450px;
-  margin: 20px auto;
-}
-</style>
