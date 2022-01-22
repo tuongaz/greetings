@@ -16,14 +16,13 @@
 * randomise the text, color, font...
 * Vuex integration (unit test block save, block delete)
 * Scrollbar for the next pages (When there are more than 5 pages)
-===============================================================
 * Icons (Find icons)
-* List colors
-
+===============================================================
 * Design the app page (Setup steps...)
 * basic cross browser check
 * UX/UI fixes
 * Unit test/code stability, clean up
+* List colors
 
 
 

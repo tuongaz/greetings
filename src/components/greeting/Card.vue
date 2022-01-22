@@ -9,6 +9,9 @@
         <button @click="newBlock">New Text</button>
       </div>
     </div>
+  </div>
+
+  <div class="slider">
     <Slider
       :tooltips="false"
       :modelValue="sliderValue"
@@ -109,13 +112,18 @@ export default defineComponent({
 .card {
   position: relative;
   margin: auto;
-  width: 500px;
-  margin-top: 200px;
+  width: 450px;
+  height: 550px;
 }
 
 .controllers {
-  position: absolute;
-  width: 100%;
+  width: 450px;
+  margin: 20px auto;
+}
+
+.slider {
+  width: 450px;
+  margin: 80px auto;
 }
 </style>
 

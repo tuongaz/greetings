@@ -105,6 +105,7 @@ export default defineComponent({
 @import '@/assets/scss/mixins.scss';
 
 .pages {
-  height: 600px;
+  height: 100%;
+  width: 100%;
 }
 </style>

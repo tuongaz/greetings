@@ -28,8 +28,8 @@ export default defineComponent({
   computed: {
     bound() {
       return {
-        width: 500,
-        height: 500
+        width: 450,
+        height: 550
       };
     }
   },
@@ -69,8 +69,8 @@ export default defineComponent({
 .container {
   position: relative;
   border: 1px solid #cccccc;
-  width: 500px;
-  height: 500px;
+  width: 450px;
+  height: 550px;
 }
 
 .page.active {

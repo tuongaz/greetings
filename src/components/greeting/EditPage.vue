@@ -24,8 +24,8 @@ export default defineComponent({
   computed: {
     bound() {
       return {
-        width: 500,
-        height: 500
+        width: 450,
+        height: 550
       };
     }
   },

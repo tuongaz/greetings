@@ -212,7 +212,7 @@ export const store = createStore<State>({
           pageId: 999999,
           type: 'blocktext',
           top: 120,
-          left: 350,
+          left: 250,
           width: 300,
           text: 'BACK PAGE',
           editable: false
