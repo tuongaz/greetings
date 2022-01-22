@@ -57,4 +57,9 @@ export default defineComponent({
   text-align: center;
   margin: 10px 0;
 }
+
+.slider {
+  width: 450px;
+  margin: 80px auto;
+}
 </style>

@@ -1,16 +1,10 @@
 <template>
   <div class="card">
     <Pages />
-
     <EditPage v-if="hasEditBlock" :block="editBlock" />
-
-    <div v-if="canShowControllers" class="controllers">
-      <div style="margin-bottom: 20px">
-        <button @click="newBlock">New Text</button>
-      </div>
-    </div>
   </div>
 
+  <Controllers @new-block="onNewBlock" v-if="canShowControllers" />
   <Navigator @changed="onNavigatorChanged" />
 </template>
 
@@ -21,13 +15,15 @@ import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import Pages from './Pages.vue';
 import EditPage from './EditPage.vue';
 import Navigator from './Navigator.vue';
+import Controllers from './Controllers.vue';
 import { Block, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
     Pages,
     EditPage,
-    Navigator
+    Navigator,
+    Controllers
   },
   props: {
     activePageId: Number
@@ -68,9 +64,9 @@ export default defineComponent({
     blocksByPageId(pageId: string): Block[] {
       return this.$store.getters.getBlocksByPageID(pageId) as Block[];
     },
-    newBlock() {
+    onNewBlock(type: string) {
       this.$store.dispatch(CREATE_BLOCK, {
-        type: 'blocktext'
+        type
       });
     },
     onPageSelected(pageId: number) {
@@ -94,16 +90,6 @@ export default defineComponent({
   margin: auto;
   width: 450px;
   height: 550px;
-}
-
-.controllers {
-  width: 450px;
-  margin: 20px auto;
-}
-
-.slider {
-  width: 450px;
-  margin: 80px auto;
 }
 </style>
 
