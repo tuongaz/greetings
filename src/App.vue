@@ -2,9 +2,10 @@
   <router-view />
 </template>
 
-<style>
+<style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Gochi+Hand&family=Grand+Hotel&family=Indie+Flower&display=swap');
 @import url('assets/icons/icons.css');
+@import '@/assets/scss/mixins.scss';
 
 #app {
   position: relative;
@@ -14,6 +15,12 @@
 
 html {
   font-family: sans-serif;
+}
+
+img {
+  width: 100%;
+  @include no-text-select();
+  @include no-user-drag();
 }
 
 body {

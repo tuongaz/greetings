@@ -1,3 +1,3 @@
 <template>
-  <p>This is the new image</p>
+  <img src="https://c.tenor.com/wdv_JiOkBGgAAAAC/cheers-lets-drink.gif" />
 </template>

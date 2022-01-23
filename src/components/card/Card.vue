@@ -2,11 +2,7 @@
   <div class="card">
     <Pages />
     <EditPage v-if="hasEditBlock" :block="editBlock" />
-    <Controllers
-      class="controllers"
-      @new-block="onNewBlock"
-      v-if="canShowControllers"
-    />
+    <Controllers @new-block="onNewBlock" v-if="canShowControllers" />
   </div>
 
   <Navigator @changed="onNavigatorChanged" />

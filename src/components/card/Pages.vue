@@ -169,10 +169,6 @@ export default defineComponent({
   width: 450px;
   height: 550px;
   overflow: hidden;
-
-  img {
-    width: 100%;
-  }
 }
 
 .page.active {

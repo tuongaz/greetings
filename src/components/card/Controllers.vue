@@ -1,5 +1,8 @@
 <template>
-  <button @click="newBlock">New Text</button>
+  <div class="controllers">
+    <button @click="newTextBlock">New Text</button>
+    <button @click="newImageBlock">New Image</button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -7,8 +10,11 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   methods: {
-    newBlock() {
+    newTextBlock() {
       this.$emit('newBlock', 'blocktext');
+    },
+    newImageBlock() {
+      this.$emit('newBlock', 'blockimage');
     }
   }
 });
@@ -22,5 +28,11 @@ button {
   cursor: pointer;
   background: rgb(0, 143, 209);
   color: #fff;
+  width: 100%;
+}
+
+.controllers {
+  width: 120px;
+  display: block;
 }
 </style>
