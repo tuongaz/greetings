@@ -28,7 +28,6 @@ export default defineComponent({
   mounted() {
     (this.$refs.options as HTMLElement).style.display = 'none';
     document.addEventListener('click', () => {
-      console.log('A');
       if (!this.clicked) {
         const elm = this.$refs.options as HTMLElement;
         if (!elm) {

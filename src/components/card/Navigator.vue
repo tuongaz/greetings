@@ -29,6 +29,9 @@ export default defineComponent({
   components: {
     Slider
   },
+  props: {
+    minItemsToShow: Number
+  },
   computed: {
     activePageNumber() {
       return this.$store.getters.activePageNumber();
