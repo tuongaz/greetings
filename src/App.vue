@@ -11,9 +11,14 @@
   width: 100%;
   height: 100%;
 }
+
+html {
+  font-family: sans-serif;
+}
+
 body {
   position: relative;
-  height: 100%;
+  height: 100vh;
   margin: 0;
   padding: 0;
 }
