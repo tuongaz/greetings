@@ -79,7 +79,6 @@ export const store = createStore<State>({
       (pageId: number): Block[] =>
         st.blocks.filter((b) => b.pageId === pageId && !b.isHidden),
     getPages: (st: State) => (): Page[] => st.pages,
-    // 2 = cover and back pages
     totalPages: (st: State) => (): number => st.pages.length,
     hasEditingBlock: (st: State) => () => st.app.editBlock !== undefined,
     coverPage: (st: State) => () => {

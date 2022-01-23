@@ -1,14 +1,23 @@
 <template>
-  <div class="slider">
+  <div class="navigation">
     <div class="progress">Page {{ activePageNumber }}/{{ totalPages }}</div>
-    <Slider
-      :tooltips="false"
-      :modelValue="activePageNumber"
-      :min="minPage"
-      :max="maxPage"
-      :lazy="false"
-      @update="onSliderChange"
-    />
+
+    <div class="container">
+      <button :disabled="disablePrevious" class="previous" @click="previous()">
+        Prev
+      </button>
+      <div class="slider">
+        <Slider
+          :tooltips="false"
+          :modelValue="activePageNumber"
+          :min="minPage"
+          :max="maxPage"
+          :lazy="false"
+          @update="onSliderChange"
+        />
+      </div>
+      <button :disabled="disableNext" class="next" @click="next()">Next</button>
+    </div>
   </div>
 </template>
 
@@ -19,9 +28,6 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   components: {
     Slider
-  },
-  props: {
-    activePageId: Number
   },
   computed: {
     activePageNumber() {
@@ -47,11 +53,36 @@ export default defineComponent({
       }
 
       return Math.max(count, 0);
+    },
+    disablePrevious() {
+      const activePageNumber = this.$store.getters.activePageNumber();
+      return (
+        activePageNumber === 1 ||
+        (activePageNumber === 2 && this.$store.getters.hasEditingBlock())
+      );
+    },
+    disableNext() {
+      const activePageNumber = this.$store.getters.activePageNumber();
+      const totalPages = this.$store.getters.totalPages();
+
+      return (
+        activePageNumber === totalPages ||
+        (activePageNumber === totalPages - 1 &&
+          this.$store.getters.hasEditingBlock())
+      );
     }
   },
   methods: {
     onSliderChange(index: number) {
       this.$emit('changed', index - 1);
+    },
+    previous() {
+      const pageNum = this.$store.getters.activePageNumber() as number;
+      this.$emit('changed', pageNum - 2);
+    },
+    next() {
+      const pageNum = this.$store.getters.activePageNumber() as number;
+      this.$emit('changed', pageNum);
     }
   }
 });
@@ -63,10 +94,29 @@ export default defineComponent({
 .progress {
   text-align: center;
   margin: 10px 0;
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.navigation {
+  width: 450px;
+  margin: 20px auto;
+}
+
+.slider,
+.previous,
+.next {
+  display: inline-block;
 }
 
 .slider {
-  width: 450px;
-  margin: 20px auto;
+  flex: 1;
+  padding: 0 20px;
 }
 </style>
