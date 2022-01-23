@@ -20,7 +20,7 @@ module.exports = {
       {
         code: 80,
         template: 80,
-        ignorePattern: 'd=([sS]*?)'
+        ignorePattern: '[ds]=([sS]*?)'
       }
     ],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }]

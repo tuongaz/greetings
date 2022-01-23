@@ -36,6 +36,8 @@ export interface UpdateBlockPayload {
 
 export interface SetCardPayload {
   card: Card;
+  coverPage: Page;
+  backPage: Page;
   pages: Page[];
   blocks: Block[];
 }
@@ -54,6 +56,12 @@ export const store = createStore<State>({
   state: {
     card: {},
     pages: [],
+    coverPage: {
+      id: 0
+    },
+    backPage: {
+      id: -1
+    },
     blocks: [],
     app: {}
   },
@@ -174,11 +182,6 @@ export const store = createStore<State>({
       };
       const pages: Page[] = [
         {
-          id: 0,
-          cardId: 'card1',
-          type: 'front'
-        },
-        {
           id: 1,
           cardId: 'card1',
           type: 'content'
@@ -187,36 +190,9 @@ export const store = createStore<State>({
           id: 2,
           cardId: 'card1',
           type: 'content'
-        },
-        {
-          id: 999999,
-          type: 'back',
-          cardId: 'card1'
         }
       ];
       const blocks: Block[] = [
-        {
-          id: 'front',
-          cardId: 'card0',
-          pageId: 0,
-          type: 'blocktext',
-          top: 120,
-          left: 20,
-          width: 300,
-          text: 'COVER PAGE',
-          editable: false
-        },
-        {
-          id: 'back',
-          cardId: 'card0',
-          pageId: 999999,
-          type: 'blocktext',
-          top: 120,
-          left: 250,
-          width: 300,
-          text: 'BACK PAGE',
-          editable: false
-        },
         {
           id: 'block1',
           cardId: 'card1',

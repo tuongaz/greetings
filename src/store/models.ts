@@ -18,7 +18,6 @@ export interface App {
 
 export interface Page {
   id: number;
-  cardId: string;
   type?: 'front' | 'back' | 'content';
   [key: string]: any;
 }
@@ -32,4 +31,6 @@ export interface State {
   card: Card;
   pages: Page[];
   blocks: Block[];
+  coverPage: Page;
+  backPage: Page;
 }

@@ -1,5 +1,6 @@
 <template>
   <div class="pages">
+    <PageCover />
     <Page
       v-for="(page, idx) in pages"
       :key="idx"
@@ -11,6 +12,13 @@
         [page.type]: true
       }"
     />
+    <PageBack />
+
+    <Controllers
+      class="controllers"
+      @new-block="onNewBlock"
+      v-if="canShowControllers"
+    />
   </div>
 </template>
 
@@ -19,11 +27,17 @@ import { defineComponent } from 'vue';
 import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
 import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import Page from './Page.vue';
+import PageCover from './PageCover.vue';
+import PageBack from './PageBack.vue';
+import Controllers from './Controllers.vue';
 import { Block, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
-    Page
+    Page,
+    PageCover,
+    PageBack,
+    Controllers
   },
   props: {
     activePageId: Number
@@ -61,11 +75,7 @@ export default defineComponent({
         return false;
       }
 
-      return (
-        !this.$store.getters.hasEditingBlock() &&
-        activePage.type !== 'front' &&
-        activePage.type !== 'back'
-      );
+      return !this.$store.getters.hasEditingBlock();
     },
     editBlock(): Block {
       return this.$store.getters.getEditingBlock();
@@ -96,16 +106,74 @@ export default defineComponent({
       this.$store.commit(SET_ACTIVE_PAGE, {
         pageId
       });
+    },
+    onNewBlock(type: string) {
+      this.$store.dispatch(CREATE_BLOCK, {
+        type
+      });
     }
   }
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/assets/scss/mixins.scss';
 
 .pages {
   height: 100%;
   width: 100%;
+}
+
+.page {
+  position: absolute;
+  background: #eee;
+  top: 0;
+  left: 0;
+  @include transition(0.4s, ease-in-out);
+}
+
+.page-container {
+  position: relative;
+  border: 1px solid #cccccc;
+  width: 450px;
+  height: 550px;
+}
+
+.page.active {
+  z-index: 10;
+  @include transition(0.4s, ease-in-out);
+}
+
+.page {
+  z-index: 1;
+}
+
+.next-active {
+  z-index: 5;
+}
+
+.right-active {
+  cursor: pointer;
+  @include transform(translateX(25%) scale(0.8));
+  @include no-text-select();
+  @include transition(0.4s, ease-in-out);
+}
+
+.left-active {
+  cursor: pointer;
+  @include transform(translateX(-25%) scale(0.8));
+  @include no-text-select();
+  @include transition(0.4s, ease-in-out);
+}
+
+.front,
+.back {
+  background: #eee;
+}
+
+.controllers {
+  position: absolute;
+  right: -200px;
+  top: 20px;
 }
 </style>

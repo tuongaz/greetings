@@ -1,6 +1,6 @@
 <template>
   <div class="page" ref="root" @click="selectPage">
-    <div class="container">
+    <div class="page-container">
       <WrapperBlock
         v-for="block in blocks"
         :bound="bound"
@@ -57,51 +57,4 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/assets/scss/mixins.scss';
-
-.page {
-  position: absolute;
-  background: #eee;
-  top: 0;
-  left: 0;
-  @include transition(0.4s, ease-in-out);
-}
-
-.container {
-  position: relative;
-  border: 1px solid #cccccc;
-  width: 450px;
-  height: 550px;
-}
-
-.page.active {
-  z-index: 10;
-  @include transition(0.4s, ease-in-out);
-}
-
-.page {
-  z-index: 1;
-}
-
-.next-active {
-  z-index: 5;
-}
-
-.right-active {
-  cursor: pointer;
-  @include transform(translateX(25%) scale(0.8));
-  @include no-text-select();
-  @include transition(0.4s, ease-in-out);
-}
-
-.left-active {
-  cursor: pointer;
-  @include transform(translateX(-25%) scale(0.8));
-  @include no-text-select();
-  @include transition(0.4s, ease-in-out);
-}
-
-.front,
-.back {
-  background: #eee;
-}
 </style>
