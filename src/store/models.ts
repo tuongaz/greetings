@@ -31,6 +31,4 @@ export interface State {
   card: Card;
   pages: Page[];
   blocks: Block[];
-  coverPage: Page;
-  backPage: Page;
 }

@@ -1,15 +1,17 @@
 <template>
-  <div class="page back" @click="selectPage">Back</div>
+  <div :class="classNames" @click="selectPage">
+    <div class="page-container">Back</div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Page } from '@/store';
+import { Page as ModelPage } from '@/store';
 
 export default defineComponent({
   props: {
     page: {
-      type: Object as PropType<Page>,
+      type: Object as PropType<ModelPage>,
       required: true
     }
   },
@@ -18,6 +20,19 @@ export default defineComponent({
       return {
         width: 450,
         height: 550
+      };
+    },
+    classNames() {
+      const activePage = this.$store.getters.getActivePage() as ModelPage;
+      const pages = this.$store.getters.getPages();
+      const isNextActive = pages[pages.length - 2].id === activePage.id;
+
+      return {
+        page: true,
+        back: true,
+        'right-active': activePage.id !== this.page.id,
+        'next-active': isNextActive,
+        active: activePage.id === this.page.id
       };
     }
   },
@@ -37,7 +52,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/assets/scss/mixins.scss';
 
 .page.back {

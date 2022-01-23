@@ -16,10 +16,9 @@ import {
   SET_ACTIVE_PAGE,
   ADD_NEW_PAGE
 } from './mutation_types';
-import { State, Card, Page, Block } from './models';
+import { State, Card, Page, Block, App } from './models';
 import { getColor, getFont } from '@/config';
 
-export const coverPageId = 0;
 export const backPageId = -1;
 
 export interface DeleteBlockPayload {
@@ -43,6 +42,7 @@ export interface SetCardPayload {
   backPage: Page;
   pages: Page[];
   blocks: Block[];
+  app: App;
 }
 
 export interface SetEditBlockPayload {
@@ -59,21 +59,13 @@ export const store = createStore<State>({
   state: {
     card: {},
     pages: [],
-    coverPage: {
-      id: coverPageId
-    },
-    backPage: {
-      id: backPageId
-    },
     blocks: [],
     app: {}
   },
   getters: {
-    getCoverPage: (st: State) => (): Page => st.coverPage,
-    getBackPage: (st: State) => (): Page => st.backPage,
     getEditingBlock: (st: State) => (): Block | undefined => st.app.editBlock,
-    getActivePageIndex: (st: State) => (): number => {
-      return st.pages.findIndex((p) => p.id === st.app.activePageId);
+    activePageNumber: (st: State) => (): number => {
+      return st.pages.findIndex((p) => p.id === st.app.activePageId) + 1;
     },
     getActivePage: (st: State) => (): Page | undefined => {
       return st.pages.find((p) => p.id === st.app.activePageId);
@@ -86,6 +78,8 @@ export const store = createStore<State>({
       (pageId: number): Block[] =>
         st.blocks.filter((b) => b.pageId === pageId && !b.isHidden),
     getPages: (st: State) => (): Page[] => st.pages,
+    // 2 = cover and back pages
+    totalPages: (st: State) => (): number => st.pages.length,
     hasEditingBlock: (st: State) => () => st.app.editBlock !== undefined
   },
   mutations: {
@@ -93,15 +87,11 @@ export const store = createStore<State>({
       state.blocks = state.blocks.filter((b) => b.id !== blockId);
       state.app.editBlock = undefined;
     },
-    [SET_CARD](
-      state: State,
-      { card, pages, coverPage, backPage, blocks }: SetCardPayload
-    ) {
+    [SET_CARD](state: State, { card, pages, blocks, app }: SetCardPayload) {
       state.card = card;
-      state.coverPage = coverPage;
-      state.backPage = backPage;
       state.blocks = blocks;
       state.pages = pages;
+      state.app = app;
     },
     [SET_ACTIVE_PAGE](state: State, { pageId, index }: SetActivePagePayload) {
       if (index !== undefined) {
@@ -140,8 +130,7 @@ export const store = createStore<State>({
     },
     [ADD_NEW_PAGE](state: State) {
       state.pages.splice(state.pages.length - 1, 0, {
-        id: state.pages.length,
-        cardId: state.card.id || ''
+        id: state.pages.length
       });
     }
   },
@@ -192,6 +181,9 @@ export const store = createStore<State>({
       };
       const pages: Page[] = [
         {
+          id: 0
+        },
+        {
           id: 1,
           cardId: 'card1',
           type: 'content'
@@ -200,6 +192,9 @@ export const store = createStore<State>({
           id: 2,
           cardId: 'card1',
           type: 'content'
+        },
+        {
+          id: -1
         }
       ];
       const blocks: Block[] = [
@@ -248,14 +243,11 @@ export const store = createStore<State>({
         }
       ];
 
-      const coverPage: Page = {
-        id: coverPageId
-      };
-      const backPage: Page = {
-        id: backPageId
+      const app: App = {
+        activePageId: 1
       };
 
-      commit(SET_CARD, { card, coverPage, backPage, pages, blocks });
+      commit(SET_CARD, { card, pages, blocks, app });
     }
   }
 });

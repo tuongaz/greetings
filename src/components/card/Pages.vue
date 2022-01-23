@@ -1,8 +1,12 @@
 <template>
   <div class="pages">
-    <PageCover :page="coverPage" @page-selected="onPageSelected" />
+    <PageCover
+      v-if="coverPage"
+      :page="coverPage"
+      @page-selected="onPageSelected"
+    />
     <Page
-      v-for="(page, idx) in pages"
+      v-for="(page, idx) in contentPages"
       :key="idx"
       :page="page"
       @page-selected="onPageSelected"
@@ -12,7 +16,11 @@
         [page.type]: true
       }"
     />
-    <PageBack :page="backPage" @page-selected="onPageSelected" />
+    <PageBack
+      v-if="backPage"
+      :page="backPage"
+      @page-selected="onPageSelected"
+    />
   </div>
 </template>
 
@@ -36,36 +44,77 @@ export default defineComponent({
   },
   computed: {
     coverPage() {
-      return this.$store.getters.getCoverPage();
+      const pages = this.$store.getters.getPages();
+      return pages[0];
     },
     backPage() {
-      return this.$store.getters.getBackPage();
+      const pages = this.$store.getters.getPages();
+      return pages[pages.length - 1];
     },
-    pages() {
+    contentPages() {
       const pages = this.$store.getters.getPages() as ModelPage[];
+      const contentPages = pages.slice(1, pages.length - 1);
       const activePage = this.$store.getters.getActivePage() as ModelPage;
+      if (!activePage) {
+        return [];
+      }
+
+      if (activePage.id === 0) {
+        let previousActive = true;
+        // cover page
+        for (let i = 0; i < contentPages.length; i += 1) {
+          const className = 'right-active';
+
+          const page = contentPages[i];
+          contentPages[i] = { ...page, className };
+          if (previousActive) {
+            previousActive = false;
+            contentPages[i].className += ' next-active';
+          }
+        }
+
+        return contentPages;
+      }
+
+      if (activePage.id === -1) {
+        // back page
+        for (let i = 0; i < contentPages.length; i += 1) {
+          const className = 'left-active';
+
+          const page = contentPages[i];
+          contentPages[i] = { ...page, className };
+          if (i === pages.length - 2) {
+            contentPages[i].className += ' next-active';
+          }
+        }
+
+        return contentPages;
+      }
 
       let className = 'left-active';
       let previousActive = false;
-      for (let i = 0; i < pages.length; i += 1) {
-        const page = pages[i];
+      for (let i = 0; i < contentPages.length; i += 1) {
+        const page = contentPages[i];
+
         if (page.id === activePage.id) {
-          className = 'right-active';
-          pages[i] = { ...page, className: 'active' };
-          if (i > 0) {
-            pages[i - 1].className += ' next-active';
+          contentPages[i] = { ...page, className: 'active' };
+
+          if (i > 1) {
+            contentPages[i - 1].className += ' next-active';
           }
+
           previousActive = true;
+          className = 'right-active';
         } else {
-          pages[i] = { ...page, className };
+          contentPages[i] = { ...page, className };
           if (previousActive) {
             previousActive = false;
-            pages[i].className += ' next-active';
+            contentPages[i].className += ' next-active';
           }
         }
       }
 
-      return pages;
+      return contentPages;
     },
     editBlock(): Block {
       return this.$store.getters.getEditingBlock();
@@ -122,6 +171,11 @@ export default defineComponent({
   border: 1px solid #cccccc;
   width: 450px;
   height: 550px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
 }
 
 .page.active {

@@ -1,12 +1,14 @@
 <template>
-  <div class="page cover left-active next-active" @click="selectPage">
-    <img src="/img/HBD-awesome-co-workers-PR-2021.gif" />
+  <div :class="classNames" @click="selectPage">
+    <div class="page-container">
+      <img src="/img/HBD-awesome-co-workers-PR-2021.gif" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Page } from '@/store';
+import { Page, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   props: {
@@ -16,6 +18,16 @@ export default defineComponent({
     }
   },
   computed: {
+    classNames() {
+      const activePage = this.$store.getters.getActivePage() as ModelPage;
+
+      return {
+        page: true,
+        cover: true,
+        'left-active': activePage.id !== this.page.id,
+        active: activePage.id === this.page.id
+      };
+    },
     bound() {
       return {
         width: 450,

@@ -1,10 +1,10 @@
 <template>
   <div class="slider">
-    <div class="progress">Page {{ currentPageIndex }}/{{ totalPages }}</div>
+    <div class="progress">Page {{ activePageNumber }}/{{ totalPages }}</div>
     <Slider
       :tooltips="false"
-      :modelValue="sliderValue"
-      :min="1"
+      :modelValue="activePageNumber"
+      :min="minPage"
       :max="maxPage"
       :lazy="false"
       @update="onSliderChange"
@@ -24,17 +24,24 @@ export default defineComponent({
     activePageId: Number
   },
   computed: {
-    currentPageIndex() {
-      return this.$store.getters.getActivePageIndex() + 1;
+    activePageNumber() {
+      return this.$store.getters.activePageNumber();
     },
     totalPages() {
-      return this.$store.getters.getPages().length;
+      return this.$store.getters.totalPages();
     },
-    sliderValue() {
-      return this.$store.getters.getActivePageIndex() + 1;
+    minPage() {
+      if (
+        this.$store.getters.activePageNumber() === 2 &&
+        this.$store.getters.hasEditingBlock()
+      ) {
+        return 2;
+      }
+
+      return 1;
     },
     maxPage() {
-      let count = this.$store.getters.getPages().length;
+      let count = this.$store.getters.totalPages();
       if (this.$store.getters.hasEditingBlock()) {
         count -= 1;
       }

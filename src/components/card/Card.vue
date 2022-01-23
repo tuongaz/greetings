@@ -29,9 +29,6 @@ export default defineComponent({
     Navigator,
     Controllers
   },
-  props: {
-    activePageId: Number
-  },
   computed: {
     pages() {
       return this.$store.getters.getPages();
@@ -42,7 +39,11 @@ export default defineComponent({
         return false;
       }
 
-      return !this.$store.getters.hasEditingBlock();
+      return (
+        !this.$store.getters.hasEditingBlock() &&
+        activePage.id !== 0 &&
+        activePage.id !== -1
+      );
     },
     editBlock(): Block {
       return this.$store.getters.getEditingBlock();
@@ -56,9 +57,6 @@ export default defineComponent({
   },
   mounted() {
     this.$store.dispatch(GET_CARD);
-    this.$store.commit(SET_ACTIVE_PAGE, {
-      pageId: this.activePageId
-    });
   },
   methods: {
     blocksByPageId(pageId: string): Block[] {

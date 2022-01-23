@@ -3,7 +3,7 @@
   <Body>
     <div>
       <h2>A card for John Doe</h2>
-      <Card :activePageId="1" />
+      <Card />
     </div>
   </Body>
   <Footer />
