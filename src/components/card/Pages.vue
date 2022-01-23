@@ -31,7 +31,7 @@ import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import Page from './Page.vue';
 import PageCover from './PageCover.vue';
 import PageBack from './PageBack.vue';
-import { Block, Page as ModelPage } from '@/store';
+import { backPageId, Block, coverPageId, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
@@ -44,22 +44,19 @@ export default defineComponent({
   },
   computed: {
     coverPage() {
-      const pages = this.$store.getters.getPages();
-      return pages[0];
+      return this.$store.getters.coverPage();
     },
     backPage() {
-      const pages = this.$store.getters.getPages();
-      return pages[pages.length - 1];
+      return this.$store.getters.backPage();
     },
     contentPages() {
-      const pages = this.$store.getters.getPages() as ModelPage[];
-      const contentPages = pages.slice(1, pages.length - 1);
+      const contentPages = this.$store.getters.contentPages();
       const activePage = this.$store.getters.getActivePage() as ModelPage;
       if (!activePage) {
         return [];
       }
 
-      if (activePage.id === 0) {
+      if (activePage.id === coverPageId) {
         let previousActive = true;
         // cover page
         for (let i = 0; i < contentPages.length; i += 1) {
@@ -76,14 +73,14 @@ export default defineComponent({
         return contentPages;
       }
 
-      if (activePage.id === -1) {
+      if (activePage.id === backPageId) {
         // back page
         for (let i = 0; i < contentPages.length; i += 1) {
           const className = 'left-active';
 
           const page = contentPages[i];
           contentPages[i] = { ...page, className };
-          if (i === pages.length - 2) {
+          if (i === contentPages.length - 1) {
             contentPages[i].className += ' next-active';
           }
         }
@@ -160,7 +157,7 @@ export default defineComponent({
 
 .page {
   position: absolute;
-  background: #eee;
+  background: rgb(245, 245, 245);
   top: 0;
   left: 0;
   @include transition(0.4s, ease-in-out);

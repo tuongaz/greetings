@@ -296,7 +296,6 @@ export default defineComponent({
 
 .block {
   width: 200px;
-  border: 2px dashed rgba(255, 255, 255, 0);
   position: absolute;
   width: 200px;
   @include text-select();

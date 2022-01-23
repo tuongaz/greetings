@@ -20,7 +20,7 @@ import Pages from './Pages.vue';
 import EditPage from './EditPage.vue';
 import Navigator from './Navigator.vue';
 import Controllers from './Controllers.vue';
-import { Block, Page as ModelPage } from '@/store';
+import { backPageId, Block, coverPageId, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
@@ -41,8 +41,8 @@ export default defineComponent({
 
       return (
         !this.$store.getters.hasEditingBlock() &&
-        activePage.id !== 0 &&
-        activePage.id !== -1
+        activePage.id !== coverPageId &&
+        activePage.id !== backPageId
       );
     },
     editBlock(): Block {

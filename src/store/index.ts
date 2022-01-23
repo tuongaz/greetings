@@ -19,6 +19,7 @@ import {
 import { State, Card, Page, Block, App } from './models';
 import { getColor, getFont } from '@/config';
 
+export const coverPageId = 0;
 export const backPageId = -1;
 
 export interface DeleteBlockPayload {
@@ -80,7 +81,16 @@ export const store = createStore<State>({
     getPages: (st: State) => (): Page[] => st.pages,
     // 2 = cover and back pages
     totalPages: (st: State) => (): number => st.pages.length,
-    hasEditingBlock: (st: State) => () => st.app.editBlock !== undefined
+    hasEditingBlock: (st: State) => () => st.app.editBlock !== undefined,
+    coverPage: (st: State) => () => {
+      return st.pages[0];
+    },
+    backPage: (st: State) => () => {
+      return st.pages[st.pages.length - 1];
+    },
+    contentPages: (st: State) => () => {
+      return st.pages.slice(1, st.pages.length - 1);
+    }
   },
   mutations: {
     [DELETE_BLOCK](state: State, { blockId }: DeleteBlockPayload) {
@@ -181,7 +191,8 @@ export const store = createStore<State>({
       };
       const pages: Page[] = [
         {
-          id: 0
+          id: 0,
+          image: '/img/HBD-awesome-co-workers-PR-2021.gif'
         },
         {
           id: 1,

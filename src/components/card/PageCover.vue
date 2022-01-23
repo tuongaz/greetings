@@ -1,7 +1,7 @@
 <template>
   <div :class="classNames" @click="selectPage">
     <div class="page-container">
-      <img src="/img/HBD-awesome-co-workers-PR-2021.gif" />
+      <img :src="page.image" />
     </div>
   </div>
 </template>
