@@ -1,5 +1,5 @@
 <template>
-  <div class="page" ref="root" @click="selectPage">
+  <div class="page" @click="selectPage">
     <div class="page-container">
       <WrapperBlock
         v-for="block in blocks"

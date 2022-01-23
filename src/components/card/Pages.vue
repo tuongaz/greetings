@@ -1,6 +1,6 @@
 <template>
   <div class="pages">
-    <PageCover />
+    <PageCover :page="coverPage" @page-selected="onPageSelected" />
     <Page
       v-for="(page, idx) in pages"
       :key="idx"
@@ -12,13 +12,7 @@
         [page.type]: true
       }"
     />
-    <PageBack />
-
-    <Controllers
-      class="controllers"
-      @new-block="onNewBlock"
-      v-if="canShowControllers"
-    />
+    <PageBack :page="backPage" @page-selected="onPageSelected" />
   </div>
 </template>
 
@@ -29,20 +23,24 @@ import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import Page from './Page.vue';
 import PageCover from './PageCover.vue';
 import PageBack from './PageBack.vue';
-import Controllers from './Controllers.vue';
 import { Block, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
     Page,
     PageCover,
-    PageBack,
-    Controllers
+    PageBack
   },
   props: {
     activePageId: Number
   },
   computed: {
+    coverPage() {
+      return this.$store.getters.getCoverPage();
+    },
+    backPage() {
+      return this.$store.getters.getBackPage();
+    },
     pages() {
       const pages = this.$store.getters.getPages() as ModelPage[];
       const activePage = this.$store.getters.getActivePage() as ModelPage;
@@ -68,14 +66,6 @@ export default defineComponent({
       }
 
       return pages;
-    },
-    canShowControllers(): boolean {
-      const activePage: ModelPage = this.$store.getters.getActivePage();
-      if (!activePage) {
-        return false;
-      }
-
-      return !this.$store.getters.hasEditingBlock();
     },
     editBlock(): Block {
       return this.$store.getters.getEditingBlock();
@@ -105,11 +95,6 @@ export default defineComponent({
     onPageSelected(pageId: number) {
       this.$store.commit(SET_ACTIVE_PAGE, {
         pageId
-      });
-    },
-    onNewBlock(type: string) {
-      this.$store.dispatch(CREATE_BLOCK, {
-        type
       });
     }
   }
@@ -169,11 +154,5 @@ export default defineComponent({
 .front,
 .back {
   background: #eee;
-}
-
-.controllers {
-  position: absolute;
-  right: -200px;
-  top: 20px;
 }
 </style>

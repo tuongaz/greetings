@@ -19,6 +19,9 @@ import {
 import { State, Card, Page, Block } from './models';
 import { getColor, getFont } from '@/config';
 
+export const coverPageId = 0;
+export const backPageId = -1;
+
 export interface DeleteBlockPayload {
   blockId: string;
 }
@@ -57,15 +60,17 @@ export const store = createStore<State>({
     card: {},
     pages: [],
     coverPage: {
-      id: 0
+      id: coverPageId
     },
     backPage: {
-      id: -1
+      id: backPageId
     },
     blocks: [],
     app: {}
   },
   getters: {
+    getCoverPage: (st: State) => (): Page => st.coverPage,
+    getBackPage: (st: State) => (): Page => st.backPage,
     getEditingBlock: (st: State) => (): Block | undefined => st.app.editBlock,
     getActivePageIndex: (st: State) => (): number => {
       return st.pages.findIndex((p) => p.id === st.app.activePageId);
@@ -88,8 +93,13 @@ export const store = createStore<State>({
       state.blocks = state.blocks.filter((b) => b.id !== blockId);
       state.app.editBlock = undefined;
     },
-    [SET_CARD](state: State, { card, pages, blocks }: SetCardPayload) {
+    [SET_CARD](
+      state: State,
+      { card, pages, coverPage, backPage, blocks }: SetCardPayload
+    ) {
       state.card = card;
+      state.coverPage = coverPage;
+      state.backPage = backPage;
       state.blocks = blocks;
       state.pages = pages;
     },
@@ -238,7 +248,14 @@ export const store = createStore<State>({
         }
       ];
 
-      commit(SET_CARD, { card, pages, blocks });
+      const coverPage: Page = {
+        id: coverPageId
+      };
+      const backPage: Page = {
+        id: backPageId
+      };
+
+      commit(SET_CARD, { card, coverPage, backPage, pages, blocks });
     }
   }
 });
