@@ -26,11 +26,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
-import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import Page from './Page.vue';
 import PageCover from './PageCover.vue';
 import PageBack from './PageBack.vue';
+import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
+import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import { backPageId, Block, coverPageId, Page as ModelPage } from '@/store';
 
 export default defineComponent({
