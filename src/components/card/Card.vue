@@ -2,7 +2,7 @@
   <div class="card">
     <Pages />
     <EditPage v-if="hasEditBlock" :block="editBlock" />
-    <Controllers @new-block="onNewBlock" v-if="canShowControllers" />
+    <Controllers @new-block="onNewBlock" />
   </div>
 
   <Navigator @changed="onNavigatorChanged" />
@@ -16,7 +16,7 @@ import Pages from './Pages.vue';
 import EditPage from './EditPage.vue';
 import Navigator from './Navigator.vue';
 import Controllers from './Controllers.vue';
-import { backPageId, Block, coverPageId, Page as ModelPage } from '@/store';
+import { Block } from '@/store';
 
 export default defineComponent({
   components: {
@@ -28,18 +28,6 @@ export default defineComponent({
   computed: {
     pages() {
       return this.$store.getters.getPages();
-    },
-    canShowControllers(): boolean {
-      const activePage: ModelPage = this.$store.getters.getActivePage();
-      if (!activePage) {
-        return false;
-      }
-
-      return (
-        !this.$store.getters.hasEditingBlock() &&
-        activePage.id !== coverPageId &&
-        activePage.id !== backPageId
-      );
     },
     editBlock(): Block {
       return this.$store.getters.getEditingBlock();

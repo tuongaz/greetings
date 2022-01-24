@@ -1,5 +1,5 @@
 <template>
-  <div class="controllers">
+  <div v-if="visible" class="controllers">
     <button @click="newTextBlock">New Text</button>
     <button @click="newImageBlock">New Image</button>
   </div>
@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { backPageId, coverPageId, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   methods: {
@@ -15,6 +16,20 @@ export default defineComponent({
     },
     newImageBlock() {
       this.$emit('newBlock', 'blockimage');
+    }
+  },
+  computed: {
+    visible(): boolean {
+      const activePage: ModelPage = this.$store.getters.getActivePage();
+      if (!activePage) {
+        return false;
+      }
+
+      return (
+        !this.$store.getters.hasEditingBlock() &&
+        activePage.id !== coverPageId &&
+        activePage.id !== backPageId
+      );
     }
   }
 });

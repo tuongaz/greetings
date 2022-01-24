@@ -17,15 +17,18 @@
 * Vuex integration (unit test block save, block delete)
 * Scrollbar for the next pages (When there are more than 5 pages)
 * Icons (Find icons)
-===============================================================
+
+
 * Animate buttons appearing...
-* Animate card open
+* Unit test/code stability, clean up
+===============================================================
 * Design the app page (Setup steps...)
+* List colors
+* UX/UI fixes
+
 * Mobile compatibility
 * basic cross browser check
-* UX/UI fixes
-* Unit test/code stability, clean up
-* List colors
+* Animate card open
 
 
 
