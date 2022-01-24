@@ -1,6 +1,8 @@
 <template>
   <nav>
-    <h1><span>Card</span>.Group</h1>
+    <div class="container">
+      <h1><span>Card</span>.Group</h1>
+    </div>
   </nav>
 </template>
 
@@ -8,8 +10,13 @@
 @import '@/assets/scss/mixins.scss';
 
 nav {
-  width: 992px;
-  margin: auto;
+  border-bottom: 1px solid #eee;
+
+  .container {
+    width: 992px;
+    margin: auto;
+    padding: 20px 0;
+  }
 }
 
 h1 {
