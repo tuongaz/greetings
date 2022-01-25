@@ -1,11 +1,14 @@
 <template>
-  <div class="card">
-    <Pages />
-    <EditPage v-if="hasEditBlock" :block="editBlock" />
-    <Controllers @new-block="onNewBlock" />
-  </div>
+  <div class="card-warpper" v-if="!!card">
+    <h2>A card for {{ card.recipientName }}</h2>
+    <div class="card">
+      <Pages />
+      <EditPage v-if="hasEditBlock" :block="editBlock" />
+      <Controllers @new-block="onNewBlock" />
+    </div>
 
-  <Navigator @changed="onNavigatorChanged" />
+    <Navigator @changed="onNavigatorChanged" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -16,7 +19,7 @@ import Pages from './Pages.vue';
 import EditPage from './EditPage.vue';
 import Navigator from './Navigator.vue';
 import Controllers from './Controllers.vue';
-import { Block } from '@/store';
+import { Block, Card as CardModel } from '@/store';
 
 export default defineComponent({
   components: {
@@ -37,6 +40,9 @@ export default defineComponent({
     },
     currentPageId(): number {
       return this.$store.state.app.activePageId || 0;
+    },
+    card(): CardModel {
+      return this.$store.getters.getCard();
     }
   },
   mounted() {
@@ -77,6 +83,10 @@ export default defineComponent({
   position: absolute;
   right: -200px;
   top: 20px;
+}
+
+h2 {
+  text-align: center;
 }
 </style>
 

@@ -58,7 +58,7 @@ export const key: InjectionKey<Store<State>> = Symbol('');
 
 export const store = createStore<State>({
   state: {
-    card: {},
+    card: undefined,
     pages: [],
     blocks: [],
     app: {}
@@ -86,6 +86,9 @@ export const store = createStore<State>({
     },
     backPage: (st: State) => () => {
       return st.pages[st.pages.length - 1];
+    },
+    getCard: (st: State) => () => {
+      return st.card;
     },
     contentPages: (st: State) => () => {
       return st.pages.slice(1, st.pages.length - 1);
@@ -169,7 +172,6 @@ export const store = createStore<State>({
     ) {
       const block: Block = {
         id: uuidv4(),
-        cardId: state.card.id || '',
         pageId: state.app.activePageId || 0,
         type,
         top: 200,
@@ -185,8 +187,17 @@ export const store = createStore<State>({
       commit(SET_EDIT_BLOCK, { blockId: block.id });
     },
     async [GET_CARD]({ commit }: ActionContext<State, State>) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 2000);
+      });
+
       const card = {
-        id: 'card1'
+        id: 'card1',
+        recipientName: 'Tuong Le',
+        recipientEmail: 'tuongaz@gmail.c.om',
+        senderName: 'Bill Gates',
+        deliveryDateTime: '2017-07-02 18:06:05.791337 +0000',
+        deliveryTimeZone: 'Melbourne/Australia'
       };
       const pages: Page[] = [
         {

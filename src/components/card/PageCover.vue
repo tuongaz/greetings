@@ -20,6 +20,12 @@ export default defineComponent({
   computed: {
     classNames() {
       const activePage = this.$store.getters.getActivePage() as ModelPage;
+      if (!activePage) {
+        return {
+          page: true,
+          cover: true
+        };
+      }
 
       return {
         page: true,

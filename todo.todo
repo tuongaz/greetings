@@ -19,15 +19,18 @@
 * Icons (Find icons)
 
 
-* Unit test/code stability, clean up
-===============================================================
 * Design the app page (Setup steps...)
-* Animate buttons appearing..
-* List colors
+* Router
+* Basic cross browser check
 * UX/UI fixes
 
+===============================================================
+* List colors
+* Unit test/code stability, clean up
+
 * Mobile compatibility
-* basic cross browser check
+
+* Animate buttons appearing..
 * Animate card open
 
 

@@ -1,6 +1,5 @@
 export interface Block {
   id: string;
-  cardId: string;
   pageId: number;
   editable?: boolean;
   type: string;
@@ -24,11 +23,16 @@ export interface Page {
 
 export interface Card {
   id?: string;
+  recipientName?: string;
+  recipientEmail?: string;
+  senderName?: string;
+  deliveryDateTime?: string;
+  deliveryTimeZone?: string;
 }
 
 export interface State {
   app: App;
-  card: Card;
+  card?: Card;
   pages: Page[];
   blocks: Block[];
 }

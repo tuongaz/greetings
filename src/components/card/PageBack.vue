@@ -24,6 +24,14 @@ export default defineComponent({
     },
     classNames() {
       const activePage = this.$store.getters.getActivePage() as ModelPage;
+
+      if (!activePage) {
+        return {
+          page: true,
+          cover: true
+        };
+      }
+
       const pages = this.$store.getters.getPages();
       const isNextActive = pages[pages.length - 2].id === activePage.id;
 
