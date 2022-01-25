@@ -39,15 +39,12 @@ export default defineComponent({
     hasEditBlock(): boolean {
       return !!this.$store.getters.getEditingBlock();
     },
-    currentPageId(): number {
-      return this.$store.state.app.activePageId || 0;
-    },
     card(): CardModel {
       return this.$store.getters.getCard();
     }
   },
-  mounted() {
-    this.$store.dispatch(GET_CARD);
+  beforeMount() {
+    this.$store.dispatch(GET_CARD, { activePageNumber: 2 });
   },
   methods: {
     blocksByPageId(pageId: string): Block[] {

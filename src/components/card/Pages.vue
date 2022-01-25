@@ -115,9 +115,6 @@ export default defineComponent({
     },
     hasEditBlock(): boolean {
       return !!this.$store.getters.getEditingBlock();
-    },
-    currentPageId(): number {
-      return this.$store.state.app.activePageId || 0;
     }
   },
   methods: {

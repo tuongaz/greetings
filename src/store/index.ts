@@ -25,6 +25,10 @@ export const backPageId = -1;
 export interface DeleteBlockPayload {
   blockId: string;
 }
+
+export interface GetCardPayload {
+  activePageNumber: number;
+}
 export interface SetActivePagePayload {
   pageId?: number;
   index?: number;
@@ -99,11 +103,10 @@ export const store = createStore<State>({
       state.blocks = state.blocks.filter((b) => b.id !== blockId);
       state.app.editBlock = undefined;
     },
-    [SET_CARD](state: State, { card, pages, blocks, app }: SetCardPayload) {
+    [SET_CARD](state: State, { card, pages, blocks }: SetCardPayload) {
       state.card = card;
       state.blocks = blocks;
       state.pages = pages;
-      state.app = app;
     },
     [SET_ACTIVE_PAGE](state: State, { pageId, index }: SetActivePagePayload) {
       if (index !== undefined) {
@@ -186,11 +189,13 @@ export const store = createStore<State>({
       commit(CREATE_BLOCK, { block });
       commit(SET_EDIT_BLOCK, { blockId: block.id });
     },
-    async [GET_CARD]({ commit }: ActionContext<State, State>) {
+    async [GET_CARD](
+      { commit }: ActionContext<State, State>,
+      { activePageNumber }: GetCardPayload
+    ) {
       await new Promise((resolve) => {
         setTimeout(resolve, 2000);
       });
-      console.log('get card');
 
       const card = {
         id: 'card1',
@@ -265,11 +270,8 @@ export const store = createStore<State>({
         }
       ];
 
-      const app: App = {
-        activePageId: 1
-      };
-
-      commit(SET_CARD, { card, pages, blocks, app });
+      commit(SET_CARD, { card, pages, blocks });
+      commit(SET_ACTIVE_PAGE, { index: activePageNumber - 1 });
     }
   }
 });
