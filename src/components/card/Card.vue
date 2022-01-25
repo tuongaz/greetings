@@ -9,6 +9,7 @@
 
     <Navigator @changed="onNavigatorChanged" />
   </div>
+  <div class="card-wrapper" v-else>Loading...</div>
 </template>
 
 <script lang="ts">
