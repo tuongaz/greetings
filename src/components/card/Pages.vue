@@ -29,7 +29,7 @@ import { defineComponent } from 'vue';
 import Page from './Page.vue';
 import PageCover from './PageCover.vue';
 import PageBack from './PageBack.vue';
-import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
+import { CREATE_BLOCK } from '@/store/action_types';
 import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
 import { backPageId, Block, coverPageId, Page as ModelPage } from '@/store';
 
@@ -38,9 +38,6 @@ export default defineComponent({
     Page,
     PageCover,
     PageBack
-  },
-  props: {
-    activePageId: Number
   },
   computed: {
     coverPage() {
@@ -122,12 +119,6 @@ export default defineComponent({
     currentPageId(): number {
       return this.$store.state.app.activePageId || 0;
     }
-  },
-  mounted() {
-    this.$store.dispatch(GET_CARD);
-    this.$store.commit(SET_ACTIVE_PAGE, {
-      pageId: this.activePageId
-    });
   },
   methods: {
     blocksByPageId(pageId: string): Block[] {

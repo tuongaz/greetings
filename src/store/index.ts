@@ -190,6 +190,7 @@ export const store = createStore<State>({
       await new Promise((resolve) => {
         setTimeout(resolve, 2000);
       });
+      console.log('get card');
 
       const card = {
         id: 'card1',
