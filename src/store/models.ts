@@ -1,6 +1,6 @@
 export interface Block {
   id: string;
-  pageId: number;
+  pageId: string;
   editable?: boolean;
   type: string;
   top: number;
@@ -11,12 +11,12 @@ export interface Block {
 }
 
 export interface App {
-  activePageId?: number;
+  activePageNumber?: number;
   editBlock?: Block;
 }
 
 export interface Page {
-  id: number;
+  id: string;
   type?: 'front' | 'back' | 'content';
   [key: string]: any;
 }

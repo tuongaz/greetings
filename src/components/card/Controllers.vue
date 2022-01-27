@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { backPageId, coverPageId, Page as ModelPage } from '@/store';
+import { Page as ModelPage } from '@/store';
 
 export default defineComponent({
   methods: {
@@ -27,8 +27,8 @@ export default defineComponent({
 
       return (
         !this.$store.getters.hasEditingBlock() &&
-        activePage.id !== coverPageId &&
-        activePage.id !== backPageId
+        !this.$store.getters.isCoverPage(activePage) &&
+        !this.$store.getters.isBackPage(activePage)
       );
     }
   }

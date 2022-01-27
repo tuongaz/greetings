@@ -240,9 +240,6 @@ export default defineComponent({
         width: pxToInt(rootElm.style.width),
         ...this.blockValues
       };
-      if (this.$store.state.app.activePageId) {
-        input.pageId = this.$store.state.app.activePageId;
-      }
       this.$store.dispatch(UPDATE_BLOCK, {
         blockId: this.block.id,
         data: input

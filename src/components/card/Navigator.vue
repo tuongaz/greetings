@@ -81,11 +81,17 @@ export default defineComponent({
     },
     previous() {
       const pageNum = this.$store.getters.activePageNumber() as number;
-      this.$emit('changed', pageNum - 2);
+      this.$router.push({
+        name: 'card',
+        params: { cardId: 'hello', pageNumber: pageNum - 1 }
+      });
     },
     next() {
       const pageNum = this.$store.getters.activePageNumber() as number;
-      this.$emit('changed', pageNum);
+      this.$router.push({
+        name: 'card',
+        params: { cardId: 'hello', pageNumber: pageNum + 1 }
+      });
     }
   }
 });

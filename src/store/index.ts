@@ -13,14 +13,12 @@ import {
   CREATE_BLOCK,
   SET_EDIT_BLOCK,
   UPDATE_BLOCK,
-  SET_ACTIVE_PAGE,
+  SET_ACTIVE_PAGE_NUMBER,
+  SET_ACTIVE_PAGE_ID,
   ADD_NEW_PAGE
 } from './mutation_types';
 import { State, Card, Page, Block, App } from './models';
 import { getColor, getFont } from '@/config';
-
-export const coverPageId = 0;
-export const backPageId = -1;
 
 export interface DeleteBlockPayload {
   blockId: string;
@@ -30,9 +28,11 @@ export interface GetCardPayload {
   activePageNumber: number;
   cardId: string;
 }
-export interface SetActivePagePayload {
-  pageId?: number;
-  index?: number;
+export interface SetActivePageNumberPayload {
+  pageNumber: number;
+}
+export interface SetActivePageIdPayload {
+  pageId: string;
 }
 
 export interface UpdateBlockPayload {
@@ -71,17 +71,30 @@ export const store = createStore<State>({
   getters: {
     getEditingBlock: (st: State) => (): Block | undefined => st.app.editBlock,
     activePageNumber: (st: State) => (): number => {
-      return st.pages.findIndex((p) => p.id === st.app.activePageId) + 1;
+      return st.app.activePageNumber || 1;
     },
     getActivePage: (st: State) => (): Page | undefined => {
-      return st.pages.find((p) => p.id === st.app.activePageId);
+      if (st.app.activePageNumber === undefined) {
+        return undefined;
+      }
+
+      return st.pages[st.app.activePageNumber - 1];
     },
-    isPageActive: (st: State) => (pageId: number) => {
-      return pageId === st.app.activePageId;
+    isPageActive: (st: State) => (pageId: string) => {
+      const index = st.pages.findIndex((p) => p.id === pageId);
+      return index + 1 === st.app.activePageNumber;
+    },
+    isCoverPage: (st: State) => (page: Page) => {
+      const index = st.pages.findIndex((p) => p.id === page.id);
+      return index === 0;
+    },
+    isBackPage: (st: State) => (page: Page) => {
+      const index = st.pages.findIndex((p) => p.id === page.id);
+      return index === st.pages.length - 1;
     },
     getBlocksByPageID:
       (st: State) =>
-      (pageId: number): Block[] =>
+      (pageId: string): Block[] =>
         st.blocks.filter((b) => b.pageId === pageId && !b.isHidden),
     getPages: (st: State) => (): Page[] => st.pages,
     totalPages: (st: State) => (): number => st.pages.length,
@@ -109,16 +122,15 @@ export const store = createStore<State>({
       state.blocks = blocks;
       state.pages = pages;
     },
-    [SET_ACTIVE_PAGE](state: State, { pageId, index }: SetActivePagePayload) {
-      if (index !== undefined) {
-        const page = state.pages[index];
-        if (page) {
-          state.app.activePageId = page.id;
-        }
-        return;
-      }
-
-      state.app.activePageId = pageId;
+    [SET_ACTIVE_PAGE_NUMBER](
+      state: State,
+      { pageNumber }: SetActivePageNumberPayload
+    ) {
+      state.app.activePageNumber = pageNumber;
+    },
+    [SET_ACTIVE_PAGE_ID](state: State, { pageId }: SetActivePageIdPayload) {
+      const index = state.pages.findIndex((p) => p.id === pageId) || 0;
+      state.app.activePageNumber = index + 1;
     },
     [SET_EDIT_BLOCK](state: State, { blockId }: SetEditBlockPayload) {
       const block = state.blocks.find((b) => b.id === blockId);
@@ -146,7 +158,7 @@ export const store = createStore<State>({
     },
     [ADD_NEW_PAGE](state: State) {
       state.pages.splice(state.pages.length - 1, 0, {
-        id: state.pages.length
+        id: uuidv4()
       });
     }
   },
@@ -161,12 +173,15 @@ export const store = createStore<State>({
       { commit, state }: ActionContext<State, State>,
       payload: UpdateBlockPayload
     ) {
-      commit(UPDATE_BLOCK, payload);
+      if (!state.app.activePageNumber) {
+        return;
+      }
+
+      const page = state.pages[state.app.activePageNumber - 1];
+      commit(UPDATE_BLOCK, { ...payload, pageId: page.id });
 
       // If this is the last page, create a new page
-      const idx = state.pages.findIndex((p) => p.id === state.app.activePageId);
-      if (idx === state.pages.length - 2) {
-        // add new page
+      if (state.app.activePageNumber === state.pages.length - 1) {
         commit(ADD_NEW_PAGE);
       }
     },
@@ -174,9 +189,14 @@ export const store = createStore<State>({
       { commit, state }: ActionContext<State, State>,
       { type }
     ) {
+      if (!state.app.activePageNumber) {
+        return;
+      }
+
+      const page = state.pages[state.app.activePageNumber - 1];
       const block: Block = {
         id: uuidv4(),
-        pageId: state.app.activePageId || 0,
+        pageId: page.id,
         type,
         top: 200,
         left: 200,
@@ -209,28 +229,28 @@ export const store = createStore<State>({
       };
       const pages: Page[] = [
         {
-          id: 0,
+          id: '0',
           image: '/img/HBD-awesome-co-workers-PR-2021.gif'
         },
         {
-          id: 1,
+          id: '1',
           cardId: 'card1',
           type: 'content'
         },
         {
-          id: 2,
+          id: '2',
           cardId: 'card1',
           type: 'content'
         },
         {
-          id: -1
+          id: '-1'
         }
       ];
       const blocks: Block[] = [
         {
           id: 'block1',
           cardId: 'card1',
-          pageId: 1,
+          pageId: '1',
           type: 'blocktext',
           top: 0,
           left: 0,
@@ -244,7 +264,7 @@ export const store = createStore<State>({
         {
           id: 'block2',
           cardId: 'card1',
-          pageId: 1,
+          pageId: '1',
           type: 'blocktext',
           top: 200,
           left: 200,
@@ -258,7 +278,7 @@ export const store = createStore<State>({
         {
           id: 'block3',
           cardId: 'card1',
-          pageId: 1,
+          pageId: '1',
           type: 'blocktext',
           top: 120,
           left: 100,
@@ -273,7 +293,7 @@ export const store = createStore<State>({
       ];
 
       commit(SET_CARD, { card, pages, blocks });
-      commit(SET_ACTIVE_PAGE, { index: activePageNumber - 1 });
+      commit(SET_ACTIVE_PAGE_NUMBER, { pageNumber: activePageNumber });
     }
   }
 });

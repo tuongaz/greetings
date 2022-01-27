@@ -1,7 +1,7 @@
 <template>
   <Header />
   <Body>
-    <Card />
+    <Card :cardId="cardId" :pageNumber="page" />
   </Body>
   <Footer />
 </template>
@@ -19,6 +19,26 @@ export default defineComponent({
     Header,
     Footer,
     Body
+  },
+  computed: {
+    page() {
+      const parsed = parseInt(this.pageNumber, 10);
+      if (!parsed) {
+        return 1;
+      }
+
+      return parsed;
+    }
+  },
+  props: {
+    cardId: {
+      required: true,
+      type: String
+    },
+    pageNumber: {
+      type: String,
+      required: true
+    }
   }
 });
 </script>

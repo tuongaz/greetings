@@ -4,7 +4,8 @@ import CardPage from '@/components/page/CardPage.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/card/:cardId/:pageNumber?',
-    name: 'Card',
+    name: 'card',
+    props: true,
     component: CardPage
   }
 ];

@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import WrapperBlock from './Block.vue';
-import { backPageId, Block, coverPageId, Page } from '@/store';
+import { Block, Page } from '@/store';
 
 export default defineComponent({
   props: {
@@ -47,7 +47,8 @@ export default defineComponent({
     },
     canSelect() {
       return !(
-        (this.page.id === coverPageId || this.page.id === backPageId) &&
+        (this.$store.getters.isCoverPage(this.page) ||
+          this.$store.getters.isBackPage(this.page)) &&
         this.$store.getters.hasEditingBlock()
       );
     }

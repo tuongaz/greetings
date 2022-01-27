@@ -30,8 +30,8 @@ import Page from './Page.vue';
 import PageCover from './PageCover.vue';
 import PageBack from './PageBack.vue';
 import { CREATE_BLOCK } from '@/store/action_types';
-import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
-import { backPageId, Block, coverPageId, Page as ModelPage } from '@/store';
+import { SET_ACTIVE_PAGE_ID } from '@/store/mutation_types';
+import { Block, Page as ModelPage } from '@/store';
 
 export default defineComponent({
   components: {
@@ -53,7 +53,7 @@ export default defineComponent({
         return [];
       }
 
-      if (activePage.id === coverPageId) {
+      if (this.$store.getters.isCoverPage(activePage)) {
         let previousActive = true;
         // cover page
         for (let i = 0; i < contentPages.length; i += 1) {
@@ -70,7 +70,7 @@ export default defineComponent({
         return contentPages;
       }
 
-      if (activePage.id === backPageId) {
+      if (this.$store.getters.isBackPage(activePage)) {
         // back page
         for (let i = 0; i < contentPages.length; i += 1) {
           const className = 'left-active';
@@ -127,7 +127,7 @@ export default defineComponent({
       });
     },
     onPageSelected(pageId: number) {
-      this.$store.commit(SET_ACTIVE_PAGE, {
+      this.$store.commit(SET_ACTIVE_PAGE_ID, {
         pageId
       });
     }

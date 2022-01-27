@@ -7,7 +7,7 @@
       <Controllers @new-block="onNewBlock" />
     </div>
 
-    <Navigator @changed="onNavigatorChanged" />
+    <Navigator />
   </div>
   <div class="card-wrapper" v-else>Loading...</div>
 </template>
@@ -15,7 +15,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
-import { SET_ACTIVE_PAGE } from '@/store/mutation_types';
+import {
+  SET_ACTIVE_PAGE_NUMBER,
+  SET_ACTIVE_PAGE_ID
+} from '@/store/mutation_types';
 import Pages from './Pages.vue';
 import EditPage from './EditPage.vue';
 import Navigator from './Navigator.vue';
@@ -28,6 +31,16 @@ export default defineComponent({
     EditPage,
     Navigator,
     Controllers
+  },
+  props: {
+    cardId: {
+      required: true,
+      type: String
+    },
+    pageNumber: {
+      required: true,
+      type: Number
+    }
   },
   computed: {
     pages() {
@@ -45,22 +58,32 @@ export default defineComponent({
   },
   beforeMount() {
     this.$store.dispatch(GET_CARD, {
-      cardId: this.$route.params.cardId,
-      activePageNumber: this.$route.params.pageNumber || 1
+      cardId: this.cardId,
+      activePageNumber: this.pageNumber || 1
     });
+  },
+  watch: {
+    pageNumber(pageNumber) {
+      console.log({ pageNumber });
+      this.$store.commit(SET_ACTIVE_PAGE_NUMBER, {
+        pageNumber
+      });
+    },
+    cardId(cardId) {
+      console.log({ cardId });
+      this.$store.dispatch(GET_CARD, {
+        cardId,
+        activePageNumber: this.pageNumber || 1
+      });
+    }
   },
   methods: {
     blocksByPageId(pageId: string): Block[] {
       return this.$store.getters.getBlocksByPageID(pageId) as Block[];
     },
     onPageSelected(pageId: number) {
-      this.$store.commit(SET_ACTIVE_PAGE, {
+      this.$store.commit(SET_ACTIVE_PAGE_ID, {
         pageId
-      });
-    },
-    onNavigatorChanged(index: number) {
-      this.$store.commit(SET_ACTIVE_PAGE, {
-        index
       });
     },
     onNewBlock(type: string) {
