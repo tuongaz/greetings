@@ -53,15 +53,14 @@ export default defineComponent({
       return this.$store.getters.getCard();
     }
   },
-  beforeMount() {
+  mounted() {
     this.$store.dispatch(GET_CARD, {
       cardId: this.cardId,
-      activePageNumber: this.pageNumber || 1
+      activePageNumber: this.pageNumber
     });
   },
   watch: {
-    pageNumber(pageNumber) {
-      console.log({ pageNumber });
+    pageNumber(pageNumber: number) {
       this.$store.commit(SET_ACTIVE_PAGE_NUMBER, {
         pageNumber
       });

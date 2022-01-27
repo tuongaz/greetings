@@ -129,7 +129,11 @@ export const store = createStore<State>({
       state: State,
       { pageNumber }: SetActivePageNumberPayload
     ) {
-      state.app.activePageNumber = pageNumber;
+      let pageNo = Math.floor(pageNumber);
+      pageNo = Math.min(pageNo, state.pages.length);
+      pageNo = Math.max(pageNo, 1);
+
+      state.app.activePageNumber = pageNo;
     },
     [SET_EDIT_BLOCK](state: State, { blockId }: SetEditBlockPayload) {
       const block = state.blocks.find((b) => b.id === blockId);
