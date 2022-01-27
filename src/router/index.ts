@@ -3,8 +3,8 @@ import CardPage from '@/components/page/CardPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'Home',
+    path: '/card/:cardId/:pageNumber?',
+    name: 'Card',
     component: CardPage
   }
 ];

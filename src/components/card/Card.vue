@@ -44,7 +44,10 @@ export default defineComponent({
     }
   },
   beforeMount() {
-    this.$store.dispatch(GET_CARD, { activePageNumber: 2 });
+    this.$store.dispatch(GET_CARD, {
+      cardId: this.$route.params.cardId,
+      activePageNumber: this.$route.params.pageNumber || 1
+    });
   },
   methods: {
     blocksByPageId(pageId: string): Block[] {

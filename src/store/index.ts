@@ -28,6 +28,7 @@ export interface DeleteBlockPayload {
 
 export interface GetCardPayload {
   activePageNumber: number;
+  cardId: string;
 }
 export interface SetActivePagePayload {
   pageId?: number;
@@ -191,9 +192,10 @@ export const store = createStore<State>({
     },
     async [GET_CARD](
       { commit }: ActionContext<State, State>,
-      { activePageNumber }: GetCardPayload
+      { activePageNumber, cardId }: GetCardPayload
     ) {
       await new Promise((resolve) => {
+        console.log('loading card', cardId);
         setTimeout(resolve, 2000);
       });
 
