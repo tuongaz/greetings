@@ -15,10 +15,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { CREATE_BLOCK, GET_CARD } from '@/store/action_types';
-import {
-  SET_ACTIVE_PAGE_NUMBER,
-  SET_ACTIVE_PAGE_ID
-} from '@/store/mutation_types';
+import { SET_ACTIVE_PAGE_NUMBER } from '@/store/mutation_types';
 import Pages from './Pages.vue';
 import EditPage from './EditPage.vue';
 import Navigator from './Navigator.vue';
@@ -80,11 +77,6 @@ export default defineComponent({
   methods: {
     blocksByPageId(pageId: string): Block[] {
       return this.$store.getters.getBlocksByPageID(pageId) as Block[];
-    },
-    onPageSelected(pageId: number) {
-      this.$store.commit(SET_ACTIVE_PAGE_ID, {
-        pageId
-      });
     },
     onNewBlock(type: string) {
       this.$store.dispatch(CREATE_BLOCK, {

@@ -14,7 +14,6 @@ import {
   SET_EDIT_BLOCK,
   UPDATE_BLOCK,
   SET_ACTIVE_PAGE_NUMBER,
-  SET_ACTIVE_PAGE_ID,
   ADD_NEW_PAGE
 } from './mutation_types';
 import { State, Card, Page, Block, App } from './models';
@@ -92,6 +91,10 @@ export const store = createStore<State>({
       const index = st.pages.findIndex((p) => p.id === page.id);
       return index === st.pages.length - 1;
     },
+    getPageNumberByPageId: (st: State) => (pageId: string) => {
+      const index = st.pages.findIndex((p) => p.id === pageId) || 0;
+      return index + 1;
+    },
     getBlocksByPageID:
       (st: State) =>
       (pageId: string): Block[] =>
@@ -127,10 +130,6 @@ export const store = createStore<State>({
       { pageNumber }: SetActivePageNumberPayload
     ) {
       state.app.activePageNumber = pageNumber;
-    },
-    [SET_ACTIVE_PAGE_ID](state: State, { pageId }: SetActivePageIdPayload) {
-      const index = state.pages.findIndex((p) => p.id === pageId) || 0;
-      state.app.activePageNumber = index + 1;
     },
     [SET_EDIT_BLOCK](state: State, { blockId }: SetEditBlockPayload) {
       const block = state.blocks.find((b) => b.id === blockId);

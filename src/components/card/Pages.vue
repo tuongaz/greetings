@@ -30,7 +30,6 @@ import Page from './Page.vue';
 import PageCover from './PageCover.vue';
 import PageBack from './PageBack.vue';
 import { CREATE_BLOCK } from '@/store/action_types';
-import { SET_ACTIVE_PAGE_ID } from '@/store/mutation_types';
 import { Block, Page as ModelPage } from '@/store';
 
 export default defineComponent({
@@ -127,8 +126,10 @@ export default defineComponent({
       });
     },
     onPageSelected(pageId: number) {
-      this.$store.commit(SET_ACTIVE_PAGE_ID, {
-        pageId
+      const pageNumber = this.$store.getters.getPageNumberByPageId(pageId);
+      this.$router.push({
+        name: 'card',
+        params: { pageNumber }
       });
     }
   }

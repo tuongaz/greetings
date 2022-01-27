@@ -90,7 +90,7 @@ export default defineComponent({
       const pageNum = this.$store.getters.activePageNumber() as number;
       this.$router.push({
         name: 'card',
-        params: { cardId: 'hello', pageNumber: pageNum + 1 }
+        params: { pageNumber: pageNum + 1 }
       });
     }
   }
