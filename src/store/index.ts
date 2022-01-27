@@ -181,7 +181,10 @@ export const store = createStore<State>({
       }
 
       const page = state.pages[state.app.activePageNumber - 1];
-      commit(UPDATE_BLOCK, { ...payload, pageId: page.id });
+      commit(UPDATE_BLOCK, {
+        blockId: payload.blockId,
+        data: { ...payload.data, pageId: page.id }
+      });
 
       // If this is the last page, create a new page
       if (state.app.activePageNumber === state.pages.length - 1) {
