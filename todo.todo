@@ -17,39 +17,29 @@
 * Vuex integration (unit test block save, block delete)
 * Scrollbar for the next pages (When there are more than 5 pages)
 * Icons (Find icons)
-
-
 * Router
-* Design the app page (Setup steps...)
-* Basic cross browser check
-* UX/UI fixes
+=======
 
-===============================================================
-* List colors
-* Unit test/code stability, clean up
+* Setup steps
 
-* Mobile compatibility
-
-* Animate buttons appearing..
-* Animate card open
-
-
-
-
-
-
-
-
-* Add emoji
-* Add slate
 
 ===
 30/Jan: API integration:
 - GRPC, Microservice?
 
+===
+
+* Add emoji
+* Add slate
+* Basic cross browser check
+* List colors
+* Unit test/code stability, clean up
 === FINAL touch
 * Choose fonts
 * Choose color
+* Mobile compatibility
+* Animate buttons appearing.. (Use motion usevue/core)
+* Animate card open (Use motion usevue/core)
 
 === FUTURE
 * Export (PDF, PNG, ...)
