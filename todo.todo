@@ -18,9 +18,11 @@
 * Scrollbar for the next pages (When there are more than 5 pages)
 * Icons (Find icons)
 * Router
-=======
+======= 
 
 * Setup steps
+* move to postcss
+* Image upload service (File uploader component with Vue)
 
 
 ===
